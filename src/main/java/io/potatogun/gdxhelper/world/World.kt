@@ -14,6 +14,10 @@ import io.potatogun.gdxhelper.collections.weakMutableSetOf;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.entity.manager.EntityManager;
 import io.potatogun.gdxhelper.entity.manager.SpatialGrid;
+import io.potatogun.gdxhelper.pools.MutablePositionPool;
+import io.potatogun.gdxhelper.pools.PositionPool;
+import io.potatogun.gdxhelper.position.MutablePosition;
+import io.potatogun.gdxhelper.position.Position;
 import io.potatogun.gdxhelper.screen.WorldProjector;
 import io.potatogun.gdxhelper.util.Utils;
 import io.potatogun.gdxhelper.world.Freezable;
@@ -77,6 +81,12 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * 자바에서도 world.entities.add()로 자연스럽게 호출하기 위해 @JvmField이다.
 	 */
 	@JvmField val entities: EntityManager = SpatialGrid(this, entityCapacity, tileSize);
+	@JvmField val positionPool: PositionPool = object : PositionPool() {
+		override fun newObject(): Position = MutablePosition(this@World, 0f, 0f) as Position;
+	};
+	@JvmField val mutablePositionPool: MutablePositionPool = object : MutablePositionPool() {
+		override fun newObject(): MutablePosition = MutablePosition(this@World, 0f, 0f);
+	};
 
 	/**
 	 * 설정 빌더를 사용하여 월드를 생성한다.

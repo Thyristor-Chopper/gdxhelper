@@ -9,9 +9,7 @@ import io.potatogun.gdxhelper.position.Position;
 /**
  * 읽기용 좌표 풀
  */
-class PositionPool() : Pool<Position>() {
-	override fun newObject(): Position = MutablePosition(0f, 0f) as Position;
-
+abstract class PositionPool() : Pool<Position>() {
 	/**
 	 * 지정한 좌표값의 좌표를 가져온다.
 	 */

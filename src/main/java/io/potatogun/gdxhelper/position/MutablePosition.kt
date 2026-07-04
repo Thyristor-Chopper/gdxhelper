@@ -1,5 +1,7 @@
 package io.potatogun.gdxhelper.position;
 
+import io.potatogun.gdxhelper.world.World;
+
 /* [ 해시맵 예제 ]
  *   val x = MutablePosition(1f, 2f);
  *   val y = MutablePosition(1f, 2f);
@@ -26,10 +28,11 @@ package io.potatogun.gdxhelper.position;
  *   원래 계약상으로는 equals가 참이면 hashCode도 같아야 한다지만 맵 키로써의 안전성과 
  *   실제 사용 시의 체감과 목적에 기반하여 의도적으로 깬 것이다.
  *
- * @property x 처음 X 좌표
- * @property y 처음 Y 좌표
+ * @param    world 소속 월드
+ * @property x     처음 X 좌표
+ * @property y     처음 Y 좌표
  */
-open class MutablePosition(override var x: Float, override var y: Float) : Position(x, y) {
+open class MutablePosition(world: World, override var x: Float, override var y: Float) : Position(world, x, y) {
 	/**
 	 * X 좌표에 지정한 값만큼 더한다.
 	 *
@@ -56,5 +59,5 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	//   x, y가 같아도 메모리 상에서 서로 다른 객체면 해시맵에서 다른 것으로 취급한다.
 	override fun hashCode(): Int = System.identityHashCode(this);
 
-	override fun copy(x: Float, y: Float): MutablePosition = MutablePosition(x, y);
+	override fun copy(world: World, x: Float, y: Float): MutablePosition = MutablePosition(world, x, y);
 }
