@@ -25,7 +25,7 @@ import kotlin.math.atan2;
  *   즉, 우리가 Player든 Bullet이든 'Entity를 상속'하기만 하면
  *   World가 자동으로 update/draw/제거까지 해준다 (다형성).
  *
- * @property world   개체가 속한 세계 - 외부에서는 entity.position.world (코틀린) / entity.position.getWorld() (자바)
+ * @property world   개체가 속한 세계
  * @property name    개체 표시 이름
  * @param    x       개체의 처음 X 위치
  * @param    y       개체의 처음 Y 위치
@@ -42,7 +42,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 *
 	 * 자바에서도 entity.position.getX() 등으로 자연스럽게 접근하기 위해 @JvmField이다.
 	 */
-	@JvmField val position = ObservablePosition(world, x, y).apply {
+	@JvmField val position = ObservablePosition(x, y).apply {
 		addObserver { _, _ -> world.entities.updatePosition(this@Entity) };
 	};
 	// x과 y를 필드로 바로 노출 (내부적으로 position과 상호작용)
@@ -224,6 +224,11 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	fun remove() {
 		world.entities.remove(this);
 	}
+
+	/**
+	 * 이 개체가 속한 월드를 가져온다.
+	 */
+	fun getWorld(): World = world;  // 외부용 API
 
 	/**
 	 * 이 객체가 갖고 있는 GPU 자원을 정리한다.

@@ -20,7 +20,7 @@ class LinearEntityManager(world: World, capacity: Int, private val nearbyThresho
 	private val removeQueue = GdxArray<Entity>(false, 8);
 
 	override fun add(entity: Entity): Boolean {
-		if(entity.position.world !== world)
+		if(entity.getWorld() !== world)
 			throw IllegalArgumentException("entity belongs to a different world");
 		if(allEntities.contains(entity, true) || addQueue.contains(entity, true)) return false;
 		addQueue.add(entity);
