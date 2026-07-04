@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import java.util.function.Predicate;
 
 /**
- * 리스트, 배열, 컬렉션 등을 '읽기 전용'으로 상호작용할 수 있는 뷰이다.
+ * 리스트, 배열, 컬렉션 등을 '읽기 전용'으로 상호작용할 수 있는 뷰
  *
  * 참고: forEach는 코틀린 컴파일러가 자동으로 제공하고 자바에서도 쓸 수 있다.
  */

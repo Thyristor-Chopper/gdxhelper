@@ -25,7 +25,7 @@ import kotlin.math.atan2;
  *   즉, 우리가 Player든 Bullet이든 'Entity를 상속'하기만 하면
  *   World가 자동으로 update/draw/제거까지 해준다 (다형성).
  *
- * @property world   개체가 속한 세계 - 자바에서는 getWorld() 사용
+ * @property world   개체가 속한 세계
  * @property name    개체 표시 이름
  * @param    x       개체의 처음 X 위치
  * @param    y       개체의 처음 Y 위치
@@ -33,31 +33,31 @@ import kotlin.math.atan2;
  * @property height  세로 크기
  * @property texture 개체 텍스처(없을 수도 있음)
  */
-abstract class Entity(val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) {
+abstract class Entity(@JvmField protected val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) {
 	// draw에서 사용하는 절반 길이 캐시
 	private val halfWidth = width * 0.5f;
 	private val halfHeight = height * 0.5f;
 	/**
-	 * 자바 전용 필드로 자바로 작성된 개체 자식클래스 내에서 getWorld() 대신 사용할 수 있는 거
-	 */
-	@JvmField protected val currentWorld = world;
-	/**
 	 * 개체의 평면좌표 위치
 	 *
-	 * 자바에서도 entity.position.getX() 등으로 자연스럽게 접근하기 위해 @JvmField
+	 * 자바에서도 entity.position.getX() 등으로 자연스럽게 접근하기 위해 @JvmField이다.
 	 */
 	@JvmField val position = ObservablePosition(x, y).apply {
 		addObserver { _, _ -> world.entities.updatePosition(this@Entity) };
 	};
 	// x과 y를 필드로 바로 노출 (내부적으로 position과 상호작용)
 	/**
-	 * 개체의 현재 X 좌표. 자바에서는 이걸 쓰면 오버헤드만 더 생기므로(인라인 함수 미지원) .position.getX()로 할 것.
+	 * 개체의 현재 X 좌표
+	 *
+	 * 자바에서는 이걸 쓰면 오버헤드만 더 생기므로(인라인 함수 미지원) entity.position.getX()로 할 것.
 	 */
 	var x: Float
 		@JvmSynthetic inline get() = position.x
 		@JvmSynthetic inline set(value) { position.x = value };
 	/**
-	 * 개체의 현재 Y 좌표. 자바에서는 .position.getY()로 할 것.
+	 * 개체의 현재 Y 좌표
+	 * 
+	 * 자바에서는 entity.position.getY()로 할 것.
 	 */
 	var y: Float
 		@JvmSynthetic inline get() = position.y
@@ -207,9 +207,7 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	 *
 	 * 상자나 물체처럼 로직이 없는 개체일 수도 있으니 기본은 빈 함수이다.
 	 *
-	 * @param delta 직전 프레임과의 시간 간격(초). 60fps 면 약 0.0167.
-	 *              '픽셀/초' 단위의 속도에 delta 를 곱하면 '이번 프레임 이동량'이 된다.
-	 *              (프레임 속도가 달라져도 같은 속도로 움직이게 하려는 공식)
+	 * @param delta 직전 프레임과의 시간 간격(초). 60fps면 약 0.0167이다. '픽셀/초' 단위의 속도에 delta 를 곱하면 '이번 프레임 이동량'이 된다. (프레임 속도가 달라져도 같은 속도로 움직이게 하려는 공식)
 	 */
 	open fun update(delta: Float) {}
 
@@ -226,6 +224,11 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	fun remove() {
 		world.entities.remove(this);
 	}
+
+	/**
+	 * 이 개체가 속한 월드를 가져온다.
+	 */
+	fun getWorld(): World = world;  // 외부용 API
 
 	/**
 	 * 이 객체가 갖고 있는 GPU 자원을 정리한다.

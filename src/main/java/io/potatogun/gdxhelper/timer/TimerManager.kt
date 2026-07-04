@@ -3,13 +3,13 @@ package io.potatogun.gdxhelper.timer;
 import io.potatogun.gdxhelper.collections.identityMutableSetOf;
 
 /**
- * 타이머 객체들을 관리한다.
+ * 타이머 객체 관리자
  */
 class TimerManager {
 	private val timers = identityMutableSetOf<Timer>();
 
 	/**
-	 * 타이머 등록
+	 * 타이머를 등록한다.
 	 *
 	 * @param timer 등록할 타이머
 	 * @return 성공 여부(중복 시 실패)
@@ -17,7 +17,7 @@ class TimerManager {
 	fun register(timer: Timer): Boolean = timers.add(timer);
 
 	/**
-	 * 타이머 등록 해제
+	 * 타이머 등록을 해제한다.
 	 *
 	 * @param timer 제거할 타이머
 	 * @return 성공 여부

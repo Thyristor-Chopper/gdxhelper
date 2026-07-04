@@ -3,7 +3,7 @@ package io.potatogun.gdxhelper.timer;
 import java.util.function.BooleanSupplier;
 
 /**
- * 지정된 시간 후 특정 작업을 실행하게 해 주는 클래스
+ * 지정된 시간 후 특정 작업을 실행하게 해 주는 타이머
  *
  * @constructor 코틀린용 생성자
  * @property delay     대기 시간(초)

@@ -1,7 +1,9 @@
 package io.potatogun.gdxhelper.util;
 
 /**
- * 인라인으로 실행되는 수학 관련 함수들 (자바에서는 무의미)
+ * 인라인으로 실행되는 수학 관련 함수들
+ *
+ * 자바에서는 무의미하다.
  */
 object Math {
 	/**

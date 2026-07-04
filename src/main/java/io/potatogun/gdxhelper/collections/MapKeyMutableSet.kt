@@ -9,6 +9,8 @@ abstract class MapKeyMutableSet<T> : MutableSet<T> {
 	/**
 	 * 집합의 크기
 	 */
+	@Suppress("INAPPLICABLE_JVM_NAME")
+	@get:JvmName("size")
 	override val size: Int
 		get() = map.size;
 

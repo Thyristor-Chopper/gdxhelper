@@ -3,7 +3,7 @@ package io.potatogun.gdxhelper.timer;
 import java.util.function.BooleanSupplier;
 
 /**
- * 일정 시간마다 특정 작업을 실행하게 해 주는 클래스
+ * 일정 시간마다 특정 작업을 실행하게 해 주는 타이머
  *
  * @param interval  실행 간격(초)
  * @param condition 실행 조건

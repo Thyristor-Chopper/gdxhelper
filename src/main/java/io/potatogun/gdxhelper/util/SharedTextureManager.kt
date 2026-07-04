@@ -64,6 +64,12 @@ abstract class SharedTextureManager {
 	companion object {
 		private val sharedTextures = weakMutableSetOf<Texture>();
 
+		/**
+		 * 공유 자원인지 확인한다.
+		 *
+		 * @param texture 확인할 텍스처
+		 * @return 공유 자원 여부
+		 */
 		@JvmStatic fun isSharedTexture(texture: Texture): Boolean = sharedTextures.contains(texture);
 	}
 }

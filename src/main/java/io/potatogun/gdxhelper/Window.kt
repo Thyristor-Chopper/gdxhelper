@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import kotlin.properties.Delegates;
 
 /**
- * 게임 화면(창)에 대한 것들
+ * 게임 화면(창)의 정보
  */
 object Window {
 	// 창 크기 캐시

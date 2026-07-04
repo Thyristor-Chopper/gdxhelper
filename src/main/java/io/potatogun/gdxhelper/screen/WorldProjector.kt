@@ -7,7 +7,7 @@ import io.potatogun.gdxhelper.collections.weakMutableSetOf;
 import io.potatogun.gdxhelper.world.World;
 
 /**
- * 월드를 불러오고 월드를 화면에 프로젝션해주는 스크린이다.
+ * 월드를 불러오고 월드를 화면에 투영해주는 화면이다.
  *
  * 상속받아서 HUD 등이 포함된 더 확장된 월드 뷰어를 만들 수 있지만
  *   가급적이면 같은 종류의 뷰어는 하나만 생성하는 것을 권한다.

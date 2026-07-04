@@ -12,7 +12,7 @@ object TextureUtils {
 	/**
 	 * 지정한 화일 이름의 텍스처를 가져온다.
 	 *
-	 * @param path 화일 이름
+	 * @param path 화일 이름 또는 경로
 	 * @return 불러온 텍스처 객체
 	 */
 	@JvmStatic inline fun loadTexture(path: String): Texture = Texture(Gdx.files.internal("assets/textures/$path"));

@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  */
 object Utils {
 	/**
-	 * libGDX에서 제공하는 정렬기이다.
+	 * libGDX에서 제공하는 정렬기
 	 */
 	@JvmField val sorter = Sort.instance();
 

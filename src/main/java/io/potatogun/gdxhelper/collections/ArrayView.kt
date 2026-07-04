@@ -6,6 +6,9 @@ import io.potatogun.gdxhelper.util.Utils;
 
 import java.util.function.Predicate;
 
+/**
+ * 배열에 대한 읽기 전용 뷰
+ */
 class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	// 왜인지는 모르겠지만 여기서는 @get:JvmName("size")를 안 넣어도 getSize()가 중복으로 안 생김
 	override val size: Int
