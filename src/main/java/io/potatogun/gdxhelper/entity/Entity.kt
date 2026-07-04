@@ -122,25 +122,21 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	}
 
 	/**
-	 * 다른 객체와 충돌했는지 검사 — AABB(축 정렬 경계 상자) 방식.
+	 * 다른 객체와 충돌했는지 검사한다.
 	 *
-	 * 두 사각형이 한 픽셀이라도 겹치면 true.
+	 * AABB(축 정렬 경계 상자) 방식이다.
+	 *
+	 * 두 사각형 영역이 한 픽셀이라도 겹치면 true.
 	 *   더 정밀한 판정(원, 다각형, 픽셀 단위)이 필요하면 서브클래스에서
-	 *   별도 메서드를 만들거나 이 메서드를 override 해서 바꿀 수 있다.
+	 *   별도 메서드를 만들거나 이 메서드를 override해서 바꿀 수 있다.
 	 *
 	 * @param other 비교 대상
 	 * @return 충돌하면 true
 	 */
-	open fun collidesWith(other: Entity): Boolean {
-		// 원본 코드: getBounds().overlaps(other.getBounds()); 한 줄
-		//   좀비처럼 게속 움직이는 개체는 매번 새 사각형 객체를 만들어서 확인하여 오버헤드도 상당하고
-		//   update() 내에서 collidesWith하는 경우도 많아 GC할 거리도 매 프레임 엄청나게 불어난다.
-
-		return abs(x - other.x) < (collideCheckWidth + other.collideCheckWidth) * 0.5f && abs(y - other.y) < (collideCheckHeight + other.collideCheckHeight) * 0.5f;
-	}
+	open fun collidesWith(other: Entity): Boolean = abs(x - other.x) < (collideCheckWidth + other.collideCheckWidth) * 0.5f && abs(y - other.y) < (collideCheckHeight + other.collideCheckHeight) * 0.5f;
 
 	/**
-	 * 다른 개체와의 거리 (몸의 중앙을 기준으로 한다)
+	 * 다른 개체와의 거리 (몸 중앙 기준)
 	 *
 	 * @param other 대상 개체
 	 * @return 떨어진 거리
@@ -209,7 +205,7 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	/**
 	 * 매 프레임 호출되어 상태를 갱신한다.
 	 *
-	 * 상자나 물체처럼 로직이 없는 개체일 수도 있으니 기본은 빈 함수.
+	 * 상자나 물체처럼 로직이 없는 개체일 수도 있으니 기본은 빈 함수이다.
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초). 60fps 면 약 0.0167.
 	 *              '픽셀/초' 단위의 속도에 delta 를 곱하면 '이번 프레임 이동량'이 된다.
@@ -232,7 +228,8 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	}
 
 	/**
-	 * 이 객체가 갖고 있는 GPU 자원을 정리한다 — 화면이 닫힐 때 한 번 호출된다.
+	 * 이 객체가 갖고 있는 GPU 자원을 정리한다.
+	 *   화면이 닫힐 때 한 번 호출된다.
 	 */
 	open fun dispose() {
 		texture?.let { TextureUtils.safeDispose(it) };

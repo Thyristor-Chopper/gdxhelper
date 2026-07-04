@@ -24,7 +24,8 @@ import io.potatogun.gdxhelper.widget.Widget;
 abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) : ScreenAdapter() {
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구.
-	 *   배경 그리기·게임 객체·텍스트 모두 이 batch 하나로 처리한다.
+	 *
+	 * 배경 그리기·게임 객체·텍스트 모두 이 batch 하나로 처리한다.
 	 */
 	@JvmField protected val batch = SpriteBatch();
 	/**
@@ -104,8 +105,10 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	// ────────────────────────────────────────────────────────
 
 	/**
-	 * 매 프레임 화면 로직 — 서브클래스가 override해서 화면 로직을 넣는 곳.
-	 *   아무 것도 안 할 수도 있으니 기본은 빈 함수
+	 * 매 프레임 화면 로직
+	 *
+	 * 서브클래스가 override해서 화면 로직을 넣는 곳이다.
+	 *   아무 것도 안 할 수도 있으니 기본은 빈 함수이다.
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
@@ -147,11 +150,10 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 
 	/**
 	 * 스크린에 등록된 위젯(컨트롤)들을 그린다.
-	 *   render에서만 한 번 쓰이므로 인라인이다.
 	 *
 	 * @return 보이는(실제로 그린) 위젯 수
 	 */
-	private inline fun drawWidgets(): Int {
+	private inline fun drawWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
 		var count = 0;
 		val iterator = widgets.values().iterator();
 		while(iterator.hasNext()) {
@@ -189,7 +191,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * 화면 좌표에 텍스트 그리기.
 	 *
 	 * 카메라가 어디로 움직이든 화면상 같은 위치에 고정된다.
-	 *   → 점수, HP, 남은 시간 같은 UI 에 적합.
+	 *   → 점수, HP, 남은 시간 같은 UI에 적합.
 	 *
 	 * 주의: 화면 y 축은 위쪽이 크다. 화면 '위쪽'에 글자를 쓰려면 y = screenHeight-10 처럼.
 	 *

@@ -21,7 +21,7 @@ import io.potatogun.gdxhelper.world.Freezable;
 import java.util.Collections;
 
 /**
- * 게임 내 월드 = '월드 하나'의 추상 기본 클래스.
+ * 게임 내 월드, '월드 하나'의 기본 추상 클래스
  *   '월드'의 개념에 맞게 플레이어나 적 등의 개체 등을 추가한다.
  *
  * @constructor Named argument를 쓸 수 있는 코틀린 전용 생성자
@@ -71,9 +71,10 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		};
 	/**
 	 * 등록된 개체 목록
-	 *   등록된 객체들만 update/draw된다.
 	 *
-	 * 자바에서도 world.entities.add()로 자연스럽게 호출하기 위해 @JvmField
+	 * 등록된 객체들만 update/draw된다.
+	 *
+	 * 자바에서도 world.entities.add()로 자연스럽게 호출하기 위해 @JvmField이다.
 	 */
 	@JvmField val entities: EntityManager = SpatialGrid(this, entityCapacity, tileSize);
 
@@ -112,8 +113,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	/**
 	 * 매 프레임 게임 로직 — 서브클래스가 override해서 자기 게임 로직을 넣는 곳.
 	 *
-	 * 기본 구현은 가장 단순한 '갱신 → 정리' 시나리오를 보여준다:
-	 *   ① entities.update(delta) — 각 객체가 자기 위치 갱신
+	 * 기본 구현은 가장 단순한 '개체 갱신' 시나리오를 보여준다.
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
@@ -148,9 +148,9 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	}
 
 	/**
-	 * 카메라를 갱신한다. 여러 번 쓰이지만 두 줄뿐이라 인라인... 나중에 함수가 더 커지면 인라인 해제
+	 * 카메라를 갱신한다.
 	 */
-	private inline fun updateProjectionMatrix() {
+	private inline fun updateProjectionMatrix() {  // 여러 번 쓰이지만 두 줄뿐이라 인라인... 나중에 함수가 더 커지면 인라인 해제
 		camera.update();
 		batch.projectionMatrix = camera.combined;
 	}
@@ -176,7 +176,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * 월드 좌표에 텍스트 그리기.
 	 *
 	 * 월드의 특정 지점에 고정되므로, 카메라를 움직이면 텍스트도 따라 움직인다.
-	 *   → 지도 표지판, NPC 머리 위 말풍선, 특정 지역 이름 등에 적합.
+	 *   지도 표지판, NPC 머리 위 말풍선, 특정 지역 이름 등에 적합하다.
 	 *
 	 * @param text  출력할 메시지
 	 * @param x     X 위치
