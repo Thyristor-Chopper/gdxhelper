@@ -46,7 +46,7 @@ open class WorldProjector(settings: Screen.Properties = Screen.Properties()) : S
 	 * 현재 보여주고 있는 월드를 닫는다.
 	 *
 	 * @param dispose 월드의 자원을 정리할지의 여부
-	 * @return        성공 여부
+	 * @return 성공 여부
 	 */
 	@JvmOverloads fun unloadWorld(dispose: Boolean = false): Boolean {
 		val currentWorld: World? = projectingWorld;
@@ -89,7 +89,7 @@ open class WorldProjector(settings: Screen.Properties = Screen.Properties()) : S
 		 *   그런 뷰어가 없으면 null이다.
 		 *
 		 * @param world 찾을 대상 월드
-		 * @return      찾은 월드 뷰어 (없으면 null)
+		 * @return 찾은 월드 뷰어 (없으면 null)
 		 */
 		@JvmStatic fun getProjectorByWorld(world: World): WorldProjector? = instances.firstOrNull { it.projectingWorld === world };
 	}

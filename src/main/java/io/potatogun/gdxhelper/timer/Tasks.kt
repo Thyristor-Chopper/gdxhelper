@@ -16,7 +16,7 @@ object Tasks {
 	 * 
 	 * @param delay     지연 시간(초)
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmSynthetic inline fun setTimeout(delay: Float, crossinline operation: () -> Unit): Task {
 		return object : Task() {
@@ -32,7 +32,7 @@ object Tasks {
 	 * @param delay     지연 시간(초)
 	 * @param condition 실행 조건
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmSynthetic inline fun setTimeout(delay: Float, crossinline condition: () -> Boolean, crossinline operation: () -> Unit): Task {
 		return object : Task() {
@@ -48,7 +48,7 @@ object Tasks {
 	 *
 	 * @param delay     지연 시간(초)
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmStatic fun setTimeout(delay: Float, operation: Runnable): Task = setTimeout(delay, operation::run);
 
@@ -58,7 +58,7 @@ object Tasks {
 	 * @param delay     지연 시간(초)
 	 * @param condition 실행 조건
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmStatic fun setTimeout(delay: Float, condition: BooleanSupplier, operation: Runnable): Task = setTimeout(delay, condition::getAsBoolean, operation::run);
 
@@ -69,7 +69,7 @@ object Tasks {
 	 * 
 	 * @param interval  실행 간격(초)
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmSynthetic inline fun setInterval(interval: Float, crossinline operation: () -> Unit): Task {
 		return object : Task() {
@@ -85,7 +85,7 @@ object Tasks {
 	 * @param interval  실행 간격(초)
 	 * @param condition 실행 조건
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmSynthetic inline fun setInterval(interval: Float, crossinline condition: () -> Boolean, crossinline operation: () -> Unit): Task {
 		return object : Task() {
@@ -101,7 +101,7 @@ object Tasks {
 	 *
 	 * @param interval  실행 간격(초)
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmStatic fun setInterval(interval: Float, operation: Runnable): Task = setInterval(interval, operation::run);
 
@@ -111,7 +111,7 @@ object Tasks {
 	 * @param interval  실행 간격(초)
 	 * @param condition 실행 조건
 	 * @param operation 실행할 서브루틴
-	 * @return          실행 작업 객체
+	 * @return 실행 작업 객체
 	 */
 	@JvmStatic fun setInterval(interval: Float, condition: BooleanSupplier, operation: Runnable): Task = setInterval(interval, condition::getAsBoolean, operation::run);
 }

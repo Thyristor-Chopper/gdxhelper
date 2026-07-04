@@ -7,7 +7,7 @@ import io.potatogun.gdxhelper.entity.Entity;
  * 이 위치와 지정한 개체 사이의 거리를 구한다.
  *
  * @param other 비교할 개체
- * @return      거리
+ * @return 거리
  */
 inline fun Position.distanceTo(other: Entity): Float = distanceTo(other.position);
 

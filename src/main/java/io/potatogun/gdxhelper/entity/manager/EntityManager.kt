@@ -24,7 +24,7 @@ interface EntityManager {
 	 * 개체를 등록한다.
 	 *
 	 * @param entity 등록할 개체
-	 * @return       성공 여부(중복 시 실패)
+	 * @return 성공 여부(중복 시 실패)
 	 * @throws IllegalArgumentException 추가하려는 개체가 다른 월드에 속해 있을 때
 	 */
 	fun add(entity: Entity): Boolean;
@@ -33,7 +33,7 @@ interface EntityManager {
 	 * 개체를 제거한다.
 	 *
 	 * @param entity 제거할 개체
-	 * @return       성공 여부
+	 * @return 성공 여부
 	 */
 	fun remove(entity: Entity): Boolean;
 

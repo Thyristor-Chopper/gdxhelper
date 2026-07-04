@@ -71,7 +71,7 @@ object Input {
 	 *   이동(← → ↑ ↓) 처럼 '누르는 동안 계속' 일어나야 할 동작에 사용.
 	 *
 	 * @param key 글쇠 번호
-	 * @return    눌렸으면 true
+	 * @return 눌렸으면 true
 	 */
 	@JvmStatic inline fun isKeyPressed(key: Int): Boolean = Gdx.input.isKeyPressed(key);
 
@@ -80,7 +80,7 @@ object Input {
 	 *   총알 발사, 메뉴 선택처럼 '한 번만' 실행되어야 할 동작에 사용.
 	 *
 	 * @param key 글쇠 번호
-	 * @return    눌렸으면 true
+	 * @return 눌렸으면 true
 	 */
 	@JvmStatic inline fun isKeyJustPressed(key: Int): Boolean = Gdx.input.isKeyJustPressed(key);
 
@@ -94,7 +94,7 @@ object Input {
 	/**
 	 * 아무 키를 방금 눌렀는지의 여부
 	 *
-	 * @return 눌렸으면 true
+	 * @return 눌렀으면 true
 	 */
 	@JvmStatic fun isAnyKeyJustPressed(): Boolean = keyJustDown;
 
@@ -102,7 +102,7 @@ object Input {
 	 * 지정한 마우스 단추가 눌려 있는지의 여부
 	 *
 	 * @param button 단추의 종류
-	 * @return       눌렸으면 true
+	 * @return 눌렸으면 true
 	 */
 	@JvmStatic inline fun isButtonPressed(button: Int): Boolean = Gdx.input.isButtonPressed(button);
 
@@ -110,7 +110,7 @@ object Input {
 	 * 지정한 마우스 단추를 막 눌렀는지의 여부
 	 *
 	 * @param button 단추의 종류
-	 * @return       눌렸으면 true
+	 * @return 눌렀으면 true
 	 */
 	@JvmStatic inline fun isButtonJustPressed(button: Int): Boolean = Gdx.input.isButtonJustPressed(button);
 

@@ -53,7 +53,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 *
 	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
-	 * @return       성공 여부 (이미 식별자가 존재하면 실패)
+	 * @return 성공 여부 (이미 식별자가 존재하면 실패)
 	 */
 	fun addWidget(id: String, widget: Widget): Boolean {
 		if(widgets.containsKey(id)) return false;
@@ -65,7 +65,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * 위젯을 화면에서 제거
 	 *
 	 * @param id 위젯의 식별자
-	 * @return   성공 여부
+	 * @return 성공 여부
 	 */
 	fun removeWidget(id: String): Boolean {
 		val widget: Widget? = widgets[id];
@@ -79,7 +79,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * 위젯을 식별자로 가져오기
 	 *
 	 * @param id 가져올 위젯의 식별자
-	 * @return   해당 위젯
+	 * @return 해당 위젯
 	 * @throws NoSuchElementException 지정한 식별자의 위젯이 없는 경우
 	 */
 	fun getWidget(id: String): Widget = widgets[id] ?: throw NoSuchElementException("invalid widget ID");
@@ -173,7 +173,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * 스크린의 addWidget로 직접 등록하지 않은 위젯(컨트롤)을 수동으로 그린다.
 	 *
 	 * @param widget 그릴 위젯
-	 * @return       isVisible이 false라 그리지 않았으면 false
+	 * @return isVisible이 false라 그리지 않았으면 false
 	 */
 	fun drawWidget(widget: Widget): Boolean {
 		if(!widget.isVisible) return false;
@@ -239,7 +239,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		 * 글꼴을 지정한다.
 		 *
 		 * @param font 글꼴
-		 * @return     옵션 객체 자신
+		 * @return 옵션 객체 자신
 		 */
 		fun font(font: BitmapFont): Properties {
 			this.font = font;

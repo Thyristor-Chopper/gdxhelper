@@ -21,7 +21,7 @@ object Utils {
 	 * 초를 X' XX''로 변환한다.
 	 *
 	 * @param seconds 초
-	 * @return        변환된 문자열
+	 * @return 변환된 문자열
 	 */
 	@JvmStatic inline fun parseSeconds(seconds: Int): String = parseSeconds(seconds, "'", "\"");
 
@@ -31,7 +31,7 @@ object Utils {
 	 * @param seconds       초
 	 * @param minutesSuffix 분 표기
 	 * @param secondsSuffix 초 표기
-	 * @return              변환된 문자열
+	 * @return 변환된 문자열
 	 */
 	@JvmStatic fun parseSeconds(seconds: Int, minutesSuffix: String, secondsSuffix: String): String {
 		if(seconds < 60) return "${seconds}$secondsSuffix";
@@ -45,7 +45,7 @@ object Utils {
 	 * @param g 초록 (0~255)
 	 * @param b 파랑 (0~255)
 	 * @param a 알파 (0.0~1.0)
-	 * @return	변환된 색 객체
+	 * @return 변환된 색 객체
 	 * @throws IllegalArgumentException 색 값이 잘못된 경우
 	 */
 	@JvmStatic

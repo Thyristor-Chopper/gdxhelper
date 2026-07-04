@@ -129,7 +129,7 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	 *   별도 메서드를 만들거나 이 메서드를 override 해서 바꿀 수 있다.
 	 *
 	 * @param other 비교 대상
-	 * @return      충돌하면 true
+	 * @return 충돌하면 true
 	 */
 	open fun collidesWith(other: Entity): Boolean {
 		// 원본 코드: getBounds().overlaps(other.getBounds()); 한 줄
@@ -143,7 +143,7 @@ abstract class Entity(val world: World, val name: String, x: Float, y: Float, @J
 	 * 다른 개체와의 거리 (몸의 중앙을 기준으로 한다)
 	 *
 	 * @param other 대상 개체
-	 * @return      떨어진 거리
+	 * @return 떨어진 거리
 	 */
 	fun distanceTo(other: Entity): Float = position.distanceTo(other.position);
 

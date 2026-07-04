@@ -228,7 +228,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		 * 카메라를 지정한다.
 		 *
 		 * @param camera 카메라
-		 * @return       옵션 객체 자신
+		 * @return 옵션 객체 자신
 		 */
 		fun camera(camera: Camera): Properties {
 			this.camera = camera;
@@ -239,7 +239,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		 * 글꼴을 지정한다.
 		 *
 		 * @param font 글꼴
-		 * @return     옵션 객체 자신
+		 * @return 옵션 객체 자신
 		 */
 		fun font(font: BitmapFont): Properties {
 			this.font = font;
@@ -250,7 +250,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		 * 격자 개체 관리자의 타일 크기를 지정한다.
 		 *
 		 * @param tileSize 타일 크기
-		 * @return         옵션 객체 자신
+		 * @return 옵션 객체 자신
 		 */
 		fun tileSize(tileSize: Float): Properties {
 			this.tileSize = tileSize;
@@ -261,7 +261,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		 * 개체 관리자의 처음 크기를 지정한다.
 		 *
 		 * @param capacity 크기
-		 * @return         옵션 객체 자신
+		 * @return 옵션 객체 자신
 		 */
 		fun entityCapacity(capacity: Int): Properties {
 			this.entityCapacity = capacity;

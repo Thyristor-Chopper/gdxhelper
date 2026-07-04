@@ -18,7 +18,7 @@ open class Position(open val x: Float, open val y: Float) {
 	 * 두 위치 사이의 거리를 구한다.
 	 *
 	 * @param other 다른 위치
-	 * @return      거리
+	 * @return 거리
 	 */
 	fun distanceTo(other: Position): Float {
 		val dx = x - other.x;

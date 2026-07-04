@@ -9,7 +9,7 @@ object Math {
 	 *
 	 * @param x 첫째 수
 	 * @param y 둘째 수
-	 * @return  최댓값
+	 * @return 최댓값
 	 */
 	@JvmStatic inline fun max2(x: Int, y: Int): Int = if(x > y) x else y;
 
@@ -18,7 +18,7 @@ object Math {
 	 *
 	 * @param x 첫째 수
 	 * @param y 둘째 수
-	 * @return  최댓값
+	 * @return 최댓값
 	 */
 	@JvmStatic inline fun max2(x: Float, y: Float): Float = if(x > y) x else y;
 
@@ -27,7 +27,7 @@ object Math {
 	 *
 	 * @param x 첫째 수
 	 * @param y 둘째 수
-	 * @return  최댓값
+	 * @return 최댓값
 	 */
 	@JvmStatic inline fun max2(x: Double, y: Double): Double = if(x > y) x else y;
 
@@ -35,7 +35,7 @@ object Math {
 	 * 지정한 수의 절댓값을 반환한다.
 	 *
 	 * @param n 처리할 수
-	 * @return  절댓값
+	 * @return 절댓값
 	 */
 	@JvmStatic inline fun abs(n: Float): Float = if(n < 0) -n else n;
 }

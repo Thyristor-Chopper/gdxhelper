@@ -11,29 +11,29 @@ import java.util.function.Predicate;
  */
 interface View<T> : Iterable<T> {
 	/**
-	 * 총 개체 수 - 자바에서는 view.size()
+	 * 총 항목 수 - 자바에서는 view.size()
 	 */
 	@Suppress("INAPPLICABLE_JVM_NAME")
 	@get:JvmName("size")
 	val size: Int;
 	/**
-	 * 개체 목록이 비어 있는지의 여부 - 자바에서는 view.isEmpty()
+	 * 목록이 비어 있는지의 여부 - 자바에서는 view.isEmpty()
 	 */
 	val isEmpty: Boolean;
 
 	/**
-	 * 지정한 인덱스의 개체를 가져온다. 코틀린에서는 view[N], 자바에서는 view.get(N)
+	 * 지정한 인덱스의 항목을 가져온다. 코틀린에서는 view[N], 자바에서는 view.get(N)
 	 *
 	 * @param index 인덱스
-	 * @return      개체
+	 * @return 항목
 	 */
 	operator fun get(index: Int): T;
 
 	/**
-	 * 개체 목록을 지정한 비교기로 정렬한다.
+	 * 목록을 지정한 비교기로 정렬한다.
 	 *
 	 * @param comparator 비교기
-	 * @return           정렬된 목록
+	 * @return 정렬된 목록
 	 */
 	fun sortedWith(comparator: Comparator<T>): GdxArray<T> {
 		val output = GdxArray<T>(false, size);
@@ -42,7 +42,7 @@ interface View<T> : Iterable<T> {
 	}
 
 	/**
-	 * 개체 목록을 지정한 비교기로 정렬한다.
+	 * 목록을 지정한 비교기로 정렬한다.
 	 *
 	 * @param comparator 비교기
 	 * @param output     정렬 결과를 저장할 목록 (이미 다른 원소가 있다면 덮어씌워짐)
@@ -70,7 +70,7 @@ interface View<T> : Iterable<T> {
 	fun filter(condition: Predicate<T>, output: GdxArray<T>);
 
 	/**
-	 * 개체 목록을 새 배열로 복사한다.
+	 * 목록을 새 배열로 복사한다.
 	 *
 	 * @return 복사된 배열
 	 */
@@ -81,7 +81,7 @@ interface View<T> : Iterable<T> {
 	}
 
 	/**
-	 * 개체 목록을 지정한 배열로 복사한다.
+	 * 목록을 지정한 배열로 복사한다.
 	 *
 	 * @param output 대상 배열 (기존 원소는 덮어씌워짐)
 	 */

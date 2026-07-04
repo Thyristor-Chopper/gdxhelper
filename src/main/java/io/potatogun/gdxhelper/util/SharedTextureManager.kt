@@ -42,7 +42,7 @@ abstract class SharedTextureManager {
 	 * 지정한 이름의 공유 텍스처를 가져온다.
 	 *
 	 * @param id 텍스처 식별자
-	 * @return   지정한 식별자의 텍스처
+	 * @return 지정한 식별자의 텍스처
 	 * @throws NoSuchElementException 지정한 식별자의 텍스처가 없는 경우
 	 */
 	fun getShared(id: String): Texture = shared[id]?.value ?: throw NoSuchElementException("invalid shared texture ID");
