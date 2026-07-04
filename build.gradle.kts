@@ -1,5 +1,6 @@
 plugins {
 	kotlin("jvm") version "2.4.0"
+	id("org.jetbrains.dokka") version "1.9.0"  // 최신 버전 2.2.0은 힙을 2기가나 쳐먹으려고 하는데 32비트 OS에서 2기가 이상 할당 불가하고 아무도 최대 힙크기를 제대로 제한하는 방법을 안 알려주고 생성형 AI들은 다 작동도 하지 않는 이상한 세팅 알려주고...
 }
 
 dependencies {
@@ -32,5 +33,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 		// 인터페이스 최적화
 		jvmDefault = org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
+	}
+}
+
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+	dokkaSourceSets.configureEach {
+		noJdkLink.set(true)
 	}
 }
