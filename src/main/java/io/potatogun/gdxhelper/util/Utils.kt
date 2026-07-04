@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.Sort;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * 유용한 함수 모음
@@ -93,4 +94,9 @@ object Utils {
 	@JvmStatic inline fun <T> sortWith(array: GdxArray<T>, comparator: Comparator<T>) {
 		sorter.sort(array, comparator);
 	}
+
+	/**
+	 * 현재 유닉스 시간(초 단위)을 가져온다.
+	 */
+	@JvmStatic inline fun getTime(): Double = (TimeUtils.millis() * 0.001);
 }
