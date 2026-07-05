@@ -2,8 +2,10 @@ package io.potatogun.gdxhelper.collections;
 
 /**
  * 맵의 키를 사용하는 집합
+ *
+ * @property map 키를 따올 맵
  */
-abstract class MapKeyMutableSet<T>(private val map: MutableMap<T, Nothing?>) : MutableSet<T> {
+abstract class MapKeyMutableSet<T>(private val map: MutableMap<T, Void?>) : MutableSet<T> {  // <T, Nothing?>으로 하면 자바로 디컴파일했을 때 타입이 지워져버림
 	private val keys = map.keys;
 	/**
 	 * 집합의 크기

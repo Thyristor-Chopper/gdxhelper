@@ -9,4 +9,4 @@ import java.util.WeakHashMap;
  *
  * 자바의 WeakHashMap의 키를 활용하여 구현되었다.
  */
-class WeakMutableSet<T> : MapKeyMutableSet<T>(WeakHashMap<T, Nothing?>());
+class WeakMutableSet<T> : MapKeyMutableSet<T>(WeakHashMap<T, Void?>());
