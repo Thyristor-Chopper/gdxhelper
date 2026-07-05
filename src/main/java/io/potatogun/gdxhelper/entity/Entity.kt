@@ -19,13 +19,13 @@ import java.lang.Math.toDegrees;
 import kotlin.math.atan2;
 
 /**
- * 게임에 등장하는 모든 '무엇인가'의 공통 부모.
+ * 게임에 등장하는 개체의 공통 부모
  *
- * World는 이 Entity 타입으로만 개체들을 관리한다.
+ * 월드는 이 Entity 형으로만 개체들을 관리한다.
  *   즉, 우리가 Player든 Bullet이든 'Entity를 상속'하기만 하면
- *   World가 자동으로 update/draw/제거까지 해준다 (다형성).
+ *   월드의 개체 관리자가 자동으로 update/draw/제거까지 해준다(다형성).
  *
- * @property world   개체가 속한 세계
+ * @property world   개체가 속한 월드 - 외부에서는 getWorld()로 접근
  * @property name    개체 표시 이름
  * @param    x       개체의 처음 X 위치
  * @param    y       개체의 처음 Y 위치
@@ -227,6 +227,8 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 
 	/**
 	 * 이 개체가 속한 월드를 가져온다.
+	 *
+	 * @return 소속 월드
 	 */
 	fun getWorld(): World = world;  // 외부용 API
 

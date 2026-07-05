@@ -10,13 +10,13 @@ import io.potatogun.gdxhelper.world.World;
 import java.util.function.Consumer;
 
 /**
- * 개체 관리자 인터페이스이다.
+ * 개체 관리자 인터페이스
  *
  * API만 지키면 쿼드트리같은 것도 만들 수 있다.
  */
 interface EntityManager {
 	/**
-	 * 개체 목록 읽기 전용 상호작용 도구
+	 * 개체 목록 읽기 전용 상호작용 뷰
 	 * 
 	 * 코틀린에서는 entityManager.view, 자바에서는 entityManager.view()로 접근한다.
 	 */
@@ -42,7 +42,7 @@ interface EntityManager {
 	fun remove(entity: Entity): Boolean;
 
 	/**
-	 * 개체가 이동하면 이동된 위치에 맞게 저장된 데이타를 갱신한다.
+	 * 이동한 개체의 새 위치에 맞게 데이타를 갱신한다.
 	 *
 	 * @param entity 갱신할 개체
 	 */
@@ -61,7 +61,7 @@ interface EntityManager {
 	/**
 	 * 등록된 모든 객체를 그린다.
 	 *
-	 * 이렇게 해야 서브클래스의 draw()는 '자기 위치에 그냥 그려라'만 구현하면 되고,
+	 * 개체의 서브클래스의 draw()는 '자기 위치에 그려라'만 구현하면 되고,
 	 *   카메라가 움직이든 말든 신경 쓸 필요가 없다.
 	 *
 	 * @param batch 이미지를 화면에 찍어주는 도구

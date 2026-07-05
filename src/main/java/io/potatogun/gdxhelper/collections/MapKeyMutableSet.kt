@@ -3,16 +3,14 @@ package io.potatogun.gdxhelper.collections;
 /**
  * 맵의 키를 사용하는 집합
  */
-abstract class MapKeyMutableSet<T> : MutableSet<T> {
-	protected abstract val map: MutableMap<T, Unit>;
-	private val keys by lazy { map.keys };
+abstract class MapKeyMutableSet<T>(private val map: MutableMap<T, Nothing?>) : MutableSet<T> {
+	private val keys = map.keys;
 	/**
 	 * 집합의 크기
 	 */
 	@Suppress("INAPPLICABLE_JVM_NAME")
 	@get:JvmName("size")
-	override val size: Int
-		get() = map.size;
+	override val size: Int by map::size;  // 디컴파일해서 확인한 결과 여전히 랩퍼가 생긴다.
 
 	/**
 	 * 집합이 비어 있는지의 여부
@@ -43,7 +41,12 @@ abstract class MapKeyMutableSet<T> : MutableSet<T> {
 	 * @param element 추가할 요소
 	 * @return 이미 있으면 false, 아니면 true
 	 */
-	override fun add(element: T): Boolean = (map.put(element, Unit) == null);
+	override fun add(element: T): Boolean {
+		if(map.containsKey(element))
+			return false;
+		map.put(element, null);
+		return true;
+	}
 
 	/**
 	 * 지정한 요소를 삭제한다.
@@ -51,7 +54,7 @@ abstract class MapKeyMutableSet<T> : MutableSet<T> {
 	 * @param element 제거할 요소
 	 * @return 있으면 true, 없었으면 false
 	 */
-	override fun remove(element: T): Boolean = (map.remove(element) != null);
+	override fun remove(element: T): Boolean = keys.remove(element);
 
 	/**
 	 * 지정한 목록의 요소들을 추가한다.
@@ -61,8 +64,14 @@ abstract class MapKeyMutableSet<T> : MutableSet<T> {
 	 */
 	override fun addAll(elements: Collection<T>): Boolean {
 		var ret = false;
-		for(item in elements)
-			ret = (map.put(item, Unit) == null) || ret;
+		val iterator = elements.iterator();
+		while(iterator.hasNext()) {
+			val item = iterator.next();
+			if(!map.containsKey(item)) {
+				map.put(item, null);
+				ret = true;
+			}
+		}
 		return ret;
 	}
 
@@ -72,12 +81,7 @@ abstract class MapKeyMutableSet<T> : MutableSet<T> {
 	 * @param elements 날릴 요소들의 컬렉션
 	 * @return 하나라도 지워진 게 있으면 true
 	 */
-	override fun removeAll(elements: Collection<T>): Boolean {
-		var ret = false;
-		for(item in elements)
-			ret = (map.remove(item) != null) || ret;
-		return ret;
-	}
+	override fun removeAll(elements: Collection<T>): Boolean = keys.removeAll(elements);
 
 	/**
 	 * 지정한 목록의 요소만 남기고 싹 다 날린다.

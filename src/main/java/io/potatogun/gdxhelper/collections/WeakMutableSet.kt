@@ -9,6 +9,4 @@ import java.util.WeakHashMap;
  *
  * 자바의 WeakHashMap의 키를 활용하여 구현되었다.
  */
-class WeakMutableSet<T> : MapKeyMutableSet<T>() {
-	override val map = WeakHashMap<T, Unit>();
-}
+class WeakMutableSet<T> : MapKeyMutableSet<T>(WeakHashMap<T, Nothing?>());
