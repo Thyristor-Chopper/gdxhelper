@@ -25,7 +25,7 @@ import kotlin.math.ceil;
  * @property style  미터기의 스타일
  * @throws IllegalArgumentException 미터기 값이 잘못된 경우
  */
-class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 15f }, value: Float = 0f, skin: Skin? = null, private val color: Color = Color.WHITE, private val style: Style = Style.SMOOTH) : Widget(x, y, width, height) {
+class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 15f }, value: Float = 0f, skin: Skin? = null, var color: Color = Color.WHITE, private val style: Style = Style.SMOOTH) : Widget(x, y, width, height) {
 	companion object {
 		private const val BAR_VERTICAL_PADDING = 3f;		// 미터기 틀 안쪽 세로 여백
 		private const val BAR_HORIZONTAL_PADDING = 3f;	// 미터기 틀 안쪽 가로 여백
