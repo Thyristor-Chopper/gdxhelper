@@ -1,6 +1,6 @@
 plugins {
 	kotlin("jvm") version "2.4.0"
-	id("org.jetbrains.dokka") version "1.9.0"  // 최신 버전 2.2.0은 힙을 2기가나 쳐먹으려고 하는데 32비트 OS에서 2기가 이상 할당 불가하고 아무도 최대 힙크기를 제대로 제한하는 방법을 안 알려주고 생성형 AI들은 다 작동도 하지 않는 이상한 세팅 알려주고...
+	id("org.jetbrains.dokka-javadoc") version "2.2.0"
 }
 
 dependencies {
@@ -27,7 +27,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 		// Windows XP 호환성
 		jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
 
-		// 일부 최적화
+		// 최적화
 		freeCompilerArgs.addAll(listOf("-Xlambdas=indy", "-Xstring-concat=indy", "-Xno-call-assertions", "-Xno-receiver-assertions", "-Xno-source-debug-extension"))
 		freeCompilerArgs.addAll(listOf("-Xwarning-level=NOTHING_TO_INLINE:disabled", "-Xwarning-level=UNCHECKED_CAST:disabled"))
 
@@ -36,8 +36,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 	}
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+dokka {
 	dokkaSourceSets.configureEach {
-		noJdkLink.set(true)
+		enableJdkDocumentationLink.set(false)
 	}
+
+	dokkaGeneratorIsolation = ClassLoaderIsolation()  // 32비트 운영체제에서 2기가 힙 할당으로 실패 방지
 }
