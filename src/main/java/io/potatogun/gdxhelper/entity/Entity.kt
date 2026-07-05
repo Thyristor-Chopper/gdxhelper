@@ -15,6 +15,7 @@ import io.potatogun.gdxhelper.util.TextureUtils;
 import io.potatogun.gdxhelper.world.World;
 
 import java.lang.Math.toDegrees;
+import java.util.function.Consumer;
 
 import kotlin.math.atan2;
 
@@ -223,6 +224,15 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 */
 	fun remove() {
 		world.entities.remove(this);
+	}
+
+	/**
+	 * 주변 개체를 순회한다.
+	 *
+	 * @param callback 실행할 서브루틴
+	 */
+	fun forEachNearby(callback: Consumer<Entity>) {
+		world.entities.forEachNearby(this, callback);
 	}
 
 	/**
