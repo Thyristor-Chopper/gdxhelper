@@ -27,7 +27,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 		// Windows XP 호환성
 		jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
 
-		// 최적화
+		// 최적화 (-Xstring-concat=indy는 현재 미적용)
 		freeCompilerArgs.addAll(listOf("-Xlambdas=indy", "-Xstring-concat=indy", "-Xno-call-assertions", "-Xno-receiver-assertions", "-Xno-source-debug-extension"))
 		freeCompilerArgs.addAll(listOf("-Xwarning-level=NOTHING_TO_INLINE:disabled", "-Xwarning-level=UNCHECKED_CAST:disabled"))
 
@@ -41,5 +41,6 @@ dokka {
 		enableJdkDocumentationLink.set(false)
 	}
 
-	dokkaGeneratorIsolation = ClassLoaderIsolation()  // 32비트 운영체제에서 2기가 힙 할당으로 실패 방지
+	// 32비트 운영체제에서 2기가 힙 할당으로 실패 방지
+	dokkaGeneratorIsolation = ClassLoaderIsolation()
 }
