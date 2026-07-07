@@ -12,12 +12,18 @@ libGDX를 위한 도우미 라이브러리이다.
 
 32비트 이상, 자바 1.8 이상.
 
-Windows XP 32비트 SP3, Windows 7 64비트 SP1, Windows 10 64비트 LTSC 2021에서 동작 확인.
+Windows XP 32비트 SP3, Windows 10 64비트 LTSC 2021에서 동작 확인.
 
 
 
 [ 3. 사용 예제 ]
 
 https://github.com/Thyristor-Chopper/Endless-Dead 참고
+
+
+
+[ 4. JAR 빌드 방법 ]
+
+도스창에서 'gradlew assemble'를 실행하거나 Windows의 경우 build.bat 사용
 
 
