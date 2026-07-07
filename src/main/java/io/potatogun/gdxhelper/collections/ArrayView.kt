@@ -8,12 +8,13 @@ import java.util.function.Predicate;
 
 /**
  * 배열에 대한 읽기 전용 뷰
+ *
+ * @property array 뷰를 생성할 배열
  */
 class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	@Suppress("INAPPLICABLE_JVM_NAME")
 	@get:JvmName("size")
-	override val size: Int
-		get() = array.size;
+	override val size: Int by array::size;
 	override val isEmpty: Boolean
 		get() = array.isEmpty();
 
