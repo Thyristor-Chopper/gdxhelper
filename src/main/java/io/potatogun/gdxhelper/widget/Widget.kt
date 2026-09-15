@@ -23,6 +23,11 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	 */
 	var isVisible = true
 		private set;
+	/**
+	 * 자원이 해제됐는지의 여부
+	 */
+	internal var isDisposed = false
+		private set;
 
 	/**
 	 * 화면 내의 컨트롤
@@ -45,7 +50,9 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	/**
 	 * 자원을 해제한다.
 	 */
-	open fun dispose() {}
+	open fun dispose() {
+		isDisposed = true;
+	}
 
 	/**
 	 * 컨트롤을 보인다.

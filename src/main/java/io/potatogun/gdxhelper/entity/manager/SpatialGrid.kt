@@ -38,6 +38,8 @@ class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : Ar
 	private val visitedPool = ObjectSetPool<Entity>(capacity / 4);
 
 	override fun add(entity: Entity): Boolean {
+		if(entity.isDisposed)
+			throw IllegalStateException("entity is disposed");
 		if(entity.getWorld() !== world)
 			throw IllegalArgumentException("entity belongs to a different world");
 		if(tilesOfEntity.containsKey(entity) || addQueue.contains(entity, true)) return false;

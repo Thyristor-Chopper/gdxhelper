@@ -59,6 +59,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * @return 성공 여부 (이미 식별자가 존재하면 실패)
 	 */
 	fun addWidget(id: String, widget: Widget): Boolean {
+		if(widget.isDisposed) return false;
 		if(widgets.containsKey(id)) return false;
 		widgets.put(id, widget);
 		return true;

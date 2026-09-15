@@ -25,7 +25,7 @@ interface EntityManager {
 	val view: View<Entity>;
 
 	/**
-	 * 개체를 등록한다.
+	 * 개체를 등록한다. 구현자는 개체의 자원이 살아있는지 확인해야 한다.
 	 *
 	 * @param entity 등록할 개체
 	 * @return 성공 여부(중복 시 실패)

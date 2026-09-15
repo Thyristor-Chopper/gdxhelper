@@ -34,6 +34,8 @@ open class WorldProjector(settings: Screen.Properties = Screen.Properties()) : S
 	 */
 	@JvmOverloads fun loadWorld(world: World, disposePreviousWorld: Boolean = false) {
 		if(projectingWorld === world) return;  // 아무 작업도 할 필요 없음
+		if(world.isDisposed)
+			throw IllegalStateException("world is disposed");
 		if(instances.any { it.projectingWorld === world })
 			throw IllegalStateException("another projector is already projecting that world");
 		val previousWorld: World? = projectingWorld;

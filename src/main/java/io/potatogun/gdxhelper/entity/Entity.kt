@@ -93,6 +93,11 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 * 충돌 감지용 높이 (캐시)
 	 */
 	private var collideCheckHeight = height;
+	/**
+	 * 자원이 해제됐는지의 여부
+	 */
+	internal var isDisposed = false
+		private set;
 
 	/**
 	 * 매 프레임 호출되어 자신을 그린다.
@@ -247,6 +252,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 *   화면이 닫힐 때 한 번 호출된다.
 	 */
 	open fun dispose() {
+		isDisposed = true;
 		texture?.let { TextureUtils.safeDispose(it) };
 	}
 }

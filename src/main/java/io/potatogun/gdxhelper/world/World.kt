@@ -77,6 +77,11 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * 자바에서도 world.entities.add()로 자연스럽게 호출하기 위해 @JvmField이다.
 	 */
 	@JvmField val entities: EntityManager = SpatialGrid(this, entityCapacity, tileSize);
+	/**
+	 * 자원이 해제됐는지의 여부
+	 */
+	internal var isDisposed = false
+		private set;
 
 	/**
 	 * 설정 빌더를 사용하여 월드를 생성한다.
@@ -195,6 +200,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	// ────────────────────────────────────────────────────────
 
 	open fun dispose() {
+		isDisposed = true;
 		undisposed.remove(this);
 		batch.dispose();
 		font.dispose();
