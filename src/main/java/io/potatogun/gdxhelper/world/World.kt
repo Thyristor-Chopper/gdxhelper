@@ -131,11 +131,11 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	// ────────────────────────────────────────────────────────
 
 	// 상속받은 자식 월드에서 추가적으로 그려야 할 것이 있다면 이 메쏘드 대신
-	//   drawElements를 override할 것.
+	//   drawContents를 override할 것.
 	internal fun render() {
 		batch.begin();
 		drawBackground();
-		drawElements();
+		drawContents();
 		batch.end();
 	}
 
@@ -148,7 +148,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * 월드에서 그려야 할 요소(등록된 개체 등)를 그린다.
 	 *   월드에 벽이나 그런 걸 그릴 때도 여기서 override해서 그리면 된다.
 	 */
-	protected open fun drawElements() {
+	protected open fun drawContents() {
 		entities.draw(batch);
 	}
 

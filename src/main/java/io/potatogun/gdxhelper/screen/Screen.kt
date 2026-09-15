@@ -191,7 +191,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		// 2) 그리기 — SpriteBatch는 begin()/end() 사이에서만 동작한다.
 		batch.begin();
 		drawBackground();
-		drawElements();
+		drawContents();
 		drawWidgets();
 		drawOverlay();
 		drawOverlayWidgets();
@@ -206,7 +206,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	/**
 	 * 그 외 하위 클래스에서 배경과 위젯(컨트롤) 사이에 그려야 할 것들
 	 */
-	protected open fun drawElements() {}
+	protected open fun drawContents() {}
 
 	/**
 	 * 스크린에 등록된 위젯(컨트롤)들을 그린다.
