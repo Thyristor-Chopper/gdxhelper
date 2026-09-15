@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.Window;
@@ -36,6 +37,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * 등록된 위젯들
 	 */
 	private val widgets = ObjectMap<String, Widget>();
+	private val overlayWidgets = GdxArray<Widget>(false, 16);
 
 	/**
 	 * 설정 빌더를 이용하여 화면을 생성한다.
@@ -63,6 +65,19 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	}
 
 	/**
+	 * 오버레이 위에 그려지는 위젯을 화면에 추가
+	 *
+	 * @param id     위젯의 식별자
+	 * @param widget 추가할 위젯 객체
+	 * @return 성공 여부 (이미 식별자가 존재하면 실패)
+	 */
+	fun addOverlayWidget(id: String, widget: Widget): Boolean {
+		if(!addWidget(id, widget)) return false;
+		overlayWidgets.add(widget);
+		return true;
+	}
+
+	/**
 	 * 위젯을 화면에서 제거
 	 *
 	 * @param id 위젯의 식별자
@@ -72,7 +87,34 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		val widget: Widget? = widgets[id];
 		if(widget == null) return false;
 		widgets.remove(id);
+		overlayWidgets.removeValue(widget, true);
 		widget.dispose();
+		return true;
+	}
+
+	/**
+	 * 위젯을 화면에서 숨김
+	 *
+	 * @param id 위젯의 식별자
+	 * @return 성공 여부
+	 */
+	fun hideWidget(id: String): Boolean {
+		val widget: Widget? = widgets[id];
+		if(widget == null) return false;
+		widget.hide();
+		return true;
+	}
+
+	/**
+	 * 숨져긴 위젯 표시
+	 *
+	 * @param id 위젯의 식별자
+	 * @return 성공 여부
+	 */
+	fun showWidget(id: String): Boolean {
+		val widget: Widget? = widgets[id];
+		if(widget == null) return false;
+		widget.show();
 		return true;
 	}
 
@@ -135,6 +177,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		drawElements();
 		drawWidgets();
 		drawOverlay();
+		drawOverlayWidgets();
 		batch.end();
 	}
 
@@ -158,6 +201,23 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		val iterator = widgets.values().iterator();
 		while(iterator.hasNext()) {
 			val widget = iterator.next();
+			if(widget.isVisible && !overlayWidgets.contains(widget, true)) {
+				widget.draw(batch);
+				count++;
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * 스크린에 등록된 위젯(컨트롤) 중 오버레이 위에 그려지는 위젯을 그린다.
+	 *
+	 * @return 보이는(실제로 그린) 위젯 수
+	 */
+	private inline fun drawOverlayWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
+		var count = 0;
+		for(i in 0 until overlayWidgets.size) {
+			val widget = overlayWidgets[i];
 			if(widget.isVisible) {
 				widget.draw(batch);
 				count++;
