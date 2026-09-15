@@ -56,7 +56,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 *
 	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
-	 * @return 성공 여부 (이미 식별자가 존재하면 실패)
+	 * @return 성공 여부 (이미 식별자가 존재하거나 위젯의 자원이 해제된 상태이면 실패)
 	 */
 	fun addWidget(id: String, widget: Widget): Boolean {
 		if(widget.isDisposed) return false;
@@ -70,7 +70,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 *
 	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
-	 * @return 성공 여부 (이미 식별자가 존재하면 실패)
+	 * @return 성공 여부 (이미 식별자가 존재하거나 위젯의 자원이 해제된 상태이면 실패)
 	 */
 	fun addOverlayWidget(id: String, widget: Widget): Boolean {
 		if(!addWidget(id, widget)) return false;

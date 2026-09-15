@@ -30,7 +30,7 @@ open class WorldProjector(settings: Screen.Properties = Screen.Properties()) : S
 	 *
 	 * @param world                불러올 월드
 	 * @param disposePreviousWorld 기존 월드의 자원을 정리할지의 여부
-	 * @throws IllegalStateException 다른 뷰어가 해당 월드를 이미 보여주고 있는 경우
+	 * @throws IllegalStateException 다른 뷰어가 해당 월드를 이미 보여주고 있거나 월드의 자원이 이미 해제됐을 때
 	 */
 	@JvmOverloads fun loadWorld(world: World, disposePreviousWorld: Boolean = false) {
 		if(projectingWorld === world) return;  // 아무 작업도 할 필요 없음
