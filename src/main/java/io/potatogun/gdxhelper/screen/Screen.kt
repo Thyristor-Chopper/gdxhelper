@@ -174,7 +174,10 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	//  매 프레임 그리기
 	// ────────────────────────────────────────────────────────
 
-	override final fun render(delta: Float) {}
+	// gdxhelper 내의 Game 객체가 아닌 LibGDX 자체의 Game 객체에서 사용할 때 대비
+	override final fun render(delta: Float) {
+		render();
+	}
 
 	/**
 	 * LibGDX가 매 프레임 자동으로 호출.
