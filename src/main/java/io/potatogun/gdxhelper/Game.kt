@@ -24,6 +24,13 @@ abstract class Game : GdxGame() {
 		screen.resize(width, height);
 	}
 
+	/**
+	 * 매 프레임 상태를 갱신한다.
+	 *
+	 * @param delta 직전 프레임과의 시간 간격(초)
+	 */
+	open fun update(delta: Float) {}
+
 	override fun render() {
 		val screen = getScreen();
 		if(screen !is Screen) {
@@ -31,6 +38,7 @@ abstract class Game : GdxGame() {
 			return;
 		}
 		val delta = Gdx.graphics.getDeltaTime();
+		update(delta);
 		screen.update(delta);
 		screen.render();
 	}
