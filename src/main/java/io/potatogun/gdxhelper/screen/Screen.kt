@@ -129,11 +129,11 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	fun getWidget(id: String): Widget = widgets[id] ?: throw NoSuchElementException("invalid widget ID");
 
 	/**
-	 * 모든 위젯 목록 (읽기 전용)
+	 * 모든 위젯 목록의 사본
 	 *
 	 * @return 위젯들의 컬렉션
 	 */
-	fun getWidgets(): ObjectMap.Values<Widget> = widgets.values();
+	fun getWidgets(): GdxArray<Widget> = widgets.values().toArray();
 
 	// ────────────────────────────────────────────────────────
 	//  콜백 함수
