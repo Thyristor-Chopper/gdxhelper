@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.ObjectSet;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.util.Utils;
@@ -37,7 +38,10 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * 등록된 위젯들
 	 */
 	private val widgets = ObjectMap<String, Widget>();
-	private val overlayWidgets = GdxArray<Widget>(false, 16);
+	/**
+	 * 오버레이 위에 표시되는 위젯
+	 */
+	private val overlayWidgets = ObjectSet<Widget>(16);
 
 	/**
 	 * 설정 빌더를 이용하여 화면을 생성한다.
@@ -52,7 +56,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	// ────────────────────────────────────────────────────────
 
 	/**
-	 * 위젯을 화면에 추가
+	 * 위젯을 화면에 추가한다.
 	 *
 	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
@@ -66,7 +70,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	}
 
 	/**
-	 * 오버레이 위에 그려지는 위젯을 화면에 추가
+	 * 오버레이 위에 그려지는 위젯을 화면에 추가한다.
 	 *
 	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
@@ -79,7 +83,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	}
 
 	/**
-	 * 위젯을 화면에서 제거
+	 * 위젯을 화면에서 제거한다.
 	 *
 	 * @param id 위젯의 식별자
 	 * @return 성공 여부
@@ -88,13 +92,13 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		val widget: Widget? = widgets[id];
 		if(widget == null) return false;
 		widgets.remove(id);
-		overlayWidgets.removeValue(widget, true);
+		overlayWidgets.remove(widget);
 		widget.dispose();
 		return true;
 	}
 
 	/**
-	 * 위젯을 화면에서 숨김
+	 * 위젯을 화면에서 숨긴다.
 	 *
 	 * @param id 위젯의 식별자
 	 * @return 성공 여부
@@ -107,7 +111,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	}
 
 	/**
-	 * 숨져긴 위젯 표시
+	 * 숨져긴 위젯을 표시한다.
 	 *
 	 * @param id 위젯의 식별자
 	 * @return 성공 여부
@@ -131,9 +135,18 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	/**
 	 * 모든 위젯 목록의 사본
 	 *
-	 * @return 위젯들의 컬렉션
+	 * @return 위젯들의 배열
 	 */
 	fun getWidgets(): GdxArray<Widget> = widgets.values().toArray();
+
+	/**
+	 * 모든 위젯 목록의 사본
+	 *
+	 * @param output 위젯들을 담을 배열
+	 */
+	fun getWidgets(output: GdxArray<Widget>) {
+		widgets.values().toArray(output);
+	}
 
 	// ────────────────────────────────────────────────────────
 	//  콜백 함수
@@ -202,7 +215,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 		val iterator = widgets.values().iterator();
 		while(iterator.hasNext()) {
 			val widget = iterator.next();
-			if(widget.isVisible && !overlayWidgets.contains(widget, true)) {
+			if(widget.isVisible && !overlayWidgets.contains(widget)) {
 				widget.draw(batch);
 				count++;
 			}
@@ -217,8 +230,9 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 */
 	private inline fun drawOverlayWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
 		var count = 0;
-		for(i in 0 until overlayWidgets.size) {
-			val widget = overlayWidgets[i];
+		val iterator = overlayWidgets.iterator();
+		while(iterator.hasNext()) {
+			val widget = iterator.next();
 			if(widget.isVisible) {
 				widget.draw(batch);
 				count++;
