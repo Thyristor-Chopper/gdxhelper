@@ -176,6 +176,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 
 	// gdxhelper 내의 Game 객체가 아닌 LibGDX 자체의 Game 객체에서 사용할 때 대비
 	final override fun render(delta: Float) {
+		update(delta);
 		render();
 	}
 
