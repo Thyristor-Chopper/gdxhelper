@@ -2,10 +2,14 @@ package io.potatogun.gdxhelper.timer;
 
 import io.potatogun.gdxhelper.collections.identityMutableSetOf;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * 타이머 객체 관리자
+ *
+ * @property condition 전역 갱신 조건
  */
-class TimerManager {
+class TimerManager @JvmOverloads constructor(internal val condition: BooleanSupplier? = null) {
 	private val timers = identityMutableSetOf<Timer>();
 
 	/**
@@ -30,6 +34,8 @@ class TimerManager {
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
 	fun tick(delta: Float) {
+		if(!(condition?.getAsBoolean() ?: true)) return;
+
 		for(timer in timers.toList())
 			if(timer.condition?.getAsBoolean() ?: true) {
 				timer.tick(delta);

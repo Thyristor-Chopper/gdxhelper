@@ -34,7 +34,6 @@ abstract class Game : GdxGame() {
 	 */
 	open fun update(delta: Float) {}
 
-	// 상태 갱신 및 그리기
 	override fun render() {
 		// 상태 갱신
 		val delta = Gdx.graphics.getDeltaTime();
