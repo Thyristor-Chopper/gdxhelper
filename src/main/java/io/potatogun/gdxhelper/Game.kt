@@ -14,14 +14,17 @@ import io.potatogun.gdxhelper.world.World;
 abstract class Game : GdxGame() {
 	// Gdx.graphics.width를 매번 실수형으로 변환하는 오버헤드를 없애기 위해 창 크기를 캐시하고 크기가 바뀔 때만 업데이트한다.
 	override fun resize(width: Int, height: Int) {
+		// 창 크기 캐시
 		Window.updateWindowDimensions();
+
+		// 화면에 크기 조절 이벤트 발생
 		val screen = getScreen();
-		if(screen !is Screen) {
+		if(screen is Screen) {
+			screen.updateProjectionMatrix();
+			screen.resize(width, height);
+		} else {
 			super.resize(width, height);
-			return;
 		}
-		screen.updateProjectionMatrix();
-		screen.resize(width, height);
 	}
 
 	/**
@@ -31,16 +34,20 @@ abstract class Game : GdxGame() {
 	 */
 	open fun update(delta: Float) {}
 
+	// 상태 갱신 및 그리기
 	override fun render() {
-		val screen = getScreen();
-		if(screen !is Screen) {
-			super.render();
-			return;
-		}
+		// 상태 갱신
 		val delta = Gdx.graphics.getDeltaTime();
 		update(delta);
-		screen.update(delta);
-		screen.render();
+
+		// 스크린 그리기
+		val screen = getScreen();
+		if(screen is Screen) {
+			screen.update(delta);
+			screen.render();
+		} else {
+			super.render();
+		}
 	}
 
 	// 자원 정리
