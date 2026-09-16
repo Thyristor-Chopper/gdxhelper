@@ -10,7 +10,7 @@ import java.util.function.BooleanSupplier;
  * @property condition 실행 조건
  * @property operation 실행할 서브루틴
  */
-open class Timer @JvmOverloads constructor(private val delay: Float, internal val condition: BooleanSupplier? = null, private val operation: Runnable) {
+open class Timer @JvmOverloads constructor(private val delay: Float, @JvmSynthetic internal val condition: BooleanSupplier? = null, private val operation: Runnable) {
 	private var timer = delay
 		set(value) {
 			if(value < 0f) field = 0f;
@@ -28,7 +28,7 @@ open class Timer @JvmOverloads constructor(private val delay: Float, internal va
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	internal open fun tick(delta: Float) {
+	@JvmSynthetic internal open fun tick(delta: Float) {
 		timer -= delta;
 		if(timer == 0f) {
 			operation.run();

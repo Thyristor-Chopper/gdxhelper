@@ -80,7 +80,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	/**
 	 * 자원이 해제됐는지의 여부
 	 */
-	internal var isDisposed = false
+	@get:JvmSynthetic internal var isDisposed = false
 		private set;
 
 	/**
@@ -105,7 +105,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	//  콜백 함수
 	// ────────────────────────────────────────────────────────
 
-	internal fun updateCamera() {
+	@JvmSynthetic internal fun updateCamera() {
 		updateViewport();
 		updateOffset();
 		updateProjectionMatrix();
@@ -132,7 +132,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 
 	// 상속받은 자식 월드에서 추가적으로 그려야 할 것이 있다면 이 메쏘드 대신
 	//   drawContents를 override할 것.
-	internal fun render() {
+	@JvmSynthetic internal fun render() {
 		batch.begin();
 		drawBackground();
 		drawContents();
@@ -211,23 +211,23 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * 월드 옵션 (자바 전용)
 	 */
 	open class Properties {
-		internal var camera: Camera? = null
+		@get:JvmSynthetic internal var camera: Camera? = null
 			get() {
 				if(field == null)
 					field = OrthographicCamera();
 				return field;
 			}
 			private set;
-		internal var font: BitmapFont? = null
+		@get:JvmSynthetic internal var font: BitmapFont? = null
 			get() {
 				if(field == null)
 					field = BitmapFont();
 				return field;
 			}
 			private set;
-		internal var tileSize = DEFAULT_TILE_SIZE
+		@get:JvmSynthetic internal var tileSize = DEFAULT_TILE_SIZE
 			private set;
-		internal var entityCapacity = DEFAULT_ENTITY_CAPACITY
+		@get:JvmSynthetic internal var entityCapacity = DEFAULT_ENTITY_CAPACITY
 			private set;
 
 		/**

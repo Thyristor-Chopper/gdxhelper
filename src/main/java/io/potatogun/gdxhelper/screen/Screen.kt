@@ -152,7 +152,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	//  콜백 함수
 	// ────────────────────────────────────────────────────────
 
-	internal fun updateProjectionMatrix() {
+	@JvmSynthetic internal fun updateProjectionMatrix() {
 		batch.projectionMatrix.setToOrtho2D(0f, 0f, Window.width, Window.height);
 	}
 
@@ -184,7 +184,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * LibGDX가 매 프레임 자동으로 호출.
 	 *   기본 흐름: 화면 지우기 → 로직 업데이트 → 배경 → 객체.
 	 */
-	internal fun render() {
+	@JvmSynthetic internal fun render() {
 		// 1) 이전 프레임의 잔상 지우기 (검은색으로 채움)
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -309,7 +309,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 */
 	open class Properties {
 		internal var font: BitmapFont? = null
-			get() {
+			@JvmSynthetic get() {
 				if(field == null)
 					field = BitmapFont();
 				return field;

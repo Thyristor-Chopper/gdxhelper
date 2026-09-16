@@ -73,7 +73,7 @@ object Window {
 	 *   updateWindowDimensions을 호출할 위험이 있다. 그래도 최적화와 안전의 균형은
 	 *   지키는 게 나을 수도.
 	 */
-	internal fun updateWindowDimensions() {
+	@JvmSynthetic internal fun updateWindowDimensions() {
 		width = Gdx.graphics.width.toFloat();
 		height = Gdx.graphics.height.toFloat();
 	}

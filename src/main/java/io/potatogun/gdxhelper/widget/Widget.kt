@@ -26,7 +26,7 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	/**
 	 * 자원이 해제됐는지의 여부
 	 */
-	internal var isDisposed = false
+	@get:JvmSynthetic internal var isDisposed = false
 		private set;
 
 	/**

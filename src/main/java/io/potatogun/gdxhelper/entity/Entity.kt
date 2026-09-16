@@ -96,7 +96,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	/**
 	 * 자원이 해제됐는지의 여부
 	 */
-	internal var isDisposed = false
+	@get:JvmSynthetic internal var isDisposed = false
 		private set;
 
 	/**

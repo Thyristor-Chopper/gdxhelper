@@ -9,7 +9,7 @@ import java.util.function.BooleanSupplier;
  *
  * @property condition 전역 갱신 조건
  */
-class TimerManager @JvmOverloads constructor(internal val condition: BooleanSupplier? = null) {
+class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val condition: BooleanSupplier? = null) {
 	private val timers = identityMutableSetOf<Timer>();
 
 	/**
