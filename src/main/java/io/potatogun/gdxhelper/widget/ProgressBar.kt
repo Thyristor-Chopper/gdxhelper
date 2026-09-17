@@ -26,10 +26,10 @@ import kotlin.math.ceil;
  */
 class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 15f }, value: Float = 0f, private val skin: Skin, var color: Color = Color.WHITE, private val style: Style = Style.SMOOTH) : Widget(x, y, width, height) {
 	companion object {
-		private const val BAR_VERTICAL_PADDING = 3f;		// 미터기 틀 안쪽 세로 여백
-		private const val BAR_HORIZONTAL_PADDING = 3f;	// 미터기 틀 안쪽 가로 여백
-		private const val CHUNK_WIDTH = 6f;				// 청크의 너비
-		private const val CHUNK_MARGIN = 2f;				// 각 청크 사이의 간격
+		private const val DEFAULT_VERTICAL_PADDING = 3f;		// 미터기 틀 안쪽 세로 여백
+		private const val DEFAULT_HORIZONTAL_PADDING = 3f;	// 미터기 틀 안쪽 가로 여백
+		private const val DEFAULT_CHUNK_WIDTH = 6f;				// 청크의 너비
+		private const val DEFAULT_CHUNK_MARGIN = 2f;				// 각 청크 사이의 간격
 	}
 
 	var value: Float = value
@@ -106,7 +106,7 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 	 * @property chunkWidth        각 청크의 너비
 	 * @property chunkMargin       각 청크 사이의 간격
 	 */
-	data class Skin(@JvmField val bar: NinePatch, @JvmField val fill: NinePatch, @JvmField val horizontalPadding: Float = BAR_HORIZONTAL_PADDING, @JvmField val verticalPadding: Float = BAR_VERTICAL_PADDING, @JvmField val chunkWidth: Float = CHUNK_WIDTH, @JvmField val chunkMargin: Float = CHUNK_MARGIN) {
+	data class Skin(@JvmField val bar: NinePatch, @JvmField val fill: NinePatch, @JvmField val horizontalPadding: Float = DEFAULT_HORIZONTAL_PADDING, @JvmField val verticalPadding: Float = DEFAULT_VERTICAL_PADDING, @JvmField val chunkWidth: Float = DEFAULT_CHUNK_WIDTH, @JvmField val chunkMargin: Float = DEFAULT_CHUNK_MARGIN) {
 		/**
 		 * smooth 스타일용 스킨을 생성한다.
 		 *
@@ -116,7 +116,7 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 		 * @property horizontalPadding 미터기의 가로 안쪽 여백
 		 * @property verticalPadding   미터기의 세로 안쪽 여백
 		 */
-		constructor(bar: NinePatch, fill: NinePatch, horizontalPadding: Float = BAR_HORIZONTAL_PADDING, verticalPadding: Float = BAR_VERTICAL_PADDING) : this(bar, fill, horizontalPadding, verticalPadding, CHUNK_WIDTH, CHUNK_MARGIN);
+		constructor(bar: NinePatch, fill: NinePatch, horizontalPadding: Float = DEFAULT_HORIZONTAL_PADDING, verticalPadding: Float = DEFAULT_VERTICAL_PADDING) : this(bar, fill, horizontalPadding, verticalPadding, DEFAULT_CHUNK_WIDTH, DEFAULT_CHUNK_MARGIN);
 	}
 
 	/**
