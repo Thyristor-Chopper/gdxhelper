@@ -280,7 +280,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		private const val DEFAULT_ENTITY_CAPACITY = 64;
 		// 생성된 모든 인스턴스를 관리하는 목록이다. 생성자에서 자동으로 추가한다. 누가 설마 자바 unsafe의 allocateInstance를 쓰진 않겠지
 		//   게임 dispose 시 사용된다.
-		private val undisposed = ObjectSet<World>(4);
+		private val undisposed = ObjectSet<World>(4);  // 게임 구현체에서 스크린 교체 시 참조를 다 잃을 수도 있으므로 강한 참조.
 
 		/**
 		 * 수동 자원 해제되지 않은 월드들을 일괄 dispose한다.

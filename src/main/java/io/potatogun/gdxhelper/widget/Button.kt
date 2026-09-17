@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
-import io.potatogun.gdxhelper.HelperTextures;
 import io.potatogun.gdxhelper.function.FloatSupplier;
 import io.potatogun.gdxhelper.util.Input;
 import io.potatogun.gdxhelper.util.Utils;
@@ -27,14 +26,7 @@ import io.potatogun.gdxhelper.Window;
  * @property color   단추의 색
  * @property onClick 단추를 눌렀을 때 실행할 서브루틴
  */
-class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 25f }, caption: String, private val skin: Skin = defaultSkin, private val color: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
-	companion object {
-		/**
-		 * 프레임워크에서 제공하는 단추의 기본 스킨
-		 */
-		private val defaultSkin = Skin(HelperTextures.button, HelperTextures.buttonHover, HelperTextures.buttonPressed, HelperTextures.buttonDisabled, Color.WHITE, Color.LIGHT_GRAY);
-	}
-
+class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 25f }, caption: String, private val skin: Skin, private val color: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
 	private val font = BitmapFont();
 	private val accessKey: Char?;
 	private val caption: String;
@@ -54,7 +46,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * @param color   단추의 색
 	 * @param onClick 단추를 눌렀을 때 실행할 서브루틴
 	 */
-	constructor(x: Float, y: Float, width: Float, height: Float = 25f, caption: String, skin: Skin = defaultSkin, color: Color = Color.WHITE, onClick: Runnable = {}) : this({ x }, { y }, { width }, { height }, caption, skin, color, onClick);
+	constructor(x: Float, y: Float, width: Float, height: Float = 25f, caption: String, skin: Skin, color: Color = Color.WHITE, onClick: Runnable = {}) : this({ x }, { y }, { width }, { height }, caption, skin, color, onClick);
 
 	init {
 		val accessKeyMatch = Regex("[&]([A-Za-z])");
@@ -155,9 +147,9 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 */
 	class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
 		private var caption = "";
-		private var skin = defaultSkin;
+		private lateinit var buttonSkin: Skin;  // Overload resolution ambiguity between candidates 때문에 변수명 다르게
 		private var color = Color.WHITE;
-		private lateinit var clickHandler: Runnable;
+		private var clickHandler: Runnable = {};
 
 		/**
 		 * 단추 빌더 (자바 개발자 전용)
@@ -176,7 +168,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		}
 
 		fun skin(skin: Skin): Builder {
-			this.skin = skin;
+			this.buttonSkin = skin;
 			return this;
 		}
 
@@ -191,9 +183,9 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		}
 
 		fun build(): Button {
-			if(!::clickHandler.isInitialized)
-				throw IllegalStateException("click handler is not set");
-			return Button(x, y, width, height, caption, skin, color, clickHandler);
+			if(!::buttonSkin.isInitialized)
+				throw IllegalStateException("skin is not set");
+			return Button(x, y, width, height, caption, buttonSkin, color, clickHandler);
 		}
 	}
 }
