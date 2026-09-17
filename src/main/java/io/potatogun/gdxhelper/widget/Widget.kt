@@ -41,6 +41,13 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	constructor(x: Float, y: Float, width: Float, height: Float) : this({ x }, { y }, { width }, { height });
 
 	/**
+	 * 매 프레임 컨트롤의 상태를 갱신한다.
+	 *
+	 * @param delta 직전 프레임과의 간격(초)
+	 */
+	open fun update(delta: Float) {}
+
+	/**
 	 * 컨트롤을 화면에 그리는 로직
 	 *
 	 * @param batch 이미지(Texture)를 화면에 찍어주는 도구

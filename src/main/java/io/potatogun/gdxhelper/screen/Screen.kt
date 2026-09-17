@@ -160,6 +160,11 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	//  매 프레임 로직
 	// ────────────────────────────────────────────────────────
 
+	@JvmSynthetic internal fun updateAll(delta: Float) {
+		update(delta);
+		updateWidgets(delta);
+	}
+
 	/**
 	 * 매 프레임 화면 로직
 	 *
@@ -170,13 +175,21 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 */
 	open fun update(delta: Float) {}
 
+	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
+		val iterator = widgets.values().iterator();
+		while(iterator.hasNext()) {
+			val widget = iterator.next();
+			widget.update(delta);
+		}
+	}
+
 	// ────────────────────────────────────────────────────────
 	//  매 프레임 그리기
 	// ────────────────────────────────────────────────────────
 
-	// gdxhelper 내의 Game 객체가 아닌 LibGDX 자체의 Game 객체에서 사용할 때 대비
+	// gdxhelper의 Game 객체가 아닌 LibGDX 자체의 Game 객체에서 사용할 때 대비
 	final override fun render(delta: Float) {
-		update(delta);
+		updateAll(delta);
 		render();
 	}
 

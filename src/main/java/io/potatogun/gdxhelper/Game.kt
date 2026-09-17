@@ -42,7 +42,7 @@ abstract class Game : GdxGame() {
 		// 스크린 그리기
 		val screen = getScreen();
 		if(screen is Screen) {
-			screen.update(delta);
+			screen.updateAll(delta);
 			screen.render();
 		} else {
 			super.render();

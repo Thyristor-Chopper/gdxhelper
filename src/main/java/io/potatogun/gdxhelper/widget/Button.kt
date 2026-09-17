@@ -32,6 +32,8 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	private val caption: String;
 	private var previouslyPressed = false;
 	private var isEnabled = true;
+	private var isHover = false;
+	private var isPressed = false;
 
 	/**
 	 * 단추 - 코틀린용 생성자이며 자바 개발자라면 빌더를 사용하면 된다.
@@ -54,7 +56,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		this.caption = caption.replaceFirst(accessKeyMatch, "$1");
 	}
 
-	override fun draw(batch: SpriteBatch) {
+	override fun update(delta: Float) {
 		val x = getX();
 		val y = getY();
 		val width = getWidth();
@@ -62,35 +64,45 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 
 		val mouseX = Input.mouseX.toFloat();
 		val mouseY = Window.height - Input.mouseY;
-		val isHover = isEnabled && mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
-		val isPressed = isEnabled && Input.isButtonPressed(Input.LEFT_MOUSE);
-		val fontColor = if(!isEnabled) skin.disabledCaptionColor else skin.captionColor;
+		isHover = isEnabled && mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
+		isPressed = isEnabled && isHover && Input.isButtonPressed(Input.LEFT_MOUSE);
 
-		val toDraw: NinePatch =
-			if(!isEnabled) {
-				previouslyPressed = false;
-
-				skin.disabled
-			} else if(isPressed && isHover) {
-				previouslyPressed = true;
-
-				skin.pressed
-			} else if(isHover) {
-				fireClickEvent();
-
-				skin.hover
-			} else {
-				fireClickEvent();
-
-				skin.normal
-			};
-
-		if(isEnabled) batch.color = color;
-		toDraw.draw(batch, x, y, width, height);
-		batch.color = Color.WHITE;
-		Utils.drawText(batch, font, caption, x, y + height * 0.5f + 6f, fontColor, 1.0f, width, Align.center);
+		// 마우스를 눌렀다 뗐으면서 뗀 순간에 반디가 단추 위에 있으면 클릭 이벤트 발생
+		if(!isEnabled) {
+			previouslyPressed = false;
+		} else if(isPressed) {
+			previouslyPressed = true;
+		} else if(isHover && previouslyPressed) {
+			fireClickEvent();
+		} else {
+			previouslyPressed = false;
+		}
 
 		detectAccessKeyPress();
+	}
+
+	override fun draw(batch: SpriteBatch) {
+		val x = getX();
+		val y = getY();
+		val width = getWidth();
+		val height = getHeight();
+
+		val fontColor = if(!isEnabled) skin.disabledCaptionColor else skin.captionColor;
+
+		val texture: NinePatch =
+			if(!isEnabled)
+				skin.disabled
+			else if(isPressed)
+				skin.pressed
+			else if(isHover)
+				skin.hover
+			else
+				skin.normal;
+
+		if(isEnabled) batch.color = color;
+		texture.draw(batch, x, y, width, height);
+		batch.color = Color.WHITE;
+		Utils.drawText(batch, font, caption, x, y + height * 0.5f + 6f, fontColor, 1.0f, width, Align.center);
 	}
 
 	/**
