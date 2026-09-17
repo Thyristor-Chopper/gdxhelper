@@ -15,16 +15,23 @@ abstract class SharedTextureManager {
 	/**
 	 * 텍스처를 등록한다.
 	 *
-	 * @param id   텍스처 식별자
-	 * @param path 텍스처 경로
+	 * @param id        텍스처 식별자
+	 * @param path      텍스처 경로
+	 * @param immediate 즉시 불러오기 여부
 	 */
-	protected fun register(id: String, path: String) {
-		shared.put(id, lazy {
+	@JvmOverloads protected fun register(id: String, path: String, immediate: Boolean = false) {
+		if(immediate) {
 			val texture = TextureUtils.loadTexture(path);
 			sharedTextures.add(texture);
+			shared.put(id, lazyOf(texture));
+		} else {
+			shared.put(id, lazy {
+				val texture = TextureUtils.loadTexture(path);
+				sharedTextures.add(texture);
 
-			/* return */ texture
-		});
+				/* return */ texture
+			});
+		}
 	}
 
 	/**
