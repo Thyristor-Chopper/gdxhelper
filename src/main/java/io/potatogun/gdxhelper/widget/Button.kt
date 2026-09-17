@@ -68,7 +68,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		isPressed = isEnabled && isHover && Input.isButtonPressed(Input.LEFT_MOUSE);
 
 		// 마우스를 눌렀다 뗐으면서 뗀 순간에 반디가 단추 위에 있으면 클릭 이벤트 발생
-		if(!isEnabled) {
+		if(!isEnabled || !isVisible) {
 			previouslyPressed = false;
 		} else if(isPressed) {
 			previouslyPressed = true;
