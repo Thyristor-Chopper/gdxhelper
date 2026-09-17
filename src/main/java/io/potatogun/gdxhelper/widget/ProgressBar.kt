@@ -28,8 +28,8 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 	companion object {
 		private const val DEFAULT_VERTICAL_PADDING = 3f;		// 미터기 틀 안쪽 세로 여백
 		private const val DEFAULT_HORIZONTAL_PADDING = 3f;	// 미터기 틀 안쪽 가로 여백
-		private const val DEFAULT_CHUNK_WIDTH = 6f;				// 청크의 너비
-		private const val DEFAULT_CHUNK_MARGIN = 2f;				// 각 청크 사이의 간격
+		private const val DEFAULT_CHUNK_WIDTH = 6f;			// 청크의 너비
+		private const val DEFAULT_CHUNK_MARGIN = 2f;			// 각 청크 사이의 간격
 	}
 
 	var value: Float = value
