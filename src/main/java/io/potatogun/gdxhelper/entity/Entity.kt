@@ -74,16 +74,16 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	/**
 	 * 개체 오버레이 색 - (흰색: 원래 텍스처 색 그대로 사용)
 	 */
-	protected open val overlayColor = Color.WHITE;
+	protected open val tint = Color.WHITE;
 	/**
 	 * 개체의 투명도
 	 */
 	protected var opacity: Float
-		inline get() = overlayColor.a
+		inline get() = tint.a
 		inline set(value) {
-			if(value < 0f) overlayColor.a = 0f;
-			else if(value > 1f) overlayColor.a = 1f;
-			else overlayColor.a = value;
+			if(value < 0f) tint.a = 0f;
+			else if(value > 1f) tint.a = 1f;
+			else tint.a = value;
 		};
 	/**
 	 * 충돌 감지용 너비 (캐시)
@@ -116,12 +116,12 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 *
 	 * @param batch           이미지(Texture)를 화면에 찍어주는 도구
 	 * @param textureOverride 대신 사용할 텍스처 (null: 기본 텍스처 사용)
-	 * @param colorOverride   대신 사용할 오버레이 색 (null: 기본 오버레이 색 사용)
+	 * @param tintOverride    대신 사용할 오버레이 색 (null: 기본 오버레이 색 사용)
 	 */
-	protected open fun draw(batch: SpriteBatch, textureOverride: Texture?, colorOverride: Color?) {
+	protected open fun draw(batch: SpriteBatch, textureOverride: Texture?, tintOverride: Color?) {
 		val texture = textureOverride ?: this.texture;
 		texture?.let {
-			batch.color = colorOverride ?: this.overlayColor;
+			batch.color = tintOverride ?: this.tint;
 			batch.draw(it, x - halfWidth, y - halfHeight, halfWidth, halfHeight, width, height, 1.0f, 1.0f, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
 			batch.color = Color.WHITE;
 		};
