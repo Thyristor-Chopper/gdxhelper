@@ -20,12 +20,12 @@ object Window {
 	@JvmStatic var height = 0f
 		private set;
 	/**
-	 * 현재 창의 너비
+	 * 현재 창의 너비 (정수형)
 	 */
 	@JvmStatic var intWidth = 0
 		private set;
 	/**
-	 * 현재 창의 높이
+	 * 현재 창의 높이 (정수형)
 	 */
 	@JvmStatic var intHeight = 0
 		private set;
