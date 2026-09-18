@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array as GdxArray;
+import com.badlogic.gdx.utils.IdentitySet;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.ObjectSet;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.util.Utils;
@@ -41,7 +41,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	/**
 	 * 오버레이 위에 표시되는 위젯
 	 */
-	private val overlayWidgets = ObjectSet<Widget>(16);
+	private val overlayWidgets = IdentitySet<Widget>(16);
 
 	/**
 	 * 설정 빌더를 이용하여 화면을 생성한다.
