@@ -5,12 +5,12 @@ import java.util.function.BooleanSupplier;
 /**
  * 지정된 시간 후 특정 작업을 실행하게 해 주는 타이머
  *
- * @constructor 코틀린용 생성자
+ * @constructor 조건이 있는 타이머
  * @property delay     대기 시간(초)
  * @property condition 실행 조건
  * @property operation 실행할 서브루틴
  */
-open class Timer @JvmOverloads constructor(private val delay: Float, @JvmSynthetic internal val condition: BooleanSupplier? = null, private val operation: Runnable) {
+open class Timer(private val delay: Float, @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) {
 	private var timer = delay
 		set(value) {
 			if(value < 0f) field = 0f;
@@ -22,6 +22,15 @@ open class Timer @JvmOverloads constructor(private val delay: Float, @JvmSynthet
 	@get:JvmName("hasExecuted")
 	var executed = false
 		private set;
+
+	/**
+	 * 조건 없는 타이머를 생성한다.
+	 *
+	 * @constructor 조건이 없는 타이머
+	 * @param delay     대기 시간(초)
+	 * @param operation 실행할 서브루틴
+	 */
+	constructor(delay: Float, operation: Runnable) : this(delay, null, operation);
 
 	/**
 	 * 타이머를 갱신한다.
