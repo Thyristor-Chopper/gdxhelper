@@ -16,7 +16,6 @@ import io.potatogun.gdxhelper.entity.manager.EntityManager;
 import io.potatogun.gdxhelper.entity.manager.SpatialGrid;
 import io.potatogun.gdxhelper.screen.WorldProjector;
 import io.potatogun.gdxhelper.util.Utils;
-import io.potatogun.gdxhelper.world.Freezable;
 
 import java.util.Collections;
 
