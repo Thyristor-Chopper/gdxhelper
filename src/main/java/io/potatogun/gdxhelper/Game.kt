@@ -1,6 +1,7 @@
 package io.potatogun.gdxhelper;
 
 import com.badlogic.gdx.Game as GdxGame;
+import com.badlogic.gdx.Screen as GdxScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -46,6 +47,16 @@ abstract class Game : GdxGame() {
 			screen.render();
 		} else {
 			super.render();
+		}
+	}
+
+	override fun setScreen(screen: GdxScreen) {
+		super.setScreen(screen);
+
+		// 다른 화면에서 크기를 조절했다가 다시 복귀했을 때 대비
+		if(screen is Screen) {
+			screen.updateProjectionMatrix();
+			screen.resize(Window.intWidth, Window.intHeight);
 		}
 	}
 

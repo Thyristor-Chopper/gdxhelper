@@ -20,6 +20,16 @@ object Window {
 	@JvmStatic var height = 0f
 		private set;
 	/**
+	 * 현재 창의 너비
+	 */
+	@JvmStatic var intWidth = 0
+		private set;
+	/**
+	 * 현재 창의 높이
+	 */
+	@JvmStatic var intHeight = 0
+		private set;
+	/**
 	 * 제목 표시줄 제목의 base
 	 */
 	private var titleBarBase: String by Delegates.observable("") { _, _, _ -> updateTitle() };
@@ -74,7 +84,9 @@ object Window {
 	 *   지키는 게 나을 수도.
 	 */
 	@JvmSynthetic internal fun updateWindowDimensions() {
-		width = Gdx.graphics.width.toFloat();
-		height = Gdx.graphics.height.toFloat();
+		intWidth = Gdx.graphics.width;
+		intHeight = Gdx.graphics.height;
+		width = intWidth.toFloat();
+		height = intHeight.toFloat();
 	}
 }
