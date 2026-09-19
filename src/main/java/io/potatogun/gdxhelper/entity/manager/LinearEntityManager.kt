@@ -59,9 +59,16 @@ class LinearEntityManager(world: World, capacity: Int, private val nearbyThresho
 		}
 	}
 
-	override fun forEachNearby(entity: Entity, callback: Consumer<Entity>) {
+	override fun getNearby(entity: Entity): GdxArray<Entity> {
+		val output = GdxArray<Entity>(allEntities.size);
+		getNearby(entity, output);
+		return output;
+	}
+
+	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
+		output.clear();
 		for(it in allEntities)
 			if(it.distanceTo(entity) <= nearbyThreshold)
-				callback.accept(it);
+				output.add(it);
 	}
 }

@@ -15,13 +15,16 @@ class RepeatingTimer(interval: Float, condition: BooleanSupplier?, operation: Ru
 	 * 조건 없는 타이머를 생성한다.
 	 *
 	 * @constructor 조건이 없는 타이머
-	 * @param delay     대기 시간(초)
+	 * @param interval  대기 시간(초)
 	 * @param operation 실행할 서브루틴
 	 */
 	constructor(interval: Float, operation: Runnable) : this(interval, null, operation);
 
 	override fun tick(delta: Float) {
 		super.tick(delta);
-		if(executed) reset();
+		if(executed) {
+			timer += timeout;
+			executed = false;
+		}
 	}
 }

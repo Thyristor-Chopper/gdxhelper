@@ -137,7 +137,15 @@ class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : Ar
 		tilesOfEntity.put(entity, newHashes);
 	}
 
-	override fun forEachNearby(entity: Entity, callback: Consumer<Entity>) {
+	override fun getNearby(entity: Entity): GdxArray<Entity> {
+		val output = GdxArray<Entity>(allEntities.size);
+		getNearby(entity, output);
+		return output;
+	}
+
+	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
+		output.clear();
+
 		val outerRange = 1;
 		val maxHalfLength = max2(entity.width, entity.height) * 0.5f;
 
@@ -154,7 +162,7 @@ class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : Ar
 				for(i in 0 until entities.size) {
 					val e = entities[i];
 					if(visited.add(e))
-						callback.accept(e);
+						output.add(e);
 				}
 			}
 		visitedPool.free(visited);

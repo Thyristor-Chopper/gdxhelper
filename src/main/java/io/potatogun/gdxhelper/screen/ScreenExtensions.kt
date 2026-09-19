@@ -9,10 +9,4 @@ import io.potatogun.gdxhelper.widget.Widget;
  * @param id 가져올 위젯의 식별자
  * @return 해당 위젯(없으면 null)
  */
-inline fun Screen.getWidgetOrNull(id: String): Widget? {
-	return try {
-		getWidget(id)
-	} catch(e: NoSuchElementException) {
-		null
-	};
-}
+inline fun Screen.getWidgetOrNull(id: String): Widget? = if(hasWidget(id)) getWidget(id) else null;

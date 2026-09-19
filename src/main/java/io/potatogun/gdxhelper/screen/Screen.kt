@@ -124,13 +124,21 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	}
 
 	/**
-	 * 위젯을 식별자로 가져오기
+	 * 위젯을 식별자로 가져온다.
 	 *
 	 * @param id 가져올 위젯의 식별자
 	 * @return 해당 위젯
 	 * @throws NoSuchElementException 지정한 식별자의 위젯이 없는 경우
 	 */
 	fun getWidget(id: String): Widget = widgets[id] ?: throw NoSuchElementException("invalid widget ID");
+
+	/**
+	 * 지정한 식별자의 위젯이 있는지 본다.
+	 *
+	 * @param id 확인할 식별자
+	 * @return 존재 여부
+	 */
+	fun hasWidget(id: String): Boolean = widgets.containsKey(id);
 
 	/**
 	 * 모든 위젯 목록의 사본

@@ -92,9 +92,17 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		val width = getWidth();
 		val height = getHeight();
 
-		val fontColor = if(!isEnabled) skin.disabledCaptionColor else skin.captionColor;
+		val fontColor =
+			if(!isEnabled)
+				skin.disabledCaptionColor
+			else if(isPressed)
+				skin.pressedCaptionColor
+			else if(isHover)
+				skin.hoverCaptionColor
+			else
+				skin.captionColor;
 
-		val texture: NinePatch =
+		val texture =
 			if(!isEnabled)
 				skin.disabled
 			else if(isPressed)
@@ -139,6 +147,10 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		if(!previouslyPressed) return;
 		onClick.run();
 		previouslyPressed = false;
+	}
+
+	override fun dispose() {
+		font.dispose();
 	}
 
 	/**

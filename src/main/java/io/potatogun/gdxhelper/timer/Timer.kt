@@ -6,31 +6,27 @@ import java.util.function.BooleanSupplier;
  * 지정된 시간 후 특정 작업을 실행하게 해 주는 타이머
  *
  * @constructor 조건이 있는 타이머
- * @property delay     대기 시간(초)
+ * @property timeout   대기 시간(초)
  * @property condition 실행 조건
  * @property operation 실행할 서브루틴
  */
-open class Timer(private val delay: Float, @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) {
-	private var timer = delay
-		set(value) {
-			if(value < 0f) field = 0f;
-			else field = value;
-		};
+open class Timer(@JvmField protected val timeout: Float, @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) {
+	@JvmField protected var timer = timeout;
 	/**
 	 * 타이머가 실행되었는지의 여부
 	 */
 	@get:JvmName("hasExecuted")
 	var executed = false
-		private set;
+		protected set;
 
 	/**
 	 * 조건 없는 타이머를 생성한다.
 	 *
 	 * @constructor 조건이 없는 타이머
-	 * @param delay     대기 시간(초)
+	 * @param timeout   대기 시간(초)
 	 * @param operation 실행할 서브루틴
 	 */
-	constructor(delay: Float, operation: Runnable) : this(delay, null, operation);
+	constructor(timeout: Float, operation: Runnable) : this(timeout, null, operation);
 
 	/**
 	 * 타이머를 갱신한다.
@@ -39,7 +35,7 @@ open class Timer(private val delay: Float, @JvmSynthetic internal val condition:
 	 */
 	@JvmSynthetic internal open fun tick(delta: Float) {
 		timer -= delta;
-		if(timer == 0f) {
+		if(timer <= 0f) {
 			operation.run();
 			executed = true;
 		}
@@ -49,7 +45,7 @@ open class Timer(private val delay: Float, @JvmSynthetic internal val condition:
 	 * 대기 시간을 초기화한다.
 	 */
 	fun reset() {
-		timer = delay;
+		timer = timeout;
 		executed = false;
 	}
 }

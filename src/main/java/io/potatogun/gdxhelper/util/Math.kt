@@ -13,7 +13,7 @@ object Math {
 	 * @param y 둘째 수
 	 * @return 최댓값
 	 */
-	@JvmStatic inline fun max2(x: Int, y: Int): Int = if(x > y) x else y;
+	@JvmSynthetic inline fun max2(x: Int, y: Int): Int = if(x > y) x else y;
 
 	/**
 	 * 두 수 중 최댓값을 반환한다. (4바이트 실수)
@@ -22,7 +22,7 @@ object Math {
 	 * @param y 둘째 수
 	 * @return 최댓값
 	 */
-	@JvmStatic inline fun max2(x: Float, y: Float): Float = if(x > y) x else y;
+	@JvmSynthetic inline fun max2(x: Float, y: Float): Float = if(x > y) x else y;
 
 	/**
 	 * 두 수 중 최댓값을 반환한다. (8바이트 실수)
@@ -31,7 +31,7 @@ object Math {
 	 * @param y 둘째 수
 	 * @return 최댓값
 	 */
-	@JvmStatic inline fun max2(x: Double, y: Double): Double = if(x > y) x else y;
+	@JvmSynthetic inline fun max2(x: Double, y: Double): Double = if(x > y) x else y;
 
 	/**
 	 * 지정한 수의 절댓값을 반환한다.
@@ -39,5 +39,5 @@ object Math {
 	 * @param n 처리할 수
 	 * @return 절댓값
 	 */
-	@JvmStatic inline fun abs(n: Float): Float = if(n < 0) -n else n;
+	@JvmSynthetic inline fun abs(n: Float): Float = if(n < 0) -n else n;
 }

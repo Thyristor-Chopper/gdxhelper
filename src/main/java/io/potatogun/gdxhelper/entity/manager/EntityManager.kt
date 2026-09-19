@@ -7,8 +7,6 @@ import io.potatogun.gdxhelper.collections.View;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.world.World;
 
-import java.util.function.Consumer;
-
 /**
  * 개체 관리자 인터페이스
  *
@@ -49,14 +47,20 @@ interface EntityManager {
 	fun updatePosition(entity: Entity) {}
 
 	/**
-	 * 현재 개체의 주변 개체를 순회한다.
+	 * 현재 개체의 주변 개체를 가져온다.
 	 *
-	 * 자바 개발자도 편하게 구현할 수 있도록 Consumer를 사용하며 코틀린에서 호출할 때는 일반 { x -> ... } 람다로 여전히 호출 가능하다.
-	 *
-	 * @param entity   기준 개체
-	 * @param callback 실행할 서브루틴
+	 * @param entity 기준 개체
+	 * @return 주변 개체들의 배열
 	 */
-	fun forEachNearby(entity: Entity, callback: Consumer<Entity>);
+	fun getNearby(entity: Entity): GdxArray<Entity>;
+
+	/**
+	 * 현재 개체의 주변 개체를 가져온다.
+	 *
+	 * @param entity 기준 개체
+	 * @param output 주변 개체들의 배열
+	 */
+	fun getNearby(entity: Entity, output: GdxArray<Entity>);
 
 	/**
 	 * 등록된 모든 객체를 그린다.

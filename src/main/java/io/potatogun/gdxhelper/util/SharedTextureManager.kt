@@ -55,6 +55,14 @@ abstract class SharedTextureManager {
 	fun getShared(id: String): Texture = shared[id]?.value ?: throw NoSuchElementException("invalid shared texture ID");
 
 	/**
+	 * 지정한 이름의 공유 텍스처가 있는지 확인한다.
+	 *
+	 * @param id 텍스처 식별자
+	 * @return 존재 여부
+	 */
+	fun hasShared(id: String): Boolean = shared.containsKey(id);
+
+	/**
 	 * 공유 텍스처(여기서 정의된 텍스처)를 dispose한다.
 	 *
 	 * Screen이나 World가 아닌 Game에서 호출해야 한다.

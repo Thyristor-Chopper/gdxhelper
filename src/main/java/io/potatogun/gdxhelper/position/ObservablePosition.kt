@@ -14,8 +14,16 @@ import kotlin.properties.Delegates;
  */
 class ObservablePosition(x: Float, y: Float) : MutablePosition(x, y) {
 	private val changeHandlers = GdxArray<FloatBiConsumer>(false, 2);
-	override var x: Float by Delegates.observable(x) { _, _, _ -> invokeObservers() };
-	override var y: Float by Delegates.observable(y) { _, _, _ -> invokeObservers() };
+	override var x = x
+		set(value) {
+			field = value;
+			invokeObservers();
+		};
+	override var y = y
+		set(value) {
+			field = value;
+			invokeObservers();
+		};
 
 	/**
 	 * 값이 바뀔 때 콜백 함수를 지정한다.
