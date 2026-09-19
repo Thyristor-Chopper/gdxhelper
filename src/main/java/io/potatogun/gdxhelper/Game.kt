@@ -63,6 +63,6 @@ abstract class Game : GdxGame() {
 	// 자원 정리
 	override fun dispose() {
 		super.dispose();
-		World.disposeUndispoed();
+		World.disposeUndisposed();
 	}
 }
