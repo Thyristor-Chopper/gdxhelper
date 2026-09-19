@@ -176,8 +176,8 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	open fun update(delta: Float) {}
 
 	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
-		val iterator = widgets.values().iterator();
-		while(iterator.hasNext()) {
+		val iterator = widgets.values();
+		while(iterator.hasNext) {
 			val widget = iterator.next();
 			widget.update(delta);
 		}
@@ -229,8 +229,8 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 */
 	private inline fun drawWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
 		var count = 0;
-		val iterator = widgets.values().iterator();
-		while(iterator.hasNext()) {
+		val iterator = widgets.values();
+		while(iterator.hasNext) {
 			val widget = iterator.next();
 			if(widget.isVisible && !overlayWidgets.contains(widget)) {
 				widget.draw(batch);
@@ -248,7 +248,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	private inline fun drawOverlayWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
 		var count = 0;
 		val iterator = overlayWidgets.iterator();
-		while(iterator.hasNext()) {
+		while(iterator.hasNext) {
 			val widget = iterator.next();
 			if(widget.isVisible) {
 				widget.draw(batch);
@@ -310,8 +310,8 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	override fun dispose() {
 		batch.dispose();
 		font.dispose();
-		val iterator = widgets.values().iterator();
-		while(iterator.hasNext()) {
+		val iterator = widgets.values();
+		while(iterator.hasNext) {
 			val widget = iterator.next();
 			widget.dispose();
 		}

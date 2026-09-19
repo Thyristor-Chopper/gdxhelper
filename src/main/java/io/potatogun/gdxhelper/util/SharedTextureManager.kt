@@ -60,8 +60,8 @@ abstract class SharedTextureManager {
 	 * Screen이나 World가 아닌 Game에서 호출해야 한다.
 	 */
 	fun disposeShared() {
-		val iterator = shared.values().iterator();
-		while(iterator.hasNext()) {
+		val iterator = shared.values();
+		while(iterator.hasNext) {
 			val texture = iterator.next();
 			if(texture.isInitialized())
 				texture.value.dispose();
