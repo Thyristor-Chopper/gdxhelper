@@ -9,7 +9,7 @@ import io.potatogun.gdxhelper.world.World;
 import java.util.function.Consumer;
 
 /**
- * 선형 목록에서 모두 관리하는 기초적인 개체 관리자이자 referene implementation 역할을 한다.
+ * 선형 목록에서 모두 관리하는 기초적인 개체 관리자이자 reference implementation 역할을 한다.
  *
  * @param    world           소속 월드
  * @param    capacity        처음 개체 목록 크기
