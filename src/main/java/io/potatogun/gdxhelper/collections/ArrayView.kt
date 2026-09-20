@@ -16,7 +16,7 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	@get:JvmName("size")
 	override val size: Int by array::size;
 	override val isEmpty: Boolean
-		get() = array.isEmpty();
+		get() = (array.size == 0);
 
 	override operator fun get(index: Int): T = array[index];
 

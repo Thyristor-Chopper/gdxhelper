@@ -13,7 +13,7 @@ import kotlin.properties.Delegates;
  * @param y 처음 Y 좌표
  */
 class ObservablePosition(x: Float, y: Float) : MutablePosition(x, y) {
-	private val changeHandlers = GdxArray<FloatBiConsumer>(false, 2);
+	private val changeHandlers = GdxArray<FloatBiConsumer>(false, 4);
 	override var x = x
 		set(value) {
 			if(field == value) return;
@@ -32,7 +32,7 @@ class ObservablePosition(x: Float, y: Float) : MutablePosition(x, y) {
 	 *
 	 * @param handler 콜백
 	 */
-	fun addObserver(handler: FloatBiConsumer) {
+	fun attachObserver(handler: FloatBiConsumer) {
 		changeHandlers.add(handler);
 	}
 
@@ -41,7 +41,7 @@ class ObservablePosition(x: Float, y: Float) : MutablePosition(x, y) {
 	 *
 	 * @param handler 해제할 콜백
 	 */
-	fun removeObserver(handler: FloatBiConsumer) {
+	fun detachObserver(handler: FloatBiConsumer) {
 		changeHandlers.removeValue(handler, true);
 	}
 
