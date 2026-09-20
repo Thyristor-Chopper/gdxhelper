@@ -17,6 +17,10 @@ tasks.withType<JavaCompile>().configureEach {
 
 	// package-info.java 한글 깨짐 방지
 	options.encoding = "UTF-8"
+
+	// Windows XP 호환성
+	sourceCompatibility = "1.8"
+	targetCompatibility = "1.8"
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
