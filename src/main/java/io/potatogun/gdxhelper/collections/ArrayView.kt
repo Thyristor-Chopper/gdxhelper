@@ -32,7 +32,7 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	}
 
 	override fun filter(condition: Predicate<T>): GdxArray<T> {
-		val output = GdxArray<T>(false, array.size);
+		val output = GdxArray<T>(array.ordered, array.size);
 		for(i in 0 until array.size) {
 			val element = array[i];
 			if(condition.test(element))
@@ -51,7 +51,7 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	}
 
 	override fun clone(): GdxArray<T> {
-		val output = GdxArray<T>(false, array.size);
+		val output = GdxArray<T>(array.ordered, array.size);
 		for(i in 0 until array.size)
 			output.add(array[i]);
 		return output;
