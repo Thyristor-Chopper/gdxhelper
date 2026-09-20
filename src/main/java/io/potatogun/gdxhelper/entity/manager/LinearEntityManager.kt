@@ -64,7 +64,7 @@ class LinearEntityManager(world: World, capacity: Int, private val nearbyThresho
 	}
 
 	override fun getNearby(entity: Entity): GdxArray<Entity> {
-		val output = GdxArray<Entity>(allEntities.size);
+		val output = GdxArray<Entity>(false, allEntities.size);
 		getNearby(entity, output);
 		return output;
 	}

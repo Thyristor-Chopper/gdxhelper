@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.ObjectSet;
 
 fun <T> ObjectSet<T>.toArray(): GdxArray<T> {
-	val output = GdxArray<T>(this.size);
+	val output = GdxArray<T>(false, this.size);
 	copyToArray(this, output);
 	return output;
 }

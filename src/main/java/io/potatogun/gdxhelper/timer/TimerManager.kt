@@ -14,7 +14,7 @@ import java.util.function.BooleanSupplier;
  */
 class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val condition: BooleanSupplier? = null) {
 	private val timers = IdentitySet<Timer>(16);
-	private val iterableClone = GdxArray<Timer>(16);
+	private val iterableClone = GdxArray<Timer>(false, 16);
 
 	/**
 	 * 타이머를 등록한다.
