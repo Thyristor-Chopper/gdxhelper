@@ -94,29 +94,32 @@ fun <T : Entity> EntityManager.getRandomOf(type: Class<T>): T? {
  */
 fun EntityManager.getClosest(entity: Entity): Entity? {
 	if(view.isEmpty) return null;
-	var ret = view[0];
-	var min = ret.distanceTo(entity);
+	var closest = view[0];
+	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
 		val e = view[i];
 		val distance = e.distanceTo(entity);
-		if(distance < min) {
-			min = distance;
-			ret = e;
+		if(distance < minDistance) {
+			minDistance = distance;
+			closest = e;
 		}
 	}
-	return ret;
+	return closest;
 }
 
 /**
  * 지정한 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (코틀린 전용)
  *
- * 일반적으로 인라인하는 함수들에 비해 좀 크지만 람다의 crossinline의 득을 볼 수 있다.
+ * 일반적으로 인라인하는 함수들에 비해 좀 크지만 바이트코드가 커지더라도 람다의 crossinline의 이득을 볼 수 있다.
+ *
+ * 코드가 일반 getClosest와 거의 같지만 인라인 최적화 + 자바용 오버로딩 떄문에 분리되어 있다.
  *
  * @param entity    기준 개체
  * @param condition 개체의 조건
  * @return 개체 (없으면 null)
  */
 @JvmSynthetic inline fun EntityManager.getClosest(entity: Entity, crossinline condition: (Entity) -> Boolean): Entity? {
+	if(view.isEmpty) return null;
 	var closest: Entity? = null;
 	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
