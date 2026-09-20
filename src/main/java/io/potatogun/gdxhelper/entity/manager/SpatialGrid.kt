@@ -41,18 +41,22 @@ class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : Ar
 			throw IllegalStateException("entity is disposed");
 		if(entity.getWorld() !== world)
 			throw IllegalArgumentException("entity belongs to a different world");
+		if(removeQueue.contains(entity, true)) {
+			removeQueue.removeValue(entity, true);
+			return true;
+		}
 		if(tilesOfEntity.containsKey(entity) || addQueue.contains(entity, true)) return false;
 		addQueue.add(entity);
-		if(removeQueue.contains(entity, true))
-			removeQueue.removeValue(entity, true);
 		return true;
 	}
 
 	override fun remove(entity: Entity): Boolean {
+		if(addQueue.contains(entity, true)) {
+			addQueue.removeValue(entity, true);
+			return true;
+		}
 		if(!tilesOfEntity.containsKey(entity) || removeQueue.contains(entity, true)) return false;
 		removeQueue.add(entity);
-		if(addQueue.contains(entity, true))
-			addQueue.removeValue(entity, true);
 		return true;
 	}
 
