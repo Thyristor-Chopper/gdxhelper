@@ -21,13 +21,13 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	override operator fun get(index: Int): T = array[index];
 
 	override fun sortedWith(comparator: Comparator<T>): GdxArray<T> {
-		val output = clone();
+		val output = toArray();
 		Utils.sortWith<T>(output, comparator);
 		return output;
 	}
 
 	override fun sortedWith(comparator: Comparator<T>, output: GdxArray<T>) {
-		clone(output);
+		toArray(output);
 		Utils.sortWith<T>(output, comparator);
 	}
 
@@ -50,14 +50,14 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 		}
 	}
 
-	override fun clone(): GdxArray<T> {
+	override fun toArray(): GdxArray<T> {
 		val output = GdxArray<T>(array.ordered, array.size);
 		for(i in 0 until array.size)
 			output.add(array[i]);
 		return output;
 	}
 
-	override fun clone(output: GdxArray<T>) {
+	override fun toArray(output: GdxArray<T>) {
 		output.clear();
 		for(i in 0 until array.size)
 			output.add(array[i]);

@@ -74,14 +74,14 @@ interface View<T> : Iterable<T> {
 	 *
 	 * @return 복사된 배열
 	 */
-	fun clone(): GdxArray<T>;
+	fun toArray(): GdxArray<T>;
 
 	/**
 	 * 목록을 지정한 배열로 복사한다.
 	 *
 	 * @param output 대상 배열 (기존 원소는 덮어씌워짐)
 	 */
-	fun clone(output: GdxArray<T>);
+	fun toArray(output: GdxArray<T>);
 
 	/**
 	 * 순회기를 반환한다.
