@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array as GdxArray;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IdentitySet;
 
 import io.potatogun.gdxhelper.Window;
@@ -30,7 +31,7 @@ import java.util.Collections;
  * @property font     월드의 기본 글꼴
  * @property tileSize 공간 분할 격자 개체 관리자의 격자 크기
  */
-abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), entityCapacity: Int = DEFAULT_ENTITY_CAPACITY, tileSize: Float = DEFAULT_TILE_SIZE) {
+abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), entityCapacity: Int = DEFAULT_ENTITY_CAPACITY, tileSize: Float = DEFAULT_TILE_SIZE) : Disposable {
 	/**
 	 * 월드를 보여주는 카메라
 	 */
@@ -198,7 +199,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	//  자원 정리
 	// ────────────────────────────────────────────────────────
 
-	open fun dispose() {
+	override fun dispose() {
 		isDisposed = true;
 		undisposed.remove(this);
 		batch.dispose();

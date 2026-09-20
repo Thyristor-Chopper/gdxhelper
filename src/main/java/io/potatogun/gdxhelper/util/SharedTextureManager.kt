@@ -1,6 +1,7 @@
 package io.potatogun.gdxhelper.util;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.collections.weakMutableSetOf;
@@ -9,7 +10,7 @@ import io.potatogun.gdxhelper.util.TextureUtils;
 /**
  * 공유 자원 관리자
  */
-abstract class SharedTextureManager {
+abstract class SharedTextureManager : Disposable {
 	private val shared = ObjectMap<String, Lazy<Texture>>();
 
 	/**
@@ -67,7 +68,7 @@ abstract class SharedTextureManager {
 	 *
 	 * Screen이나 World가 아닌 Game에서 호출해야 한다.
 	 */
-	fun disposeShared() {
+	override fun dispose() {
 		val iterator = shared.values();
 		while(iterator.hasNext) {
 			val texture = iterator.next();

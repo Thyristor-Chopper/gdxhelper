@@ -1,6 +1,7 @@
 package io.potatogun.gdxhelper.widget;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.function.FloatSupplier;
 
@@ -13,7 +14,7 @@ import io.potatogun.gdxhelper.function.FloatSupplier;
  * @param width  컨트롤 너비 계산 함수
  * @param height 컨트롤 높이 계산 함수
  */
-abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier) {
+abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier) : Disposable {
 	private var xSupplier: FloatSupplier = x;
 	private var ySupplier: FloatSupplier = y;
 	private var widthSupplier: FloatSupplier = width;
@@ -57,7 +58,7 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	/**
 	 * 자원을 해제한다.
 	 */
-	open fun dispose() {
+	override fun dispose() {
 		isDisposed = true;
 	}
 

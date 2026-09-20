@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.position.ObservablePosition;
@@ -21,7 +22,7 @@ import kotlin.math.atan2;
 /**
  * 게임에 등장하는 개체의 공통 부모
  *
- * 월드는 이 Entity 형으로만 개체들을 관리한다.
+ * 월드는 이 Entity형으로만 개체들을 관리한다.
  *   즉, 우리가 Player든 Bullet이든 'Entity를 상속'하기만 하면
  *   월드의 개체 관리자가 자동으로 update/draw/제거까지 해준다(다형성).
  *
@@ -33,7 +34,7 @@ import kotlin.math.atan2;
  * @property height  세로 크기
  * @property texture 개체 텍스처(없을 수도 있음)
  */
-abstract class Entity(@JvmField protected val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) {
+abstract class Entity(@JvmField protected val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable {
 	// draw에서 사용하는 절반 길이 캐시
 	private val halfWidth = width * 0.5f;
 	private val halfHeight = height * 0.5f;
@@ -241,7 +242,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 * 이 객체가 갖고 있는 GPU 자원을 정리한다.
 	 *   화면이 닫힐 때 한 번 호출된다.
 	 */
-	open fun dispose() {
+	override fun dispose() {
 		isDisposed = true;
 		texture?.let { TextureUtils.safeDispose(it) };
 	}
