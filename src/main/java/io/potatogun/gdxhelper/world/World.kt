@@ -96,8 +96,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		updateViewport();
 		if(camera is OrthographicCamera)
 			camera.setToOrtho(false);  // false 인자는 y 축을 위로(수학 좌표계처럼) 둔다는 뜻.
-
-		undisposed.add(this);
 	}
 
 	// ────────────────────────────────────────────────────────
