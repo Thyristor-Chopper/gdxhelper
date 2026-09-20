@@ -41,11 +41,7 @@ interface View<T> : Iterable<T> {
 	 * @param comparator 비교기
 	 * @return 정렬된 목록
 	 */
-	fun sortedWith(comparator: Comparator<T>): GdxArray<T> {
-		val output = GdxArray<T>(false, size);
-		sortedWith(comparator, output);
-		return output;
-	}
+	fun sortedWith(comparator: Comparator<T>): GdxArray<T>;
 
 	/**
 	 * 목록을 지정한 비교기로 정렬한다.
@@ -61,11 +57,7 @@ interface View<T> : Iterable<T> {
 	 * @param condition 조건
 	 * @return 결과 목록
 	 */
-	fun filter(condition: Predicate<T>): GdxArray<T> {
-		val output = GdxArray<T>(false, size);
-		filter(condition, output);
-		return output;
-	}
+	fun filter(condition: Predicate<T>): GdxArray<T>;
 
 	/**
 	 * 지정한 조건에 해당하는 개제만 모은다.
@@ -82,11 +74,7 @@ interface View<T> : Iterable<T> {
 	 *
 	 * @return 복사된 배열
 	 */
-	fun clone(): GdxArray<T> {
-		val output = GdxArray<T>(false, size);
-		clone(output);
-		return output;
-	}
+	fun clone(): GdxArray<T>;
 
 	/**
 	 * 목록을 지정한 배열로 복사한다.
