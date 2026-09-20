@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.Pool;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.entity.Entity;
-import io.potatogun.gdxhelper.pools.ArrayPool;
 import io.potatogun.gdxhelper.pools.IdentitySetPool;
 import io.potatogun.gdxhelper.pools.LongSetPool;
+import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
 import io.potatogun.gdxhelper.util.Math.max2;
 import io.potatogun.gdxhelper.world.Freezable;
 import io.potatogun.gdxhelper.world.World;
@@ -33,7 +33,7 @@ class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : Ar
 	private val addQueue = GdxArray<Entity>(false, 8);
 	private val removeQueue = GdxArray<Entity>(false, 8);
 	private val hashPool = LongSetPool(8);
-	private val tileEntityPool = ArrayPool<Entity>(capacity);
+	private val tileEntityPool = UnorderedArrayPool<Entity>(capacity);
 	private val visitedPool = IdentitySetPool<Entity>(capacity / 4);
 
 	override fun add(entity: Entity): Boolean {
