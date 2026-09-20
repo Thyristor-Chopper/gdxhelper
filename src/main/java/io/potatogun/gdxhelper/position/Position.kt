@@ -39,7 +39,7 @@ open class Position(open val x: Float, open val y: Float) {
 
 	open fun copy(x: Float = this.x, y: Float = this.y): Position = Position(x, y);
 
-	fun component1(): Float = x;
+	operator fun component1(): Float = x;
 
-	fun component2(): Float = y;
+	operator fun component2(): Float = y;
 }
