@@ -26,12 +26,16 @@ class LinearEntityManager(world: World, capacity: Int, private val nearbyThresho
 			throw IllegalArgumentException("entity belongs to a different world");
 		if(allEntities.contains(entity, true) || addQueue.contains(entity, true)) return false;
 		addQueue.add(entity);
+		if(removeQueue.contains(entity, true))
+			removeQueue.removeValue(entity, true);
 		return true;
 	}
 
 	override fun remove(entity: Entity): Boolean {
 		if(!allEntities.contains(entity, true) || removeQueue.contains(entity, true)) return false;
 		removeQueue.add(entity);
+		if(addQueue.contains(entity, true))
+			addQueue.removeValue(entity, true);
 		return true;
 	}
 

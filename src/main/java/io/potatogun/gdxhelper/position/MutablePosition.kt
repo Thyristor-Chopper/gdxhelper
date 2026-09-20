@@ -52,6 +52,17 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 		y += toAdd;
 	}
 
+	/**
+	 * X, Y 좌표에 지정한 값만큼 더한다.
+	 *
+	 * @param x 더할 X 양
+	 * @param y 더할 Y 양
+	 */
+	fun add(x: Float, y: Float) {
+		this.x += x;
+		this.y += y;
+	}
+
 	// MutablePosition은 의도적으로 메모리 주소 기반으로 동작
 	//   x, y가 같아도 메모리 상에서 서로 다른 객체면 해시맵에서 다른 것으로 취급한다.
 	override fun hashCode(): Int = System.identityHashCode(this);

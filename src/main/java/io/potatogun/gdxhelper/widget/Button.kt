@@ -122,6 +122,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * 현재 프레임에서 바로 가기 키 처리
 	 */
 	private fun detectAccessKeyPress() {
+		if(!isEnabled || !isVisible) return;
 		if(accessKey != null && Input.isKeyJustPressed(accessKey.code - 36))
 			onClick.run();
 	}

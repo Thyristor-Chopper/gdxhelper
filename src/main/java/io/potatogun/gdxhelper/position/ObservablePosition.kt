@@ -16,11 +16,13 @@ class ObservablePosition(x: Float, y: Float) : MutablePosition(x, y) {
 	private val changeHandlers = GdxArray<FloatBiConsumer>(false, 2);
 	override var x = x
 		set(value) {
+			if(field == value) return;
 			field = value;
 			invokeObservers();
 		};
 	override var y = y
 		set(value) {
+			if(field == value) return;
 			field = value;
 			invokeObservers();
 		};

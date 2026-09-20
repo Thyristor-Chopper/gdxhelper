@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 
 import io.potatogun.gdxhelper.entity.Entity;
 
+import java.util.function.Predicate;
+
 import kotlin.random.Random;
 
 /**
@@ -111,7 +113,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
  * @param entity 기준 개체
  * @return 개체 (없으면 null)
  */
-@JvmSynthetic inline fun <reified T : Entity> EntityManager.getClosestOf(entity: Entity): T? = getClosestOf(T::class.java, entity);
+@JvmSynthetic inline fun <reified T : Entity> EntityManager.getClosestOf(entity: Entity): T? = getClosestOf(entity, T::class.java);
 
 /**
  * 지정한 종류의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (자바 전용)
@@ -120,7 +122,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
  * @param entity 기준 개체
  * @return 개체 (없으면 null)
  */
-fun <T : Entity> EntityManager.getClosestOf(type: Class<T>, entity: Entity): T? {
+fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? {
 	if(view.isEmpty) return null;
 	var min: Float = 0f;  // X같은코틀린
 	var ret: T? = getFirstOf(type)?.also { min = it.distanceTo(entity) };
@@ -135,6 +137,42 @@ fun <T : Entity> EntityManager.getClosestOf(type: Class<T>, entity: Entity): T? 
 		}
 	}
 	return ret;
+}
+
+/**
+ * 지정한 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (코틀린 전용)
+ *
+ * 일반적으로 인라인하는 함수들에 비해 좀 크지만 람다의 crossinline의 득을 볼 수 있다.
+ *
+ * @param entity    기준 개체
+ * @param condition 개체의 조건
+ * @return 개체 (없으면 null)
+ */
+@JvmSynthetic inline fun EntityManager.getClosestOf(entity: Entity, crossinline condition: (Entity) -> Boolean): Entity? {
+	var closest: Entity? = null;
+	var minDistance = Float.MAX_VALUE;
+	for(i in 0 until view.size) {
+		val e = view[i];
+		if(condition(e)) {
+			val distance = e.distanceTo(entity);
+			if(distance < minDistance) {
+				minDistance = distance;
+				closest = e;
+			}
+		}
+	}
+	return closest;
+}
+
+/**
+ * 지정한 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (자바 전용)
+ *
+ * @param entity    기준 개체
+ * @param condition 개체의 조건
+ * @return 개체 (없으면 null)
+ */
+fun EntityManager.getClosestOf(entity: Entity, condition: Predicate<Entity>): Entity? {
+	return getClosestOf(entity, condition::test);
 }
 
 inline fun distanceComparator(entity: Entity): Comparator<Entity> = compareBy { it.distanceTo(entity) };
