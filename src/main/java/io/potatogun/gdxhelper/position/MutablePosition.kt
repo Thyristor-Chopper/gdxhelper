@@ -63,6 +63,28 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 		this.y += y;
 	}
 
+	/**
+	 * X, Y 좌표를 변경한다.
+	 *
+	 * @param x 새 X 좌표
+	 * @param y 새 Y 좌표
+	 */
+	fun set(x: Float, y: Float) {
+		this.x = x;
+		this.y = y;
+	}
+
+	/**
+	 * X, Y 좌표를 변경한다.
+	 *
+	 * @param x 새 X 좌표
+	 * @param y 새 Y 좌표
+	 */
+	fun set(position: Position) {
+		this.x = position.x;
+		this.y = position.y;
+	}
+
 	// MutablePosition은 의도적으로 메모리 주소 기반으로 동작
 	//   x, y가 같아도 메모리 상에서 서로 다른 객체면 해시맵에서 다른 것으로 취급한다.
 	override fun hashCode(): Int = System.identityHashCode(this);
