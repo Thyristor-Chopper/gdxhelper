@@ -59,10 +59,4 @@ abstract class Game : GdxGame() {
 			screen.resize(Window.intWidth, Window.intHeight);
 		}
 	}
-
-	// 자원 정리
-	override fun dispose() {
-		super.dispose();
-		World.disposeUndisposed();
-	}
 }
