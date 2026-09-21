@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.Window;
@@ -44,7 +45,10 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 * 자바에서도 entity.position.getX() 등으로 자연스럽게 접근하기 위해 @JvmField이다.
 	 */
 	@JvmField val position = ObservablePosition(x, y).apply {
-		attachObserver { _, _ -> world.entities.updatePosition(this@Entity) };
+		attachObserver { x, y ->
+			polygon.setPosition(x, y);
+			world.entities.updatePosition(this@Entity);
+		};
 	};
 	// x과 y를 필드로 바로 노출 (내부적으로 position과 상호작용)
 	/**
@@ -70,7 +74,11 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	/**
 	 * 텍스처 회전 각도
 	 */
-	private var rotation = 0f;
+	private var rotation = 0f
+		set(value) {
+			field = value;
+			polygon.setRotation(value);
+		};
 	/**
 	 * 개체 오버레이 색 - (흰색: 원래 텍스처 색 그대로 사용)
 	 */
@@ -86,18 +94,17 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 			else tint.a = value;
 		};
 	/**
-	 * 충돌 감지용 너비 (캐시)
-	 */
-	private var collideCheckWidth = width;
-	/**
-	 * 충돌 감지용 높이 (캐시)
-	 */
-	private var collideCheckHeight = height;
-	/**
 	 * 자원이 해제됐는지의 여부
 	 */
 	@get:JvmSynthetic internal var isDisposed = false
 		private set;
+	/**
+	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이다.
+	 */
+	internal val polygon = Polygon(floatArrayOf(0f, 0f, width, 0f, width, height, 0f, height)).apply {
+		setPosition(x, y);
+		setOrigin(width * 0.5f, height * 0.5f);
+	};
 
 	/**
 	 * 매 프레임 호출되어 자신을 그린다.
@@ -139,7 +146,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 * @param other 비교 대상
 	 * @return 충돌하면 true
 	 */
-	open fun collidesWith(other: Entity): Boolean = abs(x - other.x) < (collideCheckWidth + other.collideCheckWidth) * 0.5f && abs(y - other.y) < (collideCheckHeight + other.collideCheckHeight) * 0.5f;
+	open fun collidesWith(other: Entity): Boolean = Intersector.overlapConvexPolygons(polygon, other.polygon);
 
 	/**
 	 * 다른 개체와의 거리 (몸 중앙 기준)
@@ -172,7 +179,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 */
 	fun rotateTo(position: Position) {
 		// 샷건 내 360도 구현 참고함
-		rotate(toDegrees(atan2(position.y - y.toDouble(), position.x - x.toDouble())).toFloat() - 90f);
+		rotation = toDegrees(atan2(position.y - y.toDouble(), position.x - x.toDouble())).toFloat() - 90f;
 	}
 
 	/**
@@ -182,7 +189,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 		// 샷건 내 360도 구현 참고함
 		val x = Input.mouseX.toFloat();
 		val y = Input.mouseY.toFloat();
-		rotate(toDegrees(atan2((Window.height - y) - (this.y - world.cameraY + Window.height * 0.5f), x - (this.x - world.cameraX + Window.width * 0.5f)).toDouble()).toFloat() - 90f);
+		rotation = toDegrees(atan2((Window.height - y) - (this.y - world.cameraY + Window.height * 0.5f), x - (this.x - world.cameraX + Window.width * 0.5f)).toDouble()).toFloat() - 90f;
 	}
 
 	/**
@@ -192,20 +199,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 */
 	fun rotate(degrees: Float) {
 		if(rotation == degrees) return;
-
 		rotation = degrees;
-
-		// 충돌 판정 dimension 다시 계산
-		if(rotation % 180f == 0f) {
-			collideCheckWidth = width;
-			collideCheckHeight = height;
-		} else if((rotation + 90f) % 180f == 0f) {
-			collideCheckWidth = height;
-			collideCheckHeight = width;
-		} else {  // 사각형의 세밀한 회전을 구하기에는 연산량이 너무 늘어나니까 그냥 평균으로 때우자. 어차피 지금 플레이어 외에 회전하는 개체가 없다.
-			collideCheckWidth = (width + height) * 0.5f;
-			collideCheckHeight = collideCheckWidth;
-		}
 	}
 
 	/**
