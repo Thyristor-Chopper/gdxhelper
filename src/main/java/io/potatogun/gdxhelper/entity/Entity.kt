@@ -76,8 +76,9 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 */
 	private var rotation = 0f
 		set(value) {
-			field = value;
-			polygon.setRotation(value);
+			val normalized = ((value % 360) + 360) % 360;
+			field = normalized;
+			polygon.setRotation(normalized);
 		};
 	/**
 	 * 개체 오버레이 색 - (흰색: 원래 텍스처 색 그대로 사용)
@@ -200,6 +201,16 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	fun rotate(degrees: Float) {
 		if(rotation == degrees) return;
 		rotation = degrees;
+	}
+
+	/**
+	 * 개체의 회전각을 지정한 만큼 증가한다.
+	 * 
+	 * @param degrees 증가할 각도
+	 */
+	fun rotateBy(degrees: Float) {
+		if(degrees == 0f) return;
+		rotation += degrees;
 	}
 
 	/**
