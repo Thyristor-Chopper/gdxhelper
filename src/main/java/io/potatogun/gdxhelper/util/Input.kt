@@ -145,6 +145,7 @@ object Input {
 	const val R = GdxInput.Keys.R;
 	const val DELETE = GdxInput.Keys.FORWARD_DEL;
 	const val BACKTICK = GdxInput.Keys.GRAVE;
+	const val SHIFT_LEFT = GdxInput.Keys.SHIFT_LEFT;
 	const val LEFT_MOUSE = GdxInput.Buttons.LEFT;
 	const val RIGHT_MOUSE = GdxInput.Buttons.RIGHT;
 }
