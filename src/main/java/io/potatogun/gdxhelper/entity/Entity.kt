@@ -100,12 +100,57 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	@get:JvmSynthetic internal var isDisposed = false
 		private set;
 	/**
-	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이다.
+	 * 중심점의 X 좌표
 	 */
-	internal val polygon = Polygon(floatArrayOf(0f, 0f, width, 0f, width, height, 0f, height)).apply {
+	private var originX = halfWidth;
+	/**
+	 * 중심점의 Y 좌표
+	 */
+	private var originY = halfHeight;
+	/**
+	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이고 외부 노출용이 아니기 떄문에 @JvmField이다.
+	 */
+	@JvmField @JvmSynthetic internal val polygon = Polygon(floatArrayOf(0f, 0f, width, 0f, width, height, 0f, height)).apply {
 		setPosition(x, y);
-		setOrigin(width * 0.5f, height * 0.5f);
+		setOrigin(originX, originY);
 	};
+
+	/**
+	 * 중심점의 X 오프셋을 설정한다.
+	 *
+	 * @param x X 오프셋
+	 */
+	protected fun setOriginOffsetX(x: Float) {
+		originX = halfWidth + x;
+		updateOrigin();
+	}
+
+	/**
+	 * 중심점의 Y 오프셋을 설정한다.
+	 *
+	 * @param y Y 오프셋
+	 */
+	protected fun setOriginOffsetY(y: Float) {
+		originY = halfHeight + y;
+		updateOrigin();
+	}
+
+	/**
+	 * 중심점의 X와 Y 오프셋을 설정한다.
+	 *
+	 * @param x X 오프셋
+	 * @param y Y 오프셋
+	 */
+	protected fun setOriginOffset(x: Float, y: Float) {
+		originX = halfWidth + x;
+		originY = halfHeight + y;
+		updateOrigin();
+	}
+
+	// 한 줄짜리 함수라 인라인
+	private inline fun updateOrigin() {
+		polygon.setOrigin(originX, originY);
+	}
 
 	/**
 	 * 매 프레임 호출되어 자신을 그린다.
@@ -130,9 +175,23 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 		val texture = textureOverride ?: this.texture;
 		texture?.let {
 			batch.color = tintOverride ?: this.tint;
-			batch.draw(it, x - halfWidth, y - halfHeight, halfWidth, halfHeight, width, height, 1.0f, 1.0f, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+			batch.draw(it, x - halfWidth, y - halfHeight, originX, originY, width, height, 1.0f, 1.0f, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
 			batch.color = Color.WHITE;
 		};
+
+		/* 디버그 - 개체의 충돌 감지 사각형 경계를 보여준다.
+		batch.end();
+		val sr = com.badlogic.gdx.graphics.glutils.ShapeRenderer();
+		sr.setProjectionMatrix(world.getProjectionMatrix());
+		sr.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
+		sr.setColor(Color.YELLOW);
+		polygon.setPosition(x, y);
+		sr.polygon(polygon.getTransformedVertices());
+		polygon.setPosition(x, y);
+		sr.end();
+		sr.dispose();
+		batch.begin();
+		*/
 	}
 
 	/**

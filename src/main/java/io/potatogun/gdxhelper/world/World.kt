@@ -158,6 +158,11 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	}
 
 	/**
+	 * 카메라의 projection matrix를 가져온다.
+	 */
+	fun getProjectionMatrix() = batch.projectionMatrix;
+
+	/**
 	 * 월드에 따라 override하여 투영 좌표를 의도에 맞는 위치로 이동한다.
 	 */
 	open fun updateOffset() {}
