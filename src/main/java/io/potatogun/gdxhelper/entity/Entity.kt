@@ -178,7 +178,8 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 			batch.color = Color.WHITE;
 		};
 
-		/* 디버그 - 개체의 충돌 감지 사각형 경계를 보여준다.
+		/*
+		// 디버그 - 개체의 충돌 감지 사각형 경계를 보여준다.
 		batch.end();
 		val shapeRenderer = com.badlogic.gdx.graphics.glutils.ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(world.getProjectionMatrix());
