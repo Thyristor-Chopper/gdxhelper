@@ -110,7 +110,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	/**
 	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이고 외부 노출용이 아니기 떄문에 @JvmField이다.
 	 */
-	@JvmField @JvmSynthetic internal val polygon = Polygon(floatArrayOf(0f, 0f, width, 0f, width, height, 0f, height)).apply {
+	@JvmField @JvmSynthetic internal val polygon = Polygon(floatArrayOf(-halfWidth, -halfHeight, halfWidth, -halfHeight, halfWidth, halfHeight, -halfWidth, halfHeight)).apply {
 		setPosition(x, y);
 		setOrigin(originX, originY);
 	};
@@ -179,7 +179,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 			batch.color = Color.WHITE;
 		};
 
-		/* 디버그 - 개체의 충돌 감지 사각형 경계를 보여준다.
+		/* 디버그 - 개체의 충돌 감지 사각형 경계를 보여준다.*/
 		batch.end();
 		val sr = com.badlogic.gdx.graphics.glutils.ShapeRenderer();
 		sr.setProjectionMatrix(world.getProjectionMatrix());
@@ -191,7 +191,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 		sr.end();
 		sr.dispose();
 		batch.begin();
-		*/
+		/**/
 	}
 
 	/**
