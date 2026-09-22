@@ -180,13 +180,13 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 
 		/* 디버그 - 개체의 충돌 감지 사각형 경계를 보여준다.
 		batch.end();
-		val sr = com.badlogic.gdx.graphics.glutils.ShapeRenderer();
-		sr.setProjectionMatrix(world.getProjectionMatrix());
-		sr.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
-		sr.setColor(Color.YELLOW);
-		sr.polygon(polygon.getTransformedVertices());
-		sr.end();
-		sr.dispose();
+		val shapeRenderer = com.badlogic.gdx.graphics.glutils.ShapeRenderer();
+		shapeRenderer.setProjectionMatrix(world.getProjectionMatrix());
+		shapeRenderer.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
+		shapeRenderer.setColor(Color.YELLOW);
+		shapeRenderer.polygon(polygon.getTransformedVertices());
+		shapeRenderer.end();
+		shapeRenderer.dispose();
 		batch.begin();
 		*/
 	}
