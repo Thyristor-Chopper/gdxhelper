@@ -225,7 +225,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>, cond
 			val distance = e.distanceTo(entity);
 			if(distance < minDistance) {
 				minDistance = distance;
-				closest = e as T;
+				closest = e;
 			}
 		}
 	}
