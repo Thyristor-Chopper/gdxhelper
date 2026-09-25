@@ -182,7 +182,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
  *
  * 일반적으로 인라인하는 함수들에 비해 좀 크지만 바이트코드가 커지더라도 람다의 crossinline의 이득을 볼 수 있다.
  *
- * 코드가 일반 getClosestOf와 거의 같지만 인라인 최적화 + 자바용 오버로딩 떄문에 분리되어 있다.
+ * 코드가 일반 getClosestOf와 거의 같지만 인라인 최적화 + 자바용 오버로딩 때문에 분리되어 있다.
  *
  * @param entity    기준 개체
  * @param condition 개체의 조건
@@ -207,6 +207,8 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
 
 /**
  * 지정한 종류와 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (자바 전용)
+ *
+ * 위 코틀린 버전 getClosestOf과 하는 게 똑같지만 type를 reified type로 넘기는 게 어려워서 어쩔 수 없이 이렇게 했다. 중복을 제거하는 다른 방법이 있긴 하지만 type.isInstance 사용이 강제되어 e is T를 못 쓴다. 이 정도 두 번 밖에 안 되는 중복 정도는 그냥 참고 넘어가길 바란다.
  *
  * @param entity    기준 개체
  * @param type      개체 종류
