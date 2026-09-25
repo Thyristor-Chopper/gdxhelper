@@ -15,8 +15,5 @@ class PositionPool() : Pool<Position>() {
 	/**
 	 * 지정한 좌표값의 좌표를 가져온다.
 	 */
-	inline fun obtain(xPos: Float, yPos: Float): Position = (obtain() as MutablePosition).apply {
-		x = xPos;
-		y = yPos;
-	} as Position;
+	inline fun obtain(xPos: Float, yPos: Float): Position = (obtain() as MutablePosition).apply { set(xPos, yPos) } as Position;
 }
