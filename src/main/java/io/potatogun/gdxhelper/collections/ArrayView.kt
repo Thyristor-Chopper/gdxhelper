@@ -33,11 +33,7 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 
 	override fun filter(condition: Predicate<T>): GdxArray<T> {
 		val output = GdxArray<T>(array.ordered, array.size);
-		for(i in 0 until array.size) {
-			val element = array[i];
-			if(condition.test(element))
-				output.add(element);
-		}
+		filter(condition, output);
 		return output;
 	}
 
@@ -52,15 +48,19 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 
 	override fun toArray(): GdxArray<T> {
 		val output = GdxArray<T>(array.ordered, array.size);
-		for(i in 0 until array.size)
-			output.add(array[i]);
+		addToArray(output);
 		return output;
 	}
 
 	override fun toArray(output: GdxArray<T>) {
 		output.clear();
+		addToArray(output);
+	}
+
+	// toArray 두 군데에서 공통적으로 쓰는 두 줄밖에 안 되는 코드라 인라인이고 소스 코드상 중복 제거가 목적이다.
+	private inline fun addToArray(destination: GdxArray<T>) {
 		for(i in 0 until array.size)
-			output.add(array[i]);
+			destination.add(array[i]);
 	}
 
 	override fun iterator(): Iterator<T> = GdxArray.ArrayIterator<T>(array, false);
