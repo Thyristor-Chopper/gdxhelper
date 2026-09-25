@@ -4,6 +4,13 @@ package io.potatogun.gdxhelper.util;
 import kotlin.random.Random;
 
 /**
+ * 0부터 지정한 수까지 무작위 4바이트 부동소수점 실수를 생성한다.
+ *
+ * @param max 끝 범위
+ */
+inline fun Random.nextFloat(max: Float): Float = nextFloat() * max;
+
+/**
  * 지정한 범위에서 무작위 4바이트 부동소수점 실수를 생성한다.
  *
  * @param min 시작 범위
