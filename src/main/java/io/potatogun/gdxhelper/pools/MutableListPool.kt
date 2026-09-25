@@ -8,7 +8,8 @@ import com.badlogic.gdx.utils.Pool;
 class MutableListPool<T>(private val autoClear: Boolean = true) : Pool<MutableList<T>>() {
 	override fun newObject(): MutableList<T> = mutableListOf<T>();
 
-	override fun reset(obj: MutableList<T>) {
-		if(autoClear) obj.clear();
+	override fun reset(list: MutableList<T>) {
+		if(autoClear)
+			list.clear();
 	}
 }

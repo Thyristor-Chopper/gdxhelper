@@ -9,7 +9,8 @@ import com.badlogic.gdx.utils.Pool;
 class ObjectSetPool<T> @JvmOverloads constructor(private val capacity: Int, private val autoClear: Boolean = true) : Pool<ObjectSet<T>>() {
 	override fun newObject(): ObjectSet<T> = ObjectSet<T>(capacity);
 
-	override fun reset(obj: ObjectSet<T>) {
-		if(autoClear) obj.clear();
+	override fun reset(set: ObjectSet<T>) {
+		if(autoClear)
+			set.clear();
 	}
 }

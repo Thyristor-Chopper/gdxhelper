@@ -9,7 +9,8 @@ import com.badlogic.gdx.utils.Pool;
 class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, private val autoClear: Boolean = true) : Pool<GdxArray<T>>() {
 	override fun newObject(): GdxArray<T> = GdxArray<T>(capacity);
 
-	override fun reset(obj: GdxArray<T>) {
-		if(autoClear) obj.clear();
+	override fun reset(array: GdxArray<T>) {
+		if(autoClear)
+			array.clear();
 	}
 }
