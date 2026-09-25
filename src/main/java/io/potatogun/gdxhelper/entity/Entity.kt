@@ -271,6 +271,25 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	}
 
 	/**
+	 * 지정한 좌표로 순간이동한다. 자바에서는 비효율적이므로 그냥 Entity#position.set를 직접 호출할 것.
+	 *
+	 * @param x 새 X 좌표
+	 * @param y 새 Y 좌표
+	 */
+	@JvmSynthetic inline fun teleport(x: Float, y: Float) {
+		position.set(x, y);
+	}
+
+	/**
+	 * 지정한 위치로 순간이동한다. 자바에서는 비효율적이므로 그냥 Entity#position.set를 직접 호출할 것.
+	 *
+	 * @param position 새 위치
+	 */
+	@JvmSynthetic inline fun teleport(newPosition: Position) {
+		position.set(newPosition);
+	}
+
+	/**
 	 * 매 프레임 호출되어 상태를 갱신한다.
 	 *
 	 * 상자나 물체처럼 로직이 없는 개체일 수도 있으니 기본은 빈 함수이다.
