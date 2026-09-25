@@ -118,7 +118,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
  * @param condition 개체의 조건
  * @return 개체 (없으면 null)
  */
-@JvmSynthetic inline fun EntityManager.getClosest(entity: Entity, crossinline condition: (Entity) -> Boolean): Entity? {
+@JvmSynthetic inline fun EntityManager.getClosest(entity: Entity, condition: (Entity) -> Boolean): Entity? {
 	if(view.isEmpty) return null;
 	var closest: Entity? = null;
 	var minDistance = Float.MAX_VALUE;
@@ -188,7 +188,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
  * @param condition 개체의 조건
  * @return 개체 (없으면 null)
  */
-@JvmSynthetic inline fun <reified T : Entity> EntityManager.getClosestOf(entity: Entity, crossinline condition: (T) -> Boolean): T? {
+@JvmSynthetic inline fun <reified T : Entity> EntityManager.getClosestOf(entity: Entity, condition: (T) -> Boolean): T? {
 	if(view.isEmpty) return null;
 	var closest: T? = null;
 	var minDistance = Float.MAX_VALUE;
