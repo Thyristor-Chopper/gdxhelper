@@ -27,11 +27,6 @@ import io.potatogun.gdxhelper.Window;
  * @property onClick 단추를 눌렀을 때 실행할 서브루틴
  */
 class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 25f }, caption: String, private val skin: Skin, private val tint: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
-	companion object {
-		private val DEFAULT_CAPTION_COLOR = Color.BLACK;
-		private val DEFAULT_DISABLED_CAPTION_COLOR = Color.GRAY;
-	}
-
 	private val font = BitmapFont();
 	private val accessKey: Char?;
 	private val caption: String;
@@ -176,6 +171,11 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch) : this(normal, hover, pressed, disabled, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR);
 
 		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color) : this(normal, hover, pressed, disabled, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR);
+
+		companion object {
+			private val DEFAULT_CAPTION_COLOR = Color.BLACK;
+			private val DEFAULT_DISABLED_CAPTION_COLOR = Color.GRAY;
+		}
 	}
 
 	/**

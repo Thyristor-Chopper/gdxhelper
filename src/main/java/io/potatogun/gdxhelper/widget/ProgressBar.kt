@@ -25,13 +25,6 @@ import kotlin.math.ceil;
  * @throws IllegalArgumentException 미터기 값이 잘못된 경우
  */
 class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 15f }, value: Float = 0f, private val skin: Skin, var color: Color = Color.WHITE, private val style: Style = Style.SMOOTH) : Widget(x, y, width, height) {
-	companion object {
-		private const val DEFAULT_VERTICAL_PADDING = 3f;		// 미터기 틀 안쪽 세로 여백
-		private const val DEFAULT_HORIZONTAL_PADDING = 3f;	// 미터기 틀 안쪽 가로 여백
-		private const val DEFAULT_CHUNK_WIDTH = 6f;			// 청크의 너비
-		private const val DEFAULT_CHUNK_MARGIN = 2f;			// 각 청크 사이의 간격
-	}
-
 	var value: Float = value
 		set(value) {
 			if(value < 0f) field = 0f;
@@ -117,6 +110,13 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 		 * @property verticalPadding   미터기의 세로 안쪽 여백
 		 */
 		constructor(bar: NinePatch, fill: NinePatch, horizontalPadding: Float = DEFAULT_HORIZONTAL_PADDING, verticalPadding: Float = DEFAULT_VERTICAL_PADDING) : this(bar, fill, horizontalPadding, verticalPadding, DEFAULT_CHUNK_WIDTH, DEFAULT_CHUNK_MARGIN);
+
+		companion object {
+			private const val DEFAULT_VERTICAL_PADDING = 3f;		// 미터기 틀 안쪽 세로 여백
+			private const val DEFAULT_HORIZONTAL_PADDING = 3f;	// 미터기 틀 안쪽 가로 여백
+			private const val DEFAULT_CHUNK_WIDTH = 6f;			// 청크의 너비
+			private const val DEFAULT_CHUNK_MARGIN = 2f;			// 각 청크 사이의 간격
+		}
 	}
 
 	/**
