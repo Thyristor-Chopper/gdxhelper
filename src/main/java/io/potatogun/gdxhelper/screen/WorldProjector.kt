@@ -91,6 +91,6 @@ open class WorldProjector(settings: Screen.Properties = Screen.Properties()) : S
 		 * @param world 찾을 대상 월드
 		 * @return 찾은 월드 뷰어 (없으면 null)
 		 */
-		@JvmStatic fun getProjectorByWorld(world: World): WorldProjector? = instances.firstOrNull { it.projectingWorld === world };
+		@JvmStatic fun getProjectorByWorld(world: World): WorldProjector? = instances.firstOrNull { it.projectingWorld === world };  // 디컴파일해서 확인한 결과 실제 람다가 생기지는 않고 iterator를 생성해서 인라인으로 직접 찾는다.
 	}
 }
