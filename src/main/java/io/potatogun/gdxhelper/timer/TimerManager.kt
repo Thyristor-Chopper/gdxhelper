@@ -13,7 +13,7 @@ import java.util.function.BooleanSupplier;
  *
  * @property condition 전역 갱신 조건
  */
-class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val condition: BooleanSupplier? = null) : Updatable {
+class TimerManager @JvmOverloads constructor(private val condition: BooleanSupplier? = null) : Updatable {
 	private val timers = IdentitySet<Timer>(16);
 	private val iterableClone = GdxArray<Timer>(false, 16);
 
