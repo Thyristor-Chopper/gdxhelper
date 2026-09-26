@@ -4,8 +4,6 @@ package io.potatogun.gdxhelper.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import io.potatogun.gdxhelper.util.SharedTextureManager;
-
 /**
  * 지정한 화일 이름의 텍스처를 가져온다.
  *
