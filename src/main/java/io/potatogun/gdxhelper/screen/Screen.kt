@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.IdentitySet;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.Window;
+import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.Utils;
 import io.potatogun.gdxhelper.widget.Widget;
 
@@ -23,7 +24,7 @@ import io.potatogun.gdxhelper.widget.Widget;
  * @property font   화면 기본 글꼴
  * @param    _dummy 빌어먹을 코틀린이 Overload resolution ambiguity라면서 귀찮게 해서 (나중에 둘째 매개변수가 생기면 그걸로 대체)
  */
-abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) : ScreenAdapter() {
+abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) : ScreenAdapter(), Updatable {
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구.
 	 *
@@ -181,7 +182,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	open fun update(delta: Float) {}
+	override fun update(delta: Float) {}
 
 	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
 		val iterator = widgets.values();

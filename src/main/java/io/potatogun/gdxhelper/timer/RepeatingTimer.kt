@@ -20,8 +20,8 @@ class RepeatingTimer(interval: Float, condition: BooleanSupplier?, operation: Ru
 	 */
 	constructor(interval: Float, operation: Runnable) : this(interval, null, operation);
 
-	override fun tick(delta: Float) {
-		super.tick(delta);
+	override fun update(delta: Float) {
+		super.update(delta);
 		if(executed) {
 			timer += timeout;
 			executed = false;

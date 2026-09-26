@@ -14,6 +14,7 @@ import io.potatogun.gdxhelper.position.Position;
 import io.potatogun.gdxhelper.util.Input;
 import io.potatogun.gdxhelper.util.Math.abs;
 import io.potatogun.gdxhelper.util.TextureUtils;
+import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.world.World;
 
 import java.lang.Math.toDegrees;
@@ -35,7 +36,7 @@ import kotlin.math.atan2;
  * @property height  세로 크기
  * @property texture 개체 텍스처(없을 수도 있음)
  */
-abstract class Entity(@JvmField protected val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable {
+abstract class Entity(@JvmField protected val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
 	// draw에서 사용하는 절반 길이 캐시
 	private val halfWidth = width * 0.5f;
 	private val halfHeight = height * 0.5f;
@@ -296,7 +297,7 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초). 60fps면 약 0.0167이다. '픽셀/초' 단위의 속도에 delta 를 곱하면 '이번 프레임 이동량'이 된다. (프레임 속도가 달라져도 같은 속도로 움직이게 하려는 공식)
 	 */
-	open fun update(delta: Float) {}
+	override fun update(delta: Float) {}
 
 	/**
 	 * 시간이 멈췄어도 isUpdatableWhileFrozen에 관계없이 실행할 로직

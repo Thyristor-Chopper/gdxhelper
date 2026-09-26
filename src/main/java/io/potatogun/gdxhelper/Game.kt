@@ -7,12 +7,13 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.screen.Screen;
+import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.world.World;
 
 /**
  * 이 프레임워크에 맞게 일부 처리가 추가된 Game 추상 클래스
  */
-abstract class Game : GdxGame() {
+abstract class Game : GdxGame(), Updatable {
 	// Gdx.graphics.width를 매번 실수형으로 변환하는 오버헤드를 없애기 위해 창 크기를 캐시하고 크기가 바뀔 때만 업데이트한다.
 	override fun resize(width: Int, height: Int) {
 		// 창 크기 캐시
@@ -33,7 +34,7 @@ abstract class Game : GdxGame() {
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	open fun update(delta: Float) {}
+	override fun update(delta: Float) {}
 
 	override fun render() {
 		// 상태 갱신

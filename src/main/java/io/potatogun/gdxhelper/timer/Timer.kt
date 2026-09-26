@@ -1,5 +1,7 @@
 package io.potatogun.gdxhelper.timer;
 
+import io.potatogun.gdxhelper.util.Updatable;
+
 import java.util.function.BooleanSupplier;
 
 /**
@@ -10,7 +12,7 @@ import java.util.function.BooleanSupplier;
  * @property condition 실행 조건
  * @property operation 실행할 서브루틴
  */
-open class Timer(@JvmField protected val timeout: Float, @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) {
+open class Timer(@JvmField protected val timeout: Float, @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) : Updatable {
 	@JvmField protected var timer = timeout;
 	/**
 	 * 타이머가 실행되었는지의 여부
@@ -33,7 +35,7 @@ open class Timer(@JvmField protected val timeout: Float, @JvmSynthetic internal 
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	@JvmSynthetic internal open fun tick(delta: Float) {
+	override fun update(delta: Float) {
 		timer -= delta;
 		if(timer <= 0f) {
 			operation.run();

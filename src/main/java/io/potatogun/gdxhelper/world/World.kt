@@ -15,6 +15,7 @@ import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.entity.manager.EntityManager;
 import io.potatogun.gdxhelper.entity.manager.SpatialGrid;
 import io.potatogun.gdxhelper.screen.WorldProjector;
+import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.Utils;
 
 import java.util.Collections;
@@ -30,7 +31,7 @@ import java.util.Collections;
  * @property font     월드의 기본 글꼴
  * @property tileSize 공간 분할 격자 개체 관리자의 격자 크기
  */
-abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), entityCapacity: Int = DEFAULT_ENTITY_CAPACITY, tileSize: Float = DEFAULT_TILE_SIZE) : Disposable {
+abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), entityCapacity: Int = DEFAULT_ENTITY_CAPACITY, tileSize: Float = DEFAULT_TILE_SIZE) : Disposable, Updatable {
 	/**
 	 * 월드를 보여주는 카메라
 	 */
@@ -119,7 +120,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	open fun update(delta: Float) {
+	override fun update(delta: Float) {
 		entities.update(delta);
 	}
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.IdentitySet;
 
 import io.potatogun.gdxhelper.collections.toArray;
+import io.potatogun.gdxhelper.util.Updatable;
 
 import java.util.function.BooleanSupplier;
 
@@ -12,7 +13,7 @@ import java.util.function.BooleanSupplier;
  *
  * @property condition 전역 갱신 조건
  */
-class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val condition: BooleanSupplier? = null) {
+class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val condition: BooleanSupplier? = null) : Updatable {
 	private val timers = IdentitySet<Timer>(16);
 	private val iterableClone = GdxArray<Timer>(false, 16);
 
@@ -37,7 +38,7 @@ class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val conditio
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	fun tick(delta: Float) {
+	override fun update(delta: Float) {
 		// 전역 조건 검사
 		if(!(condition?.getAsBoolean() ?: true)) return;
 
@@ -48,7 +49,7 @@ class TimerManager @JvmOverloads constructor(@JvmSynthetic internal val conditio
 		for(i in 0 until iterableClone.size) {
 			val timer = iterableClone[i];
 			if(timer.condition?.getAsBoolean() ?: true) {
-				timer.tick(delta);
+				timer.update(delta);
 				if(timer !is RepeatingTimer && timer.executed)
 					timers.remove(timer);
 			}

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.collections.View;
 import io.potatogun.gdxhelper.entity.Entity;
+import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.world.World;
 
 /**
@@ -13,7 +14,7 @@ import io.potatogun.gdxhelper.world.World;
  *
  * API만 지키면 쿼드트리같은 것도 만들 수 있다.
  */
-interface EntityManager : Disposable {
+interface EntityManager : Disposable, Updatable {
 	/**
 	 * 개체 목록 읽기 전용 상호작용 뷰
 	 * 
@@ -79,7 +80,7 @@ interface EntityManager : Disposable {
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	fun update(delta: Float);
+	override fun update(delta: Float);
 
 	/**
 	 * 등록된 개체들의 자원을 해제한다.
