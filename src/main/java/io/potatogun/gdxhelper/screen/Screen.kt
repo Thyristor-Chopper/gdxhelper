@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.util.Updatable;
-import io.potatogun.gdxhelper.util.Utils;
+import io.potatogun.gdxhelper.util.drawText;
 import io.potatogun.gdxhelper.widget.Widget;
 
 /**
@@ -305,7 +305,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * @param align 글자 정렬(없으면 왼쪽 정렬)
 	 */
 	@JvmOverloads fun drawText(text: String, x: Float, y: Float, color: Color = Color.WHITE, scale: Float = 1f, width: Float = 0f, align: Int = Align.left) {
-		Utils.drawText(batch, font, text, x, y, color, scale, width, align);
+		drawText(batch, font, text, x, y, color, scale, width, align);
 	}
 
 	// ────────────────────────────────────────────────────────

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Align;
 
 import io.potatogun.gdxhelper.function.FloatSupplier;
 import io.potatogun.gdxhelper.util.Input;
-import io.potatogun.gdxhelper.util.Utils;
+import io.potatogun.gdxhelper.util.drawText;
 import io.potatogun.gdxhelper.Window;
 
 /**
@@ -115,7 +115,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		if(isEnabled) batch.color = tint;
 		texture.draw(batch, x, y, width, height);
 		batch.color = Color.WHITE;
-		Utils.drawText(batch, font, caption, x, y + height * 0.5f + 6f, fontColor, 1.0f, width, Align.center);
+		drawText(batch, font, caption, x, y + height * 0.5f + 6f, fontColor, 1.0f, width, Align.center);
 	}
 
 	/**

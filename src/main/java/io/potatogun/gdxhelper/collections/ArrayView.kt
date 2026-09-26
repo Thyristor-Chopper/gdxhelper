@@ -2,7 +2,7 @@ package io.potatogun.gdxhelper.collections;
 
 import com.badlogic.gdx.utils.Array as GdxArray;
 
-import io.potatogun.gdxhelper.util.Utils;
+import io.potatogun.gdxhelper.util.sortWith;
 
 import java.util.function.Predicate;
 
@@ -22,13 +22,13 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 
 	override fun sortedWith(comparator: Comparator<T>): GdxArray<T> {
 		val output = toArray();
-		Utils.sortWith<T>(output, comparator);
+		sortWith<T>(output, comparator);
 		return output;
 	}
 
 	override fun sortedWith(comparator: Comparator<T>, output: GdxArray<T>) {
 		toArray(output);
-		Utils.sortWith<T>(output, comparator);
+		sortWith<T>(output, comparator);
 	}
 
 	override fun filter(condition: Predicate<T>): GdxArray<T> {

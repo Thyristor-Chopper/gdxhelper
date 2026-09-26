@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.collections.weakMutableSetOf;
-import io.potatogun.gdxhelper.util.TextureUtils;
+import io.potatogun.gdxhelper.util.loadTexture;
 
 /**
  * 공유 자원 관리자
@@ -22,12 +22,12 @@ abstract class SharedTextureManager : Disposable {
 	 */
 	@JvmOverloads protected fun register(id: String, path: String, immediate: Boolean = false) {
 		if(immediate) {
-			val texture = TextureUtils.loadTexture(path);
+			val texture = loadTexture(path);
 			sharedTextures.add(texture);
 			shared.put(id, lazyOf(texture));
 		} else {
 			shared.put(id, lazy {
-				val texture = TextureUtils.loadTexture(path);
+				val texture = loadTexture(path);
 				sharedTextures.add(texture);
 
 				/* return */ texture

@@ -12,9 +12,9 @@ import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.position.ObservablePosition;
 import io.potatogun.gdxhelper.position.Position;
 import io.potatogun.gdxhelper.util.Input;
-import io.potatogun.gdxhelper.util.Math.abs;
-import io.potatogun.gdxhelper.util.TextureUtils;
 import io.potatogun.gdxhelper.util.Updatable;
+import io.potatogun.gdxhelper.util.abs;
+import io.potatogun.gdxhelper.util.safeDispose;
 import io.potatogun.gdxhelper.world.World;
 
 import java.lang.Math.toDegrees;
@@ -326,6 +326,6 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 */
 	override fun dispose() {
 		isDisposed = true;
-		texture?.let { TextureUtils.safeDispose(it) };
+		texture?.let { safeDispose(it) };
 	}
 }

@@ -12,7 +12,7 @@ import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.pools.IdentitySetPool;
 import io.potatogun.gdxhelper.pools.LongSetPool;
 import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
-import io.potatogun.gdxhelper.util.Math.max2;
+import io.potatogun.gdxhelper.util.max2;
 import io.potatogun.gdxhelper.world.Freezable;
 import io.potatogun.gdxhelper.world.World;
 

@@ -16,7 +16,7 @@ import io.potatogun.gdxhelper.entity.manager.EntityManager;
 import io.potatogun.gdxhelper.entity.manager.SpatialGrid;
 import io.potatogun.gdxhelper.screen.WorldProjector;
 import io.potatogun.gdxhelper.util.Updatable;
-import io.potatogun.gdxhelper.util.Utils;
+import io.potatogun.gdxhelper.util.drawText;
 
 import java.util.Collections;
 
@@ -195,7 +195,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * @param align 글자 정렬(없으면 왼쪽 정렬)
 	 */
 	@JvmOverloads fun drawText(text: String, x: Float, y: Float, color: Color = Color.WHITE, scale: Float = 1f, width: Float = 0f, align: Int = Align.left) {
-		Utils.drawText(batch, font, text, x, y, color, scale, width, align);
+		drawText(batch, font, text, x, y, color, scale, width, align);
 	}
 
 	// ────────────────────────────────────────────────────────
