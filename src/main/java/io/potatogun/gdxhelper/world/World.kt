@@ -30,19 +30,11 @@ import java.util.Collections;
  * @property camera   월드의 카메라
  * @property font     월드의 기본 글꼴
  */
-abstract class World(@JvmField val width: Float, @JvmField val height: Float, @JvmField val entities: EntityManager, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont()) : Disposable, Updatable {
-	/**
-	 * 월드를 보여주는 카메라
-	 */
-	private val camera = camera;
+abstract class World(@JvmField val width: Float, @JvmField val height: Float, @JvmField val entities: EntityManager, private val camera: Camera = OrthographicCamera(), @JvmField protected val font: BitmapFont = BitmapFont()) : Disposable, Updatable {
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구
 	 */
 	@JvmField protected val batch = SpriteBatch();
-	/**
-	 * 월드의 기본 글꼴
-	 */
-	@JvmField protected val font = font;
 	/**
 	 * 월드를 보여주는 스크린. 만약 이 월드를 띄우는 뷰어가 없으면 null일 수도 있음에 주의
 	 */
