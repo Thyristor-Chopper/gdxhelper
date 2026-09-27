@@ -38,8 +38,8 @@ open class Timer(@JvmField protected val timeout: Float, @JvmField @JvmSynthetic
 	override fun update(delta: Float) {
 		timer -= delta;
 		if(timer <= 0f) {
-			operation.run();
 			executed = true;
+			operation.run();
 		}
 	}
 
