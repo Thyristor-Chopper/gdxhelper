@@ -50,7 +50,7 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 			val timer = iterableClone[i];
 			if(timer.condition?.getAsBoolean() ?: true) {
 				timer.update(delta);
-				if(timer !is RepeatingTimer && timer.executed)
+				if(timer.executed)
 					timers.remove(timer);
 			}
 		}
