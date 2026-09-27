@@ -54,6 +54,9 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 					timers.remove(timer);
 			}
 		}
+
+		// 메모리 누수 방지
+		iterableClone.clear();
 	}
 
 	/**
