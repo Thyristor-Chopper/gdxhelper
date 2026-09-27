@@ -33,6 +33,11 @@ open class Timer(@JvmField protected var timeout: Float, @JvmField @JvmSynthetic
 	 */
 	constructor(timeout: Float, operation: Runnable) : this(timeout, null, operation);
 
+	init {
+		if(timeout < 0f)
+			throw IllegalArgumentException("invalid timeout");
+	}
+
 	/**
 	 * 타이머를 갱신한다.
 	 *
