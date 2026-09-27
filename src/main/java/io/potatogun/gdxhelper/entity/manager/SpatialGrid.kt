@@ -29,7 +29,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 	private val tilesOfEntity = IdentityMap<Entity, LongSet>(capacity);
 	private val addQueue = GdxArray<Entity>(false, 8);
 	private val removeQueue = GdxArray<Entity>(false, 8);
-	private val hashPool = LongSetPool(8);
+	private val hashPool = LongSetPool(9);
 	private val tileEntityPool = UnorderedArrayPool<Entity>(capacity);
 	private val visitedPool = IdentitySetPool<Entity>(capacity / 4);
 
