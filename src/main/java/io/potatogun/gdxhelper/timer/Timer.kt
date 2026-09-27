@@ -82,13 +82,10 @@ open class Timer(@JvmField protected var timeout: Float, @JvmField @JvmSynthetic
 	 * 타이머의 대기 시간을 변경한다.
 	 *
 	 * 주의: 변경된 대기 시간은 이번 실행 이후 다시 초기화(reset)한 이후부터 적용된다.
-	 *   이미 실행 완료된 상태라면 자동으로 초기화된다.
 	 *
 	 * @param timeout 새 대기 시간
 	 */
 	fun setTimeout(timeout: Float) {
 		this.timeout = timeout;
-		if(executed)
-			reset();
 	}
 }
