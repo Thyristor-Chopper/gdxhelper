@@ -34,6 +34,14 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 	fun unregister(timer: Timer): Boolean = timers.remove(timer);
 
 	/**
+	 * 타이머가 등록됐는지 확인한다.
+	 *
+	 * @param timer 확인할 타이머
+	 * @return 등록 여부
+	 */
+	fun isRegistered(timer: Timer): Boolean = timers.contains(timer);
+
+	/**
 	 * 타이머를 갱신한다.
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
