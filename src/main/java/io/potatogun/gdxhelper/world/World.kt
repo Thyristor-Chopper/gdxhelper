@@ -84,7 +84,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	 * @param height   월드 전체 높이
 	 * @param settings 월드 설정
 	 */
-	@JvmOverloads constructor(width: Float, height: Float, settings: Properties) : this(width, height, settings.camera!!, settings.font!!, settings.entityManager!!);
+	constructor(width: Float, height: Float, settings: Properties) : this(width, height, settings.camera!!, settings.font!!, settings.entityManager!!);
 
 	init {
 		if(usedEntityManagers.contains(entities))
