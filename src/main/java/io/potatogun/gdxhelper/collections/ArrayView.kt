@@ -20,6 +20,17 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 
 	override operator fun get(index: Int): T = array[index];
 
+	override fun contains(element: T): Boolean = array.contains(element, false);
+
+	/**
+	 * 지정한 요소가 있는지 검사한다.
+	 *
+	 * @param element  확인할 요소
+	 * @param identity false면 값 비교, true면 참조 비교
+	 * @return 존재 여부
+	 */
+	fun contains(element: T, identity: Boolean): Boolean = array.contains(element, identity);
+
 	override fun sortedWith(comparator: Comparator<T>): GdxArray<T> {
 		val output = toArray();
 		sortWith<T>(output, comparator);

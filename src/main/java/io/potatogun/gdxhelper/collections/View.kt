@@ -36,6 +36,14 @@ interface View<T> : Iterable<T> {
 	operator fun get(index: Int): T;
 
 	/**
+	 * 지정한 요소가 있는지 검사한다.
+	 *
+	 * @param element 확인할 요소
+	 * @return 존재 여부
+	 */
+	fun contains(element: T): Boolean;
+
+	/**
 	 * 목록을 지정한 비교기로 정렬한다.
 	 *
 	 * @param comparator 비교기
