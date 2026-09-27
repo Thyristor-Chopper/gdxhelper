@@ -319,7 +319,7 @@ abstract class Entity(@JvmField protected var world: World, val name: String, x:
 	 *
 	 * @return 소속 월드
 	 */
-	fun getWorld(): World = world;  // 외부용 API
+	fun getWorld(): World = world;
 
 	/**
 	 * 이 개체가 속한 월드를 변경한다.
