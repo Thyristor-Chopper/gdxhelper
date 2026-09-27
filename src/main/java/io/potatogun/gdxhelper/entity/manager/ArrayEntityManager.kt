@@ -31,7 +31,7 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
 
-		val world = allEntities[0].getWorld();
+		val world = allEntities[0].world;
 		val offsetX = world.cameraX;
 		val offsetY = world.cameraY;
 
@@ -48,7 +48,7 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 
 	override fun update(delta: Float) {
 		if(allEntities.isEmpty()) return;
-		val world = allEntities[0].getWorld();
+		val world = allEntities[0].world;
 		val isFrozen = (world is Freezable && world.isFrozen);
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities[i];

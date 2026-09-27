@@ -29,7 +29,7 @@ import kotlin.math.atan2;
  *   즉, 우리가 Player든 Bullet이든 'Entity를 상속'하기만 하면
  *   월드의 개체 관리자가 자동으로 update/draw/제거까지 해준다(다형성).
  *
- * @param    world   개체가 속한 월드 - 외부에서는 getWorld()로 접근
+ * @param    world   개체가 속한 월드
  * @property name    개체 표시 이름
  * @param    x       개체의 처음 X 위치
  * @param    y       개체의 처음 Y 위치
@@ -41,7 +41,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	/**
 	 * 개체가 속한 월드
 	 */
-	val world = world
+	var world = world
 		set(value) {
 			if(field === value) return;
 			val entityView = field.entities.view;
