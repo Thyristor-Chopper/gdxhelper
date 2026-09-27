@@ -36,7 +36,7 @@ import kotlin.math.atan2;
  * @property height  세로 크기
  * @property texture 개체 텍스처(없을 수도 있음)
  */
-abstract class Entity(@JvmField protected val world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
+abstract class Entity(@JvmField protected var world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
 	// draw에서 사용하는 절반 길이 캐시
 	private val halfWidth = width * 0.5f;
 	private val halfHeight = height * 0.5f;
@@ -319,6 +319,17 @@ abstract class Entity(@JvmField protected val world: World, val name: String, x:
 	 * @return 소속 월드
 	 */
 	fun getWorld(): World = world;  // 외부용 API
+
+	/**
+	 * 이 개체가 속한 월드를 변경한다.
+	 *
+	 * @param world 새 월드
+	 */
+	fun setWorld(world: World) {
+		this.world.entities.remove(this);
+		this.world = world;
+		world.entities.add(this);
+	}
 
 	/**
 	 * 이 객체가 갖고 있는 GPU 자원을 정리한다.

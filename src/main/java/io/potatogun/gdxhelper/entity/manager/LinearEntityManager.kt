@@ -47,7 +47,6 @@ class LinearEntityManager(capacity: Int, private val nearbyThreshold: Float) : A
 			for(i in 0 until removeQueue.size) {
 				val entity = removeQueue[i];
 				allEntities.removeValue(entity, true);
-				entity.dispose();
 			}
 			removeQueue.clear();
 		}

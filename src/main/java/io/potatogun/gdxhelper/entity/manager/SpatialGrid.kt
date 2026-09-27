@@ -78,7 +78,6 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 					hashPool.free(hashes);
 				}
 				allEntities.removeValue(entity, true);
-				entity.dispose();
 			}
 			removeQueue.clear();
 		}
