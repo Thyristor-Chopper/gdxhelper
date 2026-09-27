@@ -307,10 +307,11 @@ abstract class Entity(@JvmField protected var world: World, val name: String, x:
 	open fun forceUpdate(delta: Float) {}
 
 	/**
-	 * 개체를 월드에서 제거하고 등록을 해제한다.
+	 * 개체를 월드에서 제거하고 등록을 해제하고 자원도 해제한다.
 	 */
 	fun remove() {
 		world.entities.remove(this);
+		this.dispose();
 	}
 
 	/**
