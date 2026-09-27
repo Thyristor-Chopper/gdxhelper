@@ -36,6 +36,8 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 	override fun add(entity: Entity): Boolean {
 		if(entity.isDisposed)
 			throw IllegalStateException("entity is disposed");
+		if(entity.getWorld().entities !== this)
+			throw IllegalStateException("entity belongs to a different world");
 		if(removeQueue.contains(entity, true)) {
 			removeQueue.removeValue(entity, true);
 			return true;
