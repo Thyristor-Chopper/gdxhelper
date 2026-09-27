@@ -14,9 +14,9 @@ import io.potatogun.gdxhelper.world.World;
 /**
  * 배열을 내부적으로 사용하는 개체 관리자
  *
- * @property world 소속 월드
+ * @param capacity 개체 배열 초기 크기
  */
-abstract class ArrayEntityManager(@JvmField protected val world: World, capacity: Int) : EntityManager {
+abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 	/**
 	 * 모든 개체 목록을 담는 배열
 	 */
@@ -30,12 +30,13 @@ abstract class ArrayEntityManager(@JvmField protected val world: World, capacity
 
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
-		val offsetX = world.cameraX;
-		val offsetY = world.cameraY;
 
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities[i];
+			val world = entity.getWorld();
 			// 보이는 개체만 그리기 (자원 낭비 감소)
+			val offsetX = world.cameraX;
+			val offsetY = world.cameraY;
 			val maxEntityLength = max2(entity.width, entity.height);
 			val entityX = entity.x;
 			val entityY = entity.y;
@@ -47,6 +48,7 @@ abstract class ArrayEntityManager(@JvmField protected val world: World, capacity
 	override fun update(delta: Float) {
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities[i];
+			val world = entity.getWorld();
 			if(world !is Freezable || !world.isFrozen || entity.isUpdatableWhileFrozen)
 				entity.update(delta);
 			entity.forceUpdate(delta);

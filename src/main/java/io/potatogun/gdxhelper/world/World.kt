@@ -13,7 +13,6 @@ import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.collections.weakMutableSetOf;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.entity.manager.EntityManager;
-import io.potatogun.gdxhelper.entity.manager.SpatialGrid;
 import io.potatogun.gdxhelper.screen.WorldProjector;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.drawText;
@@ -29,9 +28,9 @@ import java.util.Collections;
  * @property height   월드 전체 높이
  * @property camera   월드의 카메라
  * @property font     월드의 기본 글꼴
- * @property tileSize 공간 분할 격자 개체 관리자의 격자 크기
+ * @property entities 개체 관리자
  */
-abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), entityCapacity: Int = DEFAULT_ENTITY_CAPACITY, tileSize: Float = DEFAULT_TILE_SIZE) : Disposable, Updatable {
+abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), @JvmField val entities: EntityManager) : Disposable, Updatable {
 	/**
 	 * 월드를 보여주는 카메라
 	 */
@@ -70,14 +69,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 			updateProjectionMatrix();
 		};
 	/**
-	 * 등록된 개체 목록
-	 *
-	 * 등록된 객체들만 update/draw된다.
-	 *
-	 * 자바에서도 world.entities.add()로 자연스럽게 호출하기 위해 @JvmField이다.
-	 */
-	@JvmField val entities: EntityManager = SpatialGrid(this, entityCapacity, tileSize);
-	/**
 	 * 자원이 해제됐는지의 여부
 	 */
 	@get:JvmSynthetic internal var isDisposed = false
@@ -86,14 +77,24 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	/**
 	 * 설정 빌더를 사용하여 월드를 생성한다.
 	 *
+	 * 개체 관리자는 반드시 지정해야 한다. 안 그러면 NullPointerException이 발생할 것이다.
+	 *
 	 * @constructor 자바 전용 생성자
 	 * @param width    월드 전체 너비
 	 * @param height   월드 전체 높이
 	 * @param settings 월드 설정
 	 */
-	@JvmOverloads constructor(width: Float, height: Float, settings: Properties = Properties()) : this(width, height, settings.camera!!, settings.font!!, settings.entityCapacity, settings.tileSize);
+	@JvmOverloads constructor(width: Float, height: Float, settings: Properties) : this(width, height, settings.camera!!, settings.font!!, settings.entityManager!!);
 
 	init {
+		if(usedEntityManagers.contains(entities))
+			throw IllegalStateException("the specified entity set is in use by another world");
+
+		if(!entities.view.isEmpty)
+			throw IllegalStateException("the specified entity set is not empty");
+
+		usedEntityManagers.add(entities);
+
 		updateViewport();
 		if(camera is OrthographicCamera)
 			camera.setToOrtho(false);  // false 인자는 y 축을 위로(수학 좌표계처럼) 둔다는 뜻.
@@ -211,6 +212,8 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 
 	/**
 	 * 월드 옵션 (자바 전용)
+	 *
+	 * 개체 관리자는 반드시 지정해야 한다. 안 그러면 NullPointerException이 발생할 것이다.
 	 */
 	open class Properties {
 		@get:JvmSynthetic internal var camera: Camera? = null
@@ -227,9 +230,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 				return field;
 			}
 			private set;
-		@get:JvmSynthetic internal var tileSize = DEFAULT_TILE_SIZE
-			private set;
-		@get:JvmSynthetic internal var entityCapacity = DEFAULT_ENTITY_CAPACITY
+		@get:JvmSynthetic internal var entityManager: EntityManager? = null
 			private set;
 
 		/**
@@ -255,24 +256,13 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		}
 
 		/**
-		 * 격자 개체 관리자의 타일 크기를 지정한다.
+		 * 개체 관리자를 지정한다.
 		 *
-		 * @param tileSize 타일 크기
+		 * @param manager 개체 관리자
 		 * @return 옵션 객체 자신
 		 */
-		fun tileSize(tileSize: Float): Properties {
-			this.tileSize = tileSize;
-			return this;
-		}
-
-		/**
-		 * 개체 관리자의 처음 크기를 지정한다.
-		 *
-		 * @param capacity 크기
-		 * @return 옵션 객체 자신
-		 */
-		fun entityCapacity(capacity: Int): Properties {
-			this.entityCapacity = capacity;
+		fun entityManager(manager: EntityManager): Properties {
+			this.entityManager = manager;
 			return this;
 		}
 	}
@@ -280,5 +270,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	companion object {
 		private const val DEFAULT_TILE_SIZE = 64f;
 		private const val DEFAULT_ENTITY_CAPACITY = 64;
+
+		private val usedEntityManagers = weakMutableSetOf<EntityManager>();
 	}
 }

@@ -13,8 +13,6 @@ import io.potatogun.gdxhelper.pools.IdentitySetPool;
 import io.potatogun.gdxhelper.pools.LongSetPool;
 import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
 import io.potatogun.gdxhelper.util.max2;
-import io.potatogun.gdxhelper.world.Freezable;
-import io.potatogun.gdxhelper.world.World;
 
 import java.util.function.Consumer;
 
@@ -23,11 +21,10 @@ import kotlin.math.floor;
 /**
  * 좌표 분할 격자식 개체 관리자
  *
- * @param    world    소속 월드
  * @param    capacity 처음 개체 목록 크기
  * @property tileSize 타일 크기
  */
-class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : ArrayEntityManager(world, capacity) {
+class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManager(capacity) {
 	private val entitiesOfTile = LongMap<GdxArray<Entity>>(capacity * 8);
 	private val tilesOfEntity = IdentityMap<Entity, LongSet>(capacity);
 	private val addQueue = GdxArray<Entity>(false, 8);
@@ -39,8 +36,6 @@ class SpatialGrid(world: World, capacity: Int, private val tileSize: Float) : Ar
 	override fun add(entity: Entity): Boolean {
 		if(entity.isDisposed)
 			throw IllegalStateException("entity is disposed");
-		if(entity.getWorld() !== world)
-			throw IllegalArgumentException("entity belongs to a different world");
 		if(removeQueue.contains(entity, true)) {
 			removeQueue.removeValue(entity, true);
 			return true;

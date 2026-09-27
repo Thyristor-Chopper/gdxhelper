@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Disposable;
 import io.potatogun.gdxhelper.collections.View;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.util.Updatable;
-import io.potatogun.gdxhelper.world.World;
 
 /**
  * 개체 관리자 인터페이스

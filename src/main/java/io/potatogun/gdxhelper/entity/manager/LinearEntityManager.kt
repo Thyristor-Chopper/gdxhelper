@@ -3,27 +3,22 @@ package io.potatogun.gdxhelper.entity.manager;
 import com.badlogic.gdx.utils.Array as GdxArray;
 
 import io.potatogun.gdxhelper.entity.Entity;
-import io.potatogun.gdxhelper.world.Freezable;
-import io.potatogun.gdxhelper.world.World;
 
 import java.util.function.Consumer;
 
 /**
  * 선형 목록에서 모두 관리하는 기초적인 개체 관리자이자 reference implementation 역할을 한다.
  *
- * @param    world           소속 월드
  * @param    capacity        처음 개체 목록 크기
  * @property nearbyThreshold getNearby에서 사용할 가깝다의 기준
  */
-class LinearEntityManager(world: World, capacity: Int, private val nearbyThreshold: Float) : ArrayEntityManager(world, capacity) {
+class LinearEntityManager(capacity: Int, private val nearbyThreshold: Float) : ArrayEntityManager(capacity) {
 	private val addQueue = GdxArray<Entity>(false, 8);
 	private val removeQueue = GdxArray<Entity>(false, 8);
 
 	override fun add(entity: Entity): Boolean {
 		if(entity.isDisposed)
 			throw IllegalStateException("entity is disposed");
-		if(entity.getWorld() !== world)
-			throw IllegalArgumentException("entity belongs to a different world");
 		if(removeQueue.contains(entity, true)) {
 			removeQueue.removeValue(entity, true);
 			return true;
