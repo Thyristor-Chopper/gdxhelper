@@ -55,7 +55,7 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 			}
 		}
 
-		// 메모리 누수 방지
+		// 참조 누수 방지
 		iterableClone.clear();
 	}
 
