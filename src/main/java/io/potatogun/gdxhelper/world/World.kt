@@ -268,9 +268,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	}
 
 	companion object {
-		private const val DEFAULT_TILE_SIZE = 64f;
-		private const val DEFAULT_ENTITY_CAPACITY = 64;
-
 		private val usedEntityManagers = weakMutableSetOf<EntityManager>();
 	}
 }
