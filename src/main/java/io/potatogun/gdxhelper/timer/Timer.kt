@@ -69,6 +69,8 @@ open class Timer(@JvmField protected var timeout: Float, @JvmField @JvmSynthetic
 	 * @param timeout 새 대기 시간
 	 */
 	fun setTimeout(timeout: Float) {
+		if(timeout < 0f)
+			throw IllegalArgumentException("invalid timeout");
 		this.timeout = timeout;
 	}
 }
