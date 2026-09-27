@@ -5,6 +5,8 @@ import java.util.function.BooleanSupplier;
 /**
  * 일정 시간마다 특정 작업을 실행하게 해 주는 타이머
  *
+ * 초당 프레임률이 낮을 경우 오차가 누적되며 실행이 누락될 수 있음에 주의할 것.
+ *
  * @constructor 조건이 있는 타이머
  * @param interval  실행 간격(초)
  * @param condition 실행 조건
