@@ -88,7 +88,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 
 	init {
 		if(usedEntityManagers.contains(entities))
-			throw IllegalStateException("the specified entity manager is in use by another world");
+			throw IllegalStateException("the specified entity manager is used by another world");
 
 		if(!entities.view.isEmpty)
 			throw IllegalStateException("the specified entity manager is not empty");
