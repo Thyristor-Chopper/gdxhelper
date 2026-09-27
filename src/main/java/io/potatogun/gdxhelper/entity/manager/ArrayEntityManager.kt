@@ -31,12 +31,13 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
 
+		val world = allEntities[0].getWorld();
+		val offsetX = world.cameraX;
+		val offsetY = world.cameraY;
+
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities[i];
-			val world = entity.getWorld();
 			// 보이는 개체만 그리기 (자원 낭비 감소)
-			val offsetX = world.cameraX;
-			val offsetY = world.cameraY;
 			val maxEntityLength = max2(entity.width, entity.height);
 			val entityX = entity.x;
 			val entityY = entity.y;
@@ -46,10 +47,12 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 	}
 
 	override fun update(delta: Float) {
+		if(allEntities.isEmpty()) return;
+		val world = allEntities[0].getWorld();
+		val isFrozen = (world is Freezable && world.isFrozen);
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities[i];
-			val world = entity.getWorld();
-			if(world !is Freezable || !world.isFrozen || entity.isUpdatableWhileFrozen)
+			if(!isFrozen || entity.isUpdatableWhileFrozen)
 				entity.update(delta);
 			entity.forceUpdate(delta);
 		}
