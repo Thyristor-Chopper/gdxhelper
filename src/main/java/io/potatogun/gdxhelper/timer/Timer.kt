@@ -8,7 +8,7 @@ import java.util.function.BooleanSupplier;
  * 지정된 시간 후 특정 작업을 실행하게 해 주는 타이머
  *
  * @constructor 조건이 있는 타이머
- * @property timeout   대기 시간(초)
+ * @property timeout   대기 시간(초) - 0이면 바로 다음 프레임에 실행한다.
  * @property condition 실행 조건
  * @property operation 실행할 서브루틴
  */
@@ -32,6 +32,23 @@ open class Timer(@JvmField protected var timeout: Float, @JvmField @JvmSynthetic
 	 * @param operation 실행할 서브루틴
 	 */
 	constructor(timeout: Float, operation: Runnable) : this(timeout, null, operation);
+
+	/**
+	 * 바로 다음 프레임에 실행되는 타이머를 생성한다.
+	 *
+	 * @constructor 대기시간 없이 다음 프레임에 실행되는 타이머
+	 * @param operation 실행할 서브루틴
+	 */
+	constructor(operation: Runnable) : this(0f, null, operation);
+
+	/**
+	 * 바로 다음 프레임에 실행되는 조건 없는 타이머를 생성한다.
+	 *
+	 * @constructor 대기시간 없이 다음 프레임에 조건이 맞으면 실행되는 타이머
+	 * @param condition 실행 조건
+	 * @param operation 실행할 서브루틴
+	 */
+	constructor(condition: BooleanSupplier, operation: Runnable) : this(0f, condition, operation);
 
 	init {
 		if(timeout < 0f)
