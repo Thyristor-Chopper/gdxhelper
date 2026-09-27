@@ -22,9 +22,7 @@ class RepeatingTimer(interval: Float, condition: BooleanSupplier?, operation: Ru
 
 	override fun update(delta: Float) {
 		super.update(delta);
-		if(executed) {
-			timer += timeout;
-			executed = false;
-		}
+		if(executed)
+			reset();
 	}
 }

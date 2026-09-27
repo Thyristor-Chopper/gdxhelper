@@ -36,10 +36,12 @@ open class Timer(@JvmField protected val timeout: Float, @JvmField @JvmSynthetic
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
 	override fun update(delta: Float) {
+		if(executed) return;
 		timer -= delta;
 		if(timer <= 0f) {
 			executed = true;
 			operation.run();
+			timer = 0f;
 		}
 	}
 
