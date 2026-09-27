@@ -13,6 +13,9 @@ import java.util.function.BooleanSupplier;
  * @property operation 실행할 서브루틴
  */
 open class Timer(@JvmField protected var timeout: Float, @JvmField @JvmSynthetic internal val condition: BooleanSupplier?, @JvmField protected val operation: Runnable) : Updatable {
+	/**
+	 * 현재 시곗값
+	 */
 	@JvmField protected var timer = timeout;
 	/**
 	 * 타이머가 실행되었는지의 여부
