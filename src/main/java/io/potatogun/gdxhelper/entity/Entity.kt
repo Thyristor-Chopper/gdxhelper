@@ -29,7 +29,7 @@ import kotlin.math.atan2;
  *   즉, 우리가 Player든 Bullet이든 'Entity를 상속'하기만 하면
  *   월드의 개체 관리자가 자동으로 update/draw/제거까지 해준다(다형성).
  *
- * @property world   개체가 속한 월드 - 외부에서는 getWorld()로 접근
+ * @param    world   개체가 속한 월드 - 외부에서는 getWorld()로 접근
  * @property name    개체 표시 이름
  * @param    x       개체의 처음 X 위치
  * @param    y       개체의 처음 Y 위치
@@ -37,7 +37,19 @@ import kotlin.math.atan2;
  * @property height  세로 크기
  * @property texture 개체 텍스처(없을 수도 있음)
  */
-abstract class Entity(@JvmField protected var world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
+abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
+	/**
+	 * 개체가 속한 월드
+	 */
+	val world = world
+		set(value) {
+			if(field === value) return;
+			val entityView = field.entities.view;
+			val wasRegistered = if(entityView is ArrayView) entityView.contains(this, true) else entityView.contains(this);
+			if(wasRegistered) field.entities.remove(this);
+			field = value;
+			if(wasRegistered) value.entities.add(this);
+		};
 	// draw에서 사용하는 절반 길이 캐시
 	private val halfWidth = width * 0.5f;
 	private val halfHeight = height * 0.5f;
@@ -313,27 +325,6 @@ abstract class Entity(@JvmField protected var world: World, val name: String, x:
 	fun remove() {
 		world.entities.remove(this);
 		this.dispose();
-	}
-
-	/**
-	 * 이 개체가 속한 월드를 가져온다.
-	 *
-	 * @return 소속 월드
-	 */
-	fun getWorld(): World = world;
-
-	/**
-	 * 이 개체가 속한 월드를 변경한다.
-	 *
-	 * @param world 새 월드
-	 */
-	fun setWorld(world: World) {
-		if(this.world === world) return;
-		val entityView = this.world.entities.view;
-		val wasRegistered = if(entityView is ArrayView) entityView.contains(this, true) else entityView.contains(this);
-		if(wasRegistered) this.world.entities.remove(this);
-		this.world = world;
-		if(wasRegistered) world.entities.add(this);
 	}
 
 	/**
