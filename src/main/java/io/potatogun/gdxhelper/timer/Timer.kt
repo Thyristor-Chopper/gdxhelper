@@ -12,7 +12,7 @@ import java.util.function.BooleanSupplier;
  * @property condition 실행 조건
  * @property operation 실행할 서브루틴
  */
-open class Timer(@JvmField protected val timeout: Float, @JvmField @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) : Updatable {
+open class Timer(@JvmField protected var timeout: Float, @JvmField @JvmSynthetic internal val condition: BooleanSupplier?, private val operation: Runnable) : Updatable {
 	@JvmField protected var timer = timeout;
 	/**
 	 * 타이머가 실행되었는지의 여부
@@ -51,5 +51,16 @@ open class Timer(@JvmField protected val timeout: Float, @JvmField @JvmSynthetic
 	fun reset() {
 		timer = timeout;
 		executed = false;
+	}
+
+	/**
+	 * 타이머의 대기 시간을 변경한다.
+	 *
+	 * 주의: 변경된 대기 시간은 이번 실행 이후 다시 초기화(reset)한 이후부터 적용된다.
+	 *
+	 * @param timeout 새 대기 시간
+	 */
+	fun setTimeout(timeout: Float) {
+		this.timeout = timeout;
 	}
 }
