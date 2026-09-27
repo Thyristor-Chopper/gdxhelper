@@ -172,6 +172,17 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 		visitedPool.free(visited);
 	}
 
+	override fun dispose() {
+		super.dispose();
+
+		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
+		if(!addQueue.isEmpty())
+			for(i in 0 until addQueue.size) {
+				val entity = addQueue[i];
+				entity.dispose();
+			}
+	}
+
 	private fun calculateTileHashes(entity: Entity, output: LongSet) {
 		val maxHalfLength = max2(entity.width, entity.height) * 0.5f;
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.Window;
+import io.potatogun.gdxhelper.collections.ArrayView;
 import io.potatogun.gdxhelper.position.ObservablePosition;
 import io.potatogun.gdxhelper.position.Position;
 import io.potatogun.gdxhelper.util.Input;
@@ -327,9 +328,12 @@ abstract class Entity(@JvmField protected var world: World, val name: String, x:
 	 * @param world 새 월드
 	 */
 	fun setWorld(world: World) {
-		this.world.entities.remove(this);
+		if(this.world === world) return;
+		val entityView = this.world.entities.view;
+		val wasRegistered = if(entityView is ArrayView) entityView.contains(this, true) else entityView.contains(this);
+		if(wasRegistered) this.world.entities.remove(this);
 		this.world = world;
-		world.entities.add(this);
+		if(wasRegistered) world.entities.add(this);
 	}
 
 	/**
