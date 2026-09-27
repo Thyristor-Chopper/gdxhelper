@@ -48,8 +48,10 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 
 	override fun update(delta: Float) {
 		if(allEntities.isEmpty()) return;
+
 		val world = allEntities[0].world;
 		val isFrozen = (world is Freezable && world.isFrozen);
+
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities[i];
 			if(!isFrozen || entity.isUpdatableWhileFrozen)
