@@ -26,11 +26,11 @@ import java.util.Collections;
  * @constructor Named argument를 쓸 수 있는 코틀린 전용 생성자
  * @property width    월드 전체 너비
  * @property height   월드 전체 높이
+ * @property entities 개체 관리자
  * @property camera   월드의 카메라
  * @property font     월드의 기본 글꼴
- * @property entities 개체 관리자
  */
-abstract class World(@JvmField val width: Float, @JvmField val height: Float, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont(), @JvmField val entities: EntityManager) : Disposable, Updatable {
+abstract class World(@JvmField val width: Float, @JvmField val height: Float, @JvmField val entities: EntityManager, camera: Camera = OrthographicCamera(), font: BitmapFont = BitmapFont()) : Disposable, Updatable {
 	/**
 	 * 월드를 보여주는 카메라
 	 */
@@ -77,14 +77,13 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 	/**
 	 * 설정 빌더를 사용하여 월드를 생성한다.
 	 *
-	 * 개체 관리자는 반드시 지정해야 한다. 안 그러면 NullPointerException이 발생할 것이다.
-	 *
 	 * @constructor 자바 전용 생성자
 	 * @param width    월드 전체 너비
 	 * @param height   월드 전체 높이
+	 * @param entities 개체 관리자
 	 * @param settings 월드 설정
 	 */
-	constructor(width: Float, height: Float, settings: Properties) : this(width, height, settings.camera!!, settings.font!!, settings.entityManager!!);
+	@JvmOverloads constructor(width: Float, height: Float, entities: EntityManager, settings: Properties = Properties()) : this(width, height, entities, settings.camera!!, settings.font!!);
 
 	init {
 		if(usedEntityManagers.contains(entities))
@@ -230,8 +229,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 				return field;
 			}
 			private set;
-		@get:JvmSynthetic internal var entityManager: EntityManager? = null
-			private set;
 
 		/**
 		 * 카메라를 지정한다.
@@ -252,17 +249,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, ca
 		 */
 		fun font(font: BitmapFont): Properties {
 			this.font = font;
-			return this;
-		}
-
-		/**
-		 * 개체 관리자를 지정한다.
-		 *
-		 * @param manager 개체 관리자
-		 * @return 옵션 객체 자신
-		 */
-		fun entityManager(manager: EntityManager): Properties {
-			this.entityManager = manager;
 			return this;
 		}
 	}
