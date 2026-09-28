@@ -66,23 +66,20 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 			val fillHeight = barHeight - skin.verticalPadding * 2;
 			val fillX = barX + skin.horizontalPadding;
 			val fillY = barY + skin.verticalPadding;
-			when(style) {
-				Style.CHUNKED	-> {
-					val chunkCount = ceil(fillWidth / (skin.chunkWidth + skin.chunkMargin)).toInt();
-					for(i in 1..chunkCount) {
-						val chunkX = fillX + (skin.chunkWidth + skin.chunkMargin) * (i - 1);  // 현재 청크의 X 위치
-						val accumulatedWidth = chunkX - barX + skin.chunkWidth - skin.chunkMargin - 1;  // 누적된 청크 너비
-						val chunkWidth = 
-							if(i == chunkCount && accumulatedWidth > maxFillWidth)
-								skin.chunkWidth - (accumulatedWidth - maxFillWidth)
-							else
-								skin.chunkWidth;
-						skin.fill.draw(batch, chunkX, fillY, chunkWidth, fillHeight);
-					}
+			if(style == Style.CHUNKED) {
+				val chunkCount = ceil(fillWidth / (skin.chunkWidth + skin.chunkMargin)).toInt();
+				for(i in 1..chunkCount) {
+					val chunkX = fillX + (skin.chunkWidth + skin.chunkMargin) * (i - 1);  // 현재 청크의 X 위치
+					val accumulatedWidth = chunkX - barX + skin.chunkWidth - skin.chunkMargin - 1;  // 누적된 청크 너비
+					val chunkWidth = 
+						if(i == chunkCount && accumulatedWidth > maxFillWidth)
+							skin.chunkWidth - (accumulatedWidth - maxFillWidth)
+						else
+							skin.chunkWidth;
+					skin.fill.draw(batch, chunkX, fillY, chunkWidth, fillHeight);
 				}
-				Style.SMOOTH	-> {
-					skin.fill.draw(batch, fillX, fillY, fillWidth, fillHeight);
-				}
+			} else {
+				skin.fill.draw(batch, fillX, fillY, fillWidth, fillHeight);
 			}
 			batch.color = Color.WHITE;
 		}
