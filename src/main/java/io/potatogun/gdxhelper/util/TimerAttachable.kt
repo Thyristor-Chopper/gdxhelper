@@ -18,7 +18,7 @@ interface TimerAttachable {
 	 *
 	 * 구현체는 다음 둘 중 하나를 해야 한다.
 	 *   i)  attachTimer로 등록한 타이머만 해제 허용
-	 *   ii) (i)번을 생략하되 책임지고 객체 내부에서 쓰이는 타이머가 외부에 노출되어 임의로 detachTimer를 호출하는 것을 방지
+	 *   ii) (i)번을 생략하되 책임지고 객체 내부에서 쓰이는 타이머가 외부에 노출되지 않게 하여 임의로 detachTimer를 호출하는 것을 방지
 	 *
 	 * @param timer 등록 해제할 타이머
 	 */
