@@ -26,7 +26,7 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 	override val view: View<Entity> = allEntities.createView();
 
 	override fun draw(batch: SpriteBatch) {
-		if(allEntities.isEmpty()) return;
+		if(allEntities.size == 0) return;
 
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
@@ -47,7 +47,7 @@ abstract class ArrayEntityManager(capacity: Int) : EntityManager {
 	}
 
 	override fun update(delta: Float) {
-		if(allEntities.isEmpty()) return;
+		if(allEntities.size == 0) return;
 
 		val world = allEntities[0].world;
 		val isFrozen = (world is Freezable && world.isFrozen);

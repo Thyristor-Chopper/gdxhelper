@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 
 import kotlin.random.Random;
 
-inline fun <T> GdxArray<T>.randomOrNull(): T? = if(isEmpty()) null else this[Random.nextInt(size)];
+inline fun <T> GdxArray<T>.randomOrNull(): T? = if(size == 0) null else this[Random.nextInt(size)];
 
 /**
  * 배열에 대한 읽기 전용 뷰를 생성한다.
