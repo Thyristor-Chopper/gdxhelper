@@ -15,12 +15,13 @@ import io.potatogun.gdxhelper.world.World;
  * 배열을 내부적으로 사용하는 개체 관리자
  *
  * @param capacity 개체 배열 초기 크기
+ * @param ordered  개체 등록 순서 보장 여부
  */
-abstract class ArrayEntityManager(capacity: Int) : EntityManager {
+abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, ordered: Boolean = false) : EntityManager {
 	/**
 	 * 모든 개체 목록을 담는 배열
 	 */
-	@JvmField protected val allEntities = GdxArray<Entity>(false, capacity);
+	@JvmField protected val allEntities = GdxArray<Entity>(ordered, capacity);
 	@Suppress("INAPPLICABLE_JVM_NAME")
 	@get:JvmName("view")
 	override val view: View<Entity> = allEntities.createView();

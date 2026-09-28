@@ -11,8 +11,9 @@ import java.util.function.Consumer;
  *
  * @param    capacity        처음 개체 목록 크기
  * @property nearbyThreshold getNearby에서 사용할 가깝다의 기준
+ * @param    ordered         개체 등록 순서 보장 여부
  */
-class LinearManager(capacity: Int, private val nearbyThreshold: Float) : ArrayEntityManager(capacity) {
+open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField protected val nearbyThreshold: Float, ordered: Boolean = false) : ArrayEntityManager(capacity, ordered) {
 	private val addQueue = GdxArray<Entity>(false, 8);
 	private val removeQueue = GdxArray<Entity>(false, 8);
 
