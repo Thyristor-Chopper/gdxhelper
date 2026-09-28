@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @param    capacity        처음 개체 목록 크기
  * @property nearbyThreshold getNearby에서 사용할 가깝다의 기준
  */
-class LinearEntityManager(capacity: Int, private val nearbyThreshold: Float) : ArrayEntityManager(capacity) {
+class LinearManager(capacity: Int, private val nearbyThreshold: Float) : ArrayEntityManager(capacity) {
 	private val addQueue = GdxArray<Entity>(false, 8);
 	private val removeQueue = GdxArray<Entity>(false, 8);
 
