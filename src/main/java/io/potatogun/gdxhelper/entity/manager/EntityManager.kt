@@ -10,8 +10,6 @@ import io.potatogun.gdxhelper.util.Updatable;
 
 /**
  * 개체 관리자 인터페이스
- *
- * API만 지키면 쿼드트리같은 것도 만들 수 있다.
  */
 interface EntityManager : Disposable, Updatable {
 	/**

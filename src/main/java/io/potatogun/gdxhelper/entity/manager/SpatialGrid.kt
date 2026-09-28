@@ -42,7 +42,8 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 			removeQueue.removeValue(entity, true);
 			return true;
 		}
-		if(tilesOfEntity.containsKey(entity) || addQueue.contains(entity, true)) return false;
+		if(tilesOfEntity.containsKey(entity) || addQueue.contains(entity, true))
+			return false;
 		addQueue.add(entity);
 		return true;
 	}
@@ -52,7 +53,8 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 			addQueue.removeValue(entity, true);
 			return true;
 		}
-		if(!tilesOfEntity.containsKey(entity) || removeQueue.contains(entity, true)) return false;
+		if(!tilesOfEntity.containsKey(entity) || removeQueue.contains(entity, true))
+			return false;
 		removeQueue.add(entity);
 		return true;
 	}

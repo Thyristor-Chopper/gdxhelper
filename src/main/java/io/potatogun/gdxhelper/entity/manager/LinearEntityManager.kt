@@ -25,7 +25,8 @@ class LinearEntityManager(capacity: Int, private val nearbyThreshold: Float) : A
 			removeQueue.removeValue(entity, true);
 			return true;
 		}
-		if(allEntities.contains(entity, true) || addQueue.contains(entity, true)) return false;
+		if(allEntities.contains(entity, true) || addQueue.contains(entity, true))
+			return false;
 		addQueue.add(entity);
 		return true;
 	}
@@ -35,7 +36,8 @@ class LinearEntityManager(capacity: Int, private val nearbyThreshold: Float) : A
 			addQueue.removeValue(entity, true);
 			return true;
 		}
-		if(!allEntities.contains(entity, true) || removeQueue.contains(entity, true)) return false;
+		if(!allEntities.contains(entity, true) || removeQueue.contains(entity, true))
+			return false;
 		removeQueue.add(entity);
 		return true;
 	}
