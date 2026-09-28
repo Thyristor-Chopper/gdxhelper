@@ -14,6 +14,8 @@ import io.potatogun.gdxhelper.util.min2;
 /**
  * 쿼드 트리 기반 개체 관리자
  *
+ * 일반 쿼드트리보다는 Loose Quadtree에 가까운 구현이다.
+ *
  * @param    capacity        처음 개체 목록 크기
  * @param    width           월드의 너비
  * @param    height          월드의 높이
