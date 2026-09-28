@@ -259,7 +259,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 
 			for(i in 0 until entities.size) {
 				val e = entities[i];
-				if(e.distanceTo(entity) <= nearbyThreshold)
+				if(e !== entity && e.distanceTo(entity) <= nearbyThreshold)
 					output.add(e);
 			}
 

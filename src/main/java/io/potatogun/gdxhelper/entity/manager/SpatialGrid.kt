@@ -167,7 +167,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 				val entities = entitiesOfTile[hash] ?: continue;
 				for(i in 0 until entities.size) {
 					val e = entities[i];
-					if(visited.add(e))
+					if(visited.add(e) && e !== entity)
 						output.add(e);
 				}
 			}

@@ -74,7 +74,7 @@ class LinearEntityManager(capacity: Int, private val nearbyThreshold: Float) : A
 	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
 		output.clear();
 		for(it in allEntities)
-			if(it.distanceTo(entity) <= nearbyThreshold)
+			if(it !== entity && it.distanceTo(entity) <= nearbyThreshold)
 				output.add(it);
 	}
 
