@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import io.potatogun.gdxhelper.collections.weakMutableSetOf;
+import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.world.World;
 
 /**
@@ -14,12 +15,17 @@ import io.potatogun.gdxhelper.world.World;
  *
  * @param settings 스크린 옵션
  */
-open class WorldProjector(settings: Screen.Properties = Screen.Properties()) : Screen(settings) {
+open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 	/**
 	 * 현재 보여주고 있는 월드를 반환한다.
 	 */
 	var projectingWorld: World? = null
 		private set;
+
+	@OptIn(JavaOnly::class)
+	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
+	@JvmOverloads
+	constructor(settings: Screen.Properties = Screen.Properties()) : this(settings.font!!);
 
 	init {
 		instances.add(this);

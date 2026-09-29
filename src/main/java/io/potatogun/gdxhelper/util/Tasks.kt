@@ -47,7 +47,7 @@ import java.util.function.BooleanSupplier;
  * @param operation 실행할 서브루틴
  * @return 실행 작업 객체
  */
-fun setTimeout(delay: Float, operation: Runnable): Task = setTimeout(delay, operation::run);
+@SinceKotlin("9999.9") fun setTimeout(delay: Float, operation: Runnable): Task = setTimeout(delay, operation::run);
 
 /**
  * 지정한 시간 후 지정한 조건을 만족하면 특정 서브루틴을 한 번만 실행한다 (자바 전용).
@@ -57,7 +57,7 @@ fun setTimeout(delay: Float, operation: Runnable): Task = setTimeout(delay, oper
  * @param operation 실행할 서브루틴
  * @return 실행 작업 객체
  */
-fun setTimeout(delay: Float, condition: BooleanSupplier, operation: Runnable): Task = setTimeout(delay, condition::getAsBoolean, operation::run);
+@SinceKotlin("9999.9") fun setTimeout(delay: Float, condition: BooleanSupplier, operation: Runnable): Task = setTimeout(delay, condition::getAsBoolean, operation::run);
 
 /**
  * 지정한 시간마다 특정 서브루틴을 실행한다. (코틀린 전용)
@@ -100,7 +100,7 @@ fun setTimeout(delay: Float, condition: BooleanSupplier, operation: Runnable): T
  * @param operation 실행할 서브루틴
  * @return 실행 작업 객체
  */
-fun setInterval(interval: Float, operation: Runnable): Task = setInterval(interval, operation::run);
+@SinceKotlin("9999.9") fun setInterval(interval: Float, operation: Runnable): Task = setInterval(interval, operation::run);
 
 /**
  * 지정한 시간마다 특정 서브루틴을 지정한 조건을 만족하면 실행한다 (자바 전용).
@@ -110,4 +110,4 @@ fun setInterval(interval: Float, operation: Runnable): Task = setInterval(interv
  * @param operation 실행할 서브루틴
  * @return 실행 작업 객체
  */
-fun setInterval(interval: Float, condition: BooleanSupplier, operation: Runnable): Task = setInterval(interval, condition::getAsBoolean, operation::run);
+@SinceKotlin("9999.9") fun setInterval(interval: Float, condition: BooleanSupplier, operation: Runnable): Task = setInterval(interval, condition::getAsBoolean, operation::run);

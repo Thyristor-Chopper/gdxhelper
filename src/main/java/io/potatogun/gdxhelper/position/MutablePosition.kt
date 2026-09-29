@@ -33,8 +33,6 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	/**
 	 * X 좌표에 지정한 값만큼 더한다.
 	 *
-	 * 자바 전용이며 코틀린은 x += ...를 사용하면 된다.
-	 *
 	 * @param toAdd 더할 양
 	 */
 	fun addX(toAdd: Float) {
@@ -42,9 +40,7 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	}
 
 	/**
-	 * Y 좌표에 지정한 값만큼 더한다
-	 *
-	 * 자바 전용이며 코틀린은 y += ...를 사용하면 된다.
+	 * Y 좌표에 지정한 값만큼 더한다.
 	 *
 	 * @param toAdd 더할 양
 	 */

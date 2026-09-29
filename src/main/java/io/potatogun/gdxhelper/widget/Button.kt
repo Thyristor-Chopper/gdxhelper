@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align;
 
 import io.potatogun.gdxhelper.function.FloatSupplier;
 import io.potatogun.gdxhelper.util.Input;
+import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.drawText;
 import io.potatogun.gdxhelper.Window;
 
@@ -187,7 +188,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * @param width  단추 너비 계산 함수
 	 * @param height 단추 높이 계산 함수
 	 */
-	class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
+	@JavaOnly class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
 		private var caption = "";
 		private lateinit var buttonSkin: Skin;  // Overload resolution ambiguity between candidates 때문에 변수명 다르게
 		private var color = Color.WHITE;

@@ -14,6 +14,7 @@ import io.potatogun.gdxhelper.collections.weakMutableSetOf;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.entity.manager.EntityManager;
 import io.potatogun.gdxhelper.screen.WorldProjector;
+import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.drawText;
 
@@ -75,7 +76,10 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 	 * @param entities 개체 관리자
 	 * @param settings 월드 설정
 	 */
-	@JvmOverloads constructor(width: Float, height: Float, entities: EntityManager, settings: Properties = Properties()) : this(width, height, entities, settings.camera!!, settings.font!!);
+	@OptIn(JavaOnly::class)
+	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
+	@JvmOverloads
+	constructor(width: Float, height: Float, entities: EntityManager, settings: Properties = Properties()) : this(width, height, entities, settings.camera!!, settings.font!!);
 
 	init {
 		if(usedEntityManagers.contains(entities))
@@ -204,10 +208,8 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 
 	/**
 	 * 월드 옵션 (자바 전용)
-	 *
-	 * 개체 관리자는 반드시 지정해야 한다. 안 그러면 NullPointerException이 발생할 것이다.
 	 */
-	open class Properties {
+	@JavaOnly open class Properties {
 		@get:JvmSynthetic internal var camera: Camera? = null
 			get() {
 				if(field == null)

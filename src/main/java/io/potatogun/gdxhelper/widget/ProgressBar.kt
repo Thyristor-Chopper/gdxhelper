@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.potatogun.gdxhelper.function.FloatSupplier;
+import io.potatogun.gdxhelper.util.JavaOnly;
 
 import kotlin.math.ceil;
 
@@ -139,7 +140,7 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 	 * @param width  미터기 너비 계산 함수
 	 * @param height 미터기 높이 계산 함수
 	 */
-	class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
+	@JavaOnly class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
 		private var value = 0f;
 		private lateinit var progressBarSkin: Skin;  // Overload resolution ambiguity between candidates 때문에 변수명 다르게
 		private var color = Color.WHITE;

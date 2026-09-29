@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.IdentitySet;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.Window;
+import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.drawText;
 import io.potatogun.gdxhelper.widget.Widget;
@@ -22,9 +23,8 @@ import io.potatogun.gdxhelper.widget.Widget;
  *
  * @constructor Named argument를 쓸 수 있는 코틀린용 생성자
  * @property font   화면 기본 글꼴
- * @param    _dummy 빌어먹을 코틀린이 Overload resolution ambiguity라면서 귀찮게 해서 (나중에 둘째 매개변수가 생기면 그걸로 대체)
  */
-abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) : ScreenAdapter(), Updatable {
+abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updatable {
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구.
 	 *
@@ -50,7 +50,10 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	 * @constructor 자바용 생성자
 	 * @param settings 스크린 옵션
 	 */
-	@JvmOverloads constructor(settings: Properties = Properties()) : this(settings.font!!);
+	@OptIn(JavaOnly::class)
+	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
+	@JvmOverloads
+	constructor(settings: Properties = Properties()) : this(settings.font!!);
 
 	// ────────────────────────────────────────────────────────
 	//  위젯 객체 관리
@@ -329,7 +332,7 @@ abstract class Screen(font: BitmapFont = BitmapFont(), _dummy: Nothing? = null) 
 	/**
 	 * 스크린 옵션 (자바용)
 	 */
-	open class Properties {
+	@JavaOnly open class Properties {
 		internal var font: BitmapFont? = null
 			@JvmSynthetic get() {
 				if(field == null)

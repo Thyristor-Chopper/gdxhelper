@@ -35,6 +35,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 		freeCompilerArgs.addAll(listOf("-Xlambdas=indy", "-Xstring-concat=indy", "-Xno-call-assertions", "-Xno-receiver-assertions", "-Xno-source-debug-extension"))
 		freeCompilerArgs.addAll(listOf("-Xwarning-level=NOTHING_TO_INLINE:disabled", "-Xwarning-level=UNCHECKED_CAST:disabled"))
 
+		// SinceKotlin 트릭으로 자바 전용 API를 코틀린에서만 숨길 때 나오는 경고 죽이기
+		freeCompilerArgs.addAll(listOf("-Xwarning-level=NEWER_VERSION_IN_SINCE_KOTLIN:disabled"))
+
 		// 인터페이스 최적화
 		jvmDefault = org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
 	}

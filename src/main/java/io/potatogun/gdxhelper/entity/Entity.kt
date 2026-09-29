@@ -13,6 +13,7 @@ import io.potatogun.gdxhelper.collections.ArrayView;
 import io.potatogun.gdxhelper.position.ObservablePosition;
 import io.potatogun.gdxhelper.position.Position;
 import io.potatogun.gdxhelper.util.Input;
+import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.abs;
 import io.potatogun.gdxhelper.util.safeDispose;
@@ -60,7 +61,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 			if(wasRegistered) value.entities.add(this);
 
 			// 별칭에 반영
-			@Suppress("DEPRECATION_ERROR")
+			@OptIn(JavaOnly::class)
 			level = value;
 		};
 	/**
@@ -70,8 +71,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 *
 	 * 외부에서는 여전히 getWorld()/setWorld(world)를 사용한다.
 	 */
-	@Deprecated(message = "This field can only be used in Java.", level = DeprecationLevel.ERROR)  // 자바는 error 레벨을 무시하는 특성 이용
-	@JvmField protected var level = world;
+	@JavaOnly @JvmField protected var level = world;  // 자바는 requiresoptin 주석을 무시하는 특성 이용
 	/**
 	 * draw에서 사용하는 절반 가로 길이 캐시
 	 */
@@ -149,7 +149,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 */
 	private var originOffsetY = 0f;
 	/**
-	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이고 외부 노출용이 아니기 떄문에 @JvmField이다.
+	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이고 외부 노출용이 아니기 떄문에 `@JvmField`이다.
 	 */
 	@JvmField @JvmSynthetic internal val polygon = Polygon(floatArrayOf(-halfWidth, -halfHeight, halfWidth, -halfHeight, halfWidth, halfHeight, -halfWidth, halfHeight)).apply {
 		setPosition(x, y);
