@@ -46,7 +46,9 @@ interface EntityManager : Disposable, Updatable {
 	fun updatePosition(entity: Entity) {}
 
 	/**
-	 * 현재 개체의 주변 개체를 가져온다.
+	 * 기준 개체의 주변 개체를 가져온다.
+	 *
+	 * 구현자는 기준 개체는 제외해야 한다.
 	 *
 	 * @param entity 기준 개체
 	 * @return 주변 개체들의 배열
