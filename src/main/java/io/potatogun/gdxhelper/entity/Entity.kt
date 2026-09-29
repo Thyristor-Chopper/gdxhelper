@@ -60,6 +60,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 			if(wasRegistered) value.entities.add(this);
 
 			// 별칭에 반영
+			@Suppress("DEPRECATION_ERROR")
 			level = value;
 		};
 	/**
@@ -69,6 +70,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 *
 	 * 외부에서는 여전히 getWorld()/setWorld(world)를 사용한다.
 	 */
+	@Deprecated(message = "This field can only be used in Java.", level = DeprecationLevel.ERROR)  // 자바는 hidden 레벨을 무시하는 특성 이용
 	@JvmField protected var level = world;
 	/**
 	 * draw에서 사용하는 절반 가로 길이 캐시
