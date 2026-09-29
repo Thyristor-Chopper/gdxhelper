@@ -27,7 +27,7 @@ fun EntityManager.getRandom(): Entity? {
 @JvmSynthetic inline fun <reified T : Entity> EntityManager.countOf(): Int = countOf(T::class.java);
 
 /**
- * 지정한 종류의 개체들의 수를 반환한다. (자바 전용)
+ * 지정한 종류의 개체들의 수를 반환한다. 
  *
  * @param type 개체 종류
  * @return 개체 수
@@ -48,7 +48,7 @@ fun <T : Entity> EntityManager.countOf(type: Class<T>): Int {
 @JvmSynthetic inline fun <reified T : Entity> EntityManager.getFirstOf(): T? = getFirstOf(T::class.java);
 
 /**
- * 지정한 종류의 개체 중 처음으로 등록된 것을 반환한다. (자바 전용)
+ * 지정한 종류의 개체 중 처음으로 등록된 것을 반환한다. 
  *
  * @param type 개체 종류
  * @return 개체 (없으면 null)
@@ -70,7 +70,7 @@ fun <T : Entity> EntityManager.getFirstOf(type: Class<T>): T? {
 @JvmSynthetic inline fun <reified T : Entity> EntityManager.getRandomOf(): T? = getRandomOf(T::class.java);
 
 /**
- * 지정한 종류의 개체를 아무거나 반환한다. (자바 전용)
+ * 지정한 종류의 개체를 아무거나 반환한다. 
  *
  * @param type 개체 종류
  * @return 개체 (없으면 null)
@@ -136,7 +136,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
 }
 
 /**
- * 지정한 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (자바 전용)
+ * 지정한 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. 
  *
  * @param entity    기준 개체
  * @param condition 개체의 조건
@@ -155,7 +155,7 @@ fun EntityManager.getClosest(entity: Entity, condition: Predicate<Entity>): Enti
 @JvmSynthetic inline fun <reified T : Entity> EntityManager.getClosestOf(entity: Entity): T? = getClosestOf(entity, T::class.java);
 
 /**
- * 지정한 종류의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (자바 전용)
+ * 지정한 종류의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. 
  *
  * @param type   개체 종류
  * @param entity 기준 개체
@@ -206,7 +206,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
 }
 
 /**
- * 지정한 종류와 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. (자바 전용)
+ * 지정한 종류와 조건의 개체들 중 지정한 개체로부터 가장 가까운 것을 반환한다. 
  *
  * 위 코틀린 버전 getClosestOf과 하는 게 똑같지만 type를 reified type로 넘기는 게 어려워서 어쩔 수 없이 이렇게 했다. 중복을 제거하는 다른 방법이 있긴 하지만 type.isInstance 사용이 강제되어 e is T를 못 쓴다. 이 정도 두 번 밖에 안 되는 중복 정도는 그냥 참고 넘어가길 바란다.
  *
