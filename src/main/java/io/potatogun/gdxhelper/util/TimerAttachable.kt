@@ -3,7 +3,7 @@ package io.potatogun.gdxhelper.util;
 import io.potatogun.gdxhelper.timer.Timer;
 
 /**
- * '외부'에서 이 객체(개체, 월드 등)에 타이머를 붙일 수 있는 객체
+ * '외부'에서 이 객체(개체, 월드, 위젯, 화면 등)에 타이머를 붙일 수 있는 객체
  */
 interface TimerAttachable {
 	/**
