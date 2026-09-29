@@ -37,7 +37,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 			throw IllegalArgumentException("invalid width");
 		if(height <= 0f)
 			throw IllegalArgumentException("invalid height");
-		if(maxNodeEntities <= 0f)
+		if(maxNodeEntities <= 0)
 			throw IllegalArgumentException("invalid maximum entities per node");
 		if(maxDepth < 0f)
 			throw IllegalArgumentException("invalid maximum depth");
