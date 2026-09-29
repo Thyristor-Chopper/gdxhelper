@@ -14,8 +14,6 @@ import io.potatogun.gdxhelper.pools.LongSetPool;
 import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
 import io.potatogun.gdxhelper.util.max2;
 
-import java.util.function.Consumer;
-
 import kotlin.math.floor;
 
 /**

@@ -43,15 +43,40 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 */
 	var world = world
 		set(value) {
+			// 동일 값이면 패스
 			if(field === value) return;
+
+			// 개체 관리자에 등록됐는지 먼저 확인
 			val entityView = field.entities.view;
 			val wasRegistered = if(entityView is ArrayView) entityView.contains(this, true) else entityView.contains(this);
+
+			// 등록됐다면 월드 이동 (1)
 			if(wasRegistered) field.entities.remove(this);
+
+			// 새 월드 할당
 			field = value;
+
+			// 등록됐다면 월드 이동 (2)
 			if(wasRegistered) value.entities.add(this);
+
+			// 별칭에 반영
+			level = value;
 		};
-	// draw에서 사용하는 절반 길이 캐시
+	/**
+	 * 자바 개발자가 자식 클래스(구현체) 내에서 getWorld()하는 번거로움이나 오버헤드를 줄이기 위한 별칭
+	 *
+	 * var이지만 직접 변경하면 안 되고 반드시 setWorld를 사용해야 한다.
+	 *
+	 * 외부에서는 여전히 getWorld()/setWorld(world)를 사용한다.
+	 */
+	@JvmField protected var level = world;
+	/**
+	 * draw에서 사용하는 절반 가로 길이 캐시
+	 */
 	private val halfWidth = width * 0.5f;
+	/**
+	 * draw에서 사용하는 절반 세로 길이 캐시
+	 */
 	private val halfHeight = height * 0.5f;
 	/**
 	 * 개체의 평면좌표 위치
@@ -324,7 +349,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 */
 	fun remove() {
 		world.entities.remove(this);
-		this.dispose();
+		dispose();
 	}
 
 	/**
