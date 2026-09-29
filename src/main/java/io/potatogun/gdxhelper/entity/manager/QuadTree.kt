@@ -30,7 +30,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 	private val entityArrayPool = UnorderedArrayPool<Entity>(maxNodeEntities);
 	private val childrenPool = ArrayPool<Node>(4);
 	private val nodePool = NodePool();
-	private val root = nodePool.obtain(0f, 0f, width, height, 0, null);
+	private val root: Node;
 
 	init {
 		if(width <= 0f)
@@ -41,6 +41,8 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 			throw IllegalArgumentException("invalid maximum entities per node");
 		if(maxDepth < 0f)
 			throw IllegalArgumentException("invalid maximum depth");
+
+		root = nodePool.obtain(0f, 0f, width, height, 0, null);
 	}
 
 	override fun add(entity: Entity): Boolean {
