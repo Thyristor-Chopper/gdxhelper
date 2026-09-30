@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.IdentitySet;
 
 import io.potatogun.gdxhelper.collections.toArray;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.Updatable;
 
 import java.util.function.BooleanSupplier;
@@ -15,7 +16,7 @@ import java.util.function.BooleanSupplier;
  */
 class TimerManager @JvmOverloads constructor(private val condition: BooleanSupplier? = null) : Updatable {
 	private val timers = IdentitySet<Timer>(16);
-	private val iterableClone = GdxArray<Timer>(false, 16);
+	private val iterableClone = GdxArray<Timer>(false, 16, ArraySuppliers.timer);
 
 	/**
 	 * 타이머를 등록한다.
@@ -55,7 +56,7 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 
 		// 각 타이머 갱신
 		for(i in 0 until iterableClone.size) {
-			val timer = iterableClone[i];
+			val timer = iterableClone.items[i];
 			if(timer.condition?.getAsBoolean() ?: true) {
 				timer.update(delta);
 				if(timer.executed)

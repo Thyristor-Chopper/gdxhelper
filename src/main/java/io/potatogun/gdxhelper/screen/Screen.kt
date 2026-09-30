@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.IdentitySet;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.Window;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.drawText;

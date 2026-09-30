@@ -3,6 +3,7 @@ package io.potatogun.gdxhelper.entity.manager;
 import com.badlogic.gdx.utils.Array as GdxArray;
 
 import io.potatogun.gdxhelper.entity.Entity;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 
 import java.util.function.Consumer;
 
@@ -14,8 +15,8 @@ import java.util.function.Consumer;
  * @param    ordered         개체 등록 순서 보장 여부
  */
 open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField protected val nearbyThreshold: Float, ordered: Boolean = false) : ArrayEntityManager(capacity, ordered) {
-	private val addQueue = GdxArray<Entity>(false, 8);
-	private val removeQueue = GdxArray<Entity>(false, 8);
+	private val addQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
+	private val removeQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
 
 	override fun add(entity: Entity): Boolean {
 		if(entity.isDisposed)
@@ -50,7 +51,7 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 		// 제거 큐 처리
 		if(removeQueue.size > 0) {
 			for(i in 0 until removeQueue.size) {
-				val entity = removeQueue[i];
+				val entity = removeQueue.items[i];
 				allEntities.removeValue(entity, true);
 			}
 			removeQueue.clear();
@@ -59,7 +60,7 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 		// 추가 큐 처리
 		if(addQueue.size > 0) {
 			for(i in 0 until addQueue.size) {
-				val entity = addQueue[i];
+				val entity = addQueue.items[i];
 				allEntities.add(entity);
 			}
 			addQueue.clear();
@@ -67,7 +68,7 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 	}
 
 	override fun getNearby(entity: Entity): GdxArray<Entity> {
-		val output = GdxArray<Entity>(false, allEntities.size);
+		val output = GdxArray<Entity>(false, allEntities.size, ArraySuppliers.entity);
 		getNearby(entity, output);
 		return output;
 	}
@@ -85,7 +86,7 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
 		if(addQueue.size > 0)
 			for(i in 0 until addQueue.size) {
-				val entity = addQueue[i];
+				val entity = addQueue.items[i];
 				entity.dispose();
 			}
 	}

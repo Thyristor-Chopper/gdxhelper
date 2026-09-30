@@ -12,6 +12,7 @@ import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.pools.IdentitySetPool;
 import io.potatogun.gdxhelper.pools.LongSetPool;
 import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.max2;
 
 import kotlin.math.floor;
@@ -25,10 +26,10 @@ import kotlin.math.floor;
 class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManager(capacity) {
 	private val entitiesOfTile = LongMap<GdxArray<Entity>>(capacity * 8);
 	private val tilesOfEntity = IdentityMap<Entity, LongSet>(capacity);
-	private val addQueue = GdxArray<Entity>(false, 8);
-	private val removeQueue = GdxArray<Entity>(false, 8);
+	private val addQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
+	private val removeQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
 	private val hashPool = LongSetPool(9);
-	private val tileEntityPool = UnorderedArrayPool<Entity>(capacity);
+	private val tileEntityPool = UnorderedArrayPool<Entity>(capacity, supplier = ArraySuppliers.entity);
 	private val visitedPool = IdentitySetPool<Entity>(capacity / 4);
 
 	override fun add(entity: Entity): Boolean {
@@ -64,7 +65,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 		// 제거 큐 처리
 		if(removeQueue.size > 0) {
 			for(i in 0 until removeQueue.size) {
-				val entity = removeQueue[i];
+				val entity = removeQueue.items[i];
 				val hashes = tilesOfEntity.remove(entity);
 				if(hashes != null) {
 					val iterator = hashes.iterator();
@@ -87,7 +88,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 		// 추가 큐 처리
 		if(addQueue.size > 0) {
 			for(i in 0 until addQueue.size) {
-				val entity = addQueue[i];
+				val entity = addQueue.items[i];
 				val hashes = hashPool.obtain();
 				calculateTileHashes(entity, hashes);
 
@@ -142,7 +143,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 	}
 
 	override fun getNearby(entity: Entity): GdxArray<Entity> {
-		val output = GdxArray<Entity>(false, allEntities.size);
+		val output = GdxArray<Entity>(false, allEntities.size, ArraySuppliers.entity);
 		getNearby(entity, output);
 		return output;
 	}
@@ -164,7 +165,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 				val hash = (tileX.toLong() shl 32) or (tileY.toLong() and 0xffffffffL);
 				val entities = entitiesOfTile[hash] ?: continue;
 				for(i in 0 until entities.size) {
-					val e = entities[i];
+					val e = entities.items[i];
 					if(visited.add(e) && e !== entity)
 						output.add(e);
 				}
@@ -178,7 +179,7 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
 		if(addQueue.size > 0)
 			for(i in 0 until addQueue.size) {
-				val entity = addQueue[i];
+				val entity = addQueue.items[i];
 				entity.dispose();
 			}
 	}

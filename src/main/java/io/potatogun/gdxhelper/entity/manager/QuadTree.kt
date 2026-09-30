@@ -8,6 +8,7 @@ import io.potatogun.gdxhelper.collections.clone;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.pools.ArrayPool;
 import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.max2;
 import io.potatogun.gdxhelper.util.min2;
 
@@ -24,10 +25,10 @@ import io.potatogun.gdxhelper.util.min2;
  * @property maxDepth        트리의 최대 깊이
  */
 class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThreshold: Float, private val maxNodeEntities: Int, private val maxDepth: Int) : ArrayEntityManager(capacity) {
-	private val addQueue = GdxArray<Entity>(false, 8);
-	private val removeQueue = GdxArray<Entity>(false, 8);
+	private val addQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
+	private val removeQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
 	private val entityNodeMap = IdentityMap<Entity, Node>(capacity);
-	private val entityArrayPool = UnorderedArrayPool<Entity>(maxNodeEntities);
+	private val entityArrayPool = UnorderedArrayPool<Entity>(maxNodeEntities, supplier = ArraySuppliers.entity);
 	private val childrenPool = ArrayPool<Node>(4);
 	private val nodePool = NodePool();
 	private val root: Node;
@@ -76,7 +77,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 
 		if(removeQueue.size > 0) {
 			for(i in 0 until removeQueue.size) {
-				val entity = removeQueue[i];
+				val entity = removeQueue.items[i];
 				entityNodeMap.remove(entity)?.let { node ->
 					node.entities.removeValue(entity, true);
 					node.merge();
@@ -88,7 +89,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 
 		if(addQueue.size > 0) {
 			for(i in 0 until addQueue.size) {
-				val entity = addQueue[i];
+				val entity = addQueue.items[i];
 				root.insert(entity);
 				allEntities.add(entity);
 			}
@@ -117,7 +118,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 	}
 
 	override fun getNearby(entity: Entity): GdxArray<Entity> {
-		val output = GdxArray<Entity>(false, allEntities.size);
+		val output = GdxArray<Entity>(false, allEntities.size, ArraySuppliers.entity);
 		getNearby(entity, output);
 		return output;
 	}
@@ -140,7 +141,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
 		if(addQueue.size > 0)
 			for(i in 0 until addQueue.size) {
-				val entity = addQueue[i];
+				val entity = addQueue.items[i];
 				entity.dispose();
 			}
 	}
@@ -157,7 +158,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 		@JvmField var height = 0f;
 		@JvmField var depth = 0;
 		@JvmField var parent: Node? = null;
-		@JvmField val entities = GdxArray<Entity>(false, maxNodeEntities);
+		@JvmField val entities = GdxArray<Entity>(false, maxNodeEntities, ArraySuppliers.entity);
 		@JvmField var children: GdxArray<Node>? = null;
 		@JvmField var midX = 0f;
 		@JvmField var midY = 0f;
@@ -218,7 +219,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 
 		fun getFittingChild(children: GdxArray<Node>, entity: Entity): Node? {
 			val index = (if(entity.x >= midX) 1 else 0) or (if(entity.y >= midY) 2 else 0);
-			val child = children[index];
+			val child = children.items[index];
 			return if(child.contains(entity)) child else null;
 		}
 
@@ -236,16 +237,16 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 				if(children != null) {
 					var total = node.entities.size;
 					for(i in 0 until children.size) {
-						val child = children[i];
+						val child = children.items[i];
 						if(child.children != null) return;
 						total += child.entities.size;
 					}
 					if(total > maxNodeEntities / 2) return;
 
 					for(i in 0 until children.size) {
-						val child = children[i];
+						val child = children.items[i];
 						for(j in 0 until child.entities.size) {
-							val entity = child.entities[j];
+							val entity = child.entities.items[j];
 							node.entities.add(entity);
 							entityNodeMap.put(entity, node);
 						}
@@ -262,7 +263,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 			if(depth > 0 && (qx1 < looseX0 || qx0 > looseX1 || qy1 < looseY0 || qy0 > looseY1)) return;
 
 			for(i in 0 until entities.size) {
-				val e = entities[i];
+				val e = entities.items[i];
 				if(e !== entity && e.distanceTo(entity) <= nearbyThreshold)
 					output.add(e);
 			}

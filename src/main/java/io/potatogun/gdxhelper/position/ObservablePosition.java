@@ -10,7 +10,7 @@ import io.potatogun.gdxhelper.function.FloatBiConsumer;
 public final class ObservablePosition extends MutablePosition {
 	private float x;
 	private float y;
-	private Array<FloatBiConsumer> changeHandlers = new Array<>(false, 4);
+	private final Array<FloatBiConsumer> changeHandlers = new Array<>(false, 4, FloatBiConsumer[]::new);
 
 	/**
 	 * 변경 감지 가능 좌표를 생성한다.
@@ -35,7 +35,7 @@ public final class ObservablePosition extends MutablePosition {
 		this.x = x;
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(this.x, y);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public final class ObservablePosition extends MutablePosition {
 		x += toAdd;
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(x, y);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public final class ObservablePosition extends MutablePosition {
 		this.y = y;
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(x, this.y);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public final class ObservablePosition extends MutablePosition {
 		y += toAdd;
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(x, y);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public final class ObservablePosition extends MutablePosition {
 		this.y = y;
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(this.x, this.y);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public final class ObservablePosition extends MutablePosition {
 		y = position.getY();
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(x, y);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public final class ObservablePosition extends MutablePosition {
 		this.y += y;
 
 		for(int i=0; i<changeHandlers.size; i++)
-			changeHandlers.get(i).accept(x, y);
+			changeHandlers.items[i].accept(this.x, this.y);
 	}
 
 	/**

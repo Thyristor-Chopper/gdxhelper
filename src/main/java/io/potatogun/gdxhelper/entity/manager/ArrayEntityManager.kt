@@ -7,6 +7,7 @@ import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.collections.View;
 import io.potatogun.gdxhelper.collections.createView;
 import io.potatogun.gdxhelper.entity.Entity;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.max2;
 import io.potatogun.gdxhelper.world.Freezable;
 import io.potatogun.gdxhelper.world.World;
@@ -21,7 +22,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	/**
 	 * 모든 개체 목록을 담는 배열
 	 */
-	@JvmField protected val allEntities = GdxArray<Entity>(ordered, capacity);
+	@JvmField protected val allEntities = GdxArray<Entity>(ordered, capacity, ArraySuppliers.entity);
 	@Suppress("INAPPLICABLE_JVM_NAME")
 	@get:JvmName("view")
 	override val view: View<Entity> = allEntities.createView();
@@ -32,12 +33,12 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
 
-		val world = allEntities[0].world;
+		val world = allEntities.items[0].world;
 		val offsetX = world.cameraX;
 		val offsetY = world.cameraY;
 
 		for(i in 0 until allEntities.size) {
-			val entity = allEntities[i];
+			val entity = allEntities.items[i];
 			// 보이는 개체만 그리기 (자원 낭비 감소)
 			val maxEntityLength = max2(entity.width, entity.height);
 			val entityX = entity.x;
@@ -50,11 +51,11 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	override fun update(delta: Float) {
 		if(allEntities.size == 0) return;
 
-		val world = allEntities[0].world;
+		val world = allEntities.items[0].world;
 		val isFrozen = (world is Freezable && world.isFrozen);
 
 		for(i in 0 until allEntities.size) {
-			val entity = allEntities[i];
+			val entity = allEntities.items[i];
 			if(!isFrozen || entity.isUpdatableWhileFrozen)
 				entity.update(delta);
 			entity.forceUpdate(delta);
@@ -63,6 +64,6 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 
 	override fun dispose() {
 		for(i in 0 until allEntities.size)
-			allEntities[i].dispose();
+			allEntities.items[i].dispose();
 	}
 }
