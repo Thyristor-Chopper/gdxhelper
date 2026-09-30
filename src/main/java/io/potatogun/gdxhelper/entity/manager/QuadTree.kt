@@ -76,7 +76,8 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 		super.update(delta);
 
 		if(removeQueue.size > 0) {
-			for(entity in removeQueue.items) {
+			for(i in 0 until removeQueue.size) {
+				val entity = removeQueue.items[i];
 				entityNodeMap.remove(entity)?.let { node ->
 					node.entities.removeValue(entity, true);
 					node.merge();
@@ -87,7 +88,8 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 		}
 
 		if(addQueue.size > 0) {
-			for(entity in addQueue.items) {
+			for(i in 0 until addQueue.size) {
+				val entity = addQueue.items[i];
 				root.insert(entity);
 				allEntities.add(entity);
 			}
@@ -138,8 +140,10 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 
 		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
 		if(addQueue.size > 0)
-			for(entity in addQueue.items)
+			for(i in 0 until addQueue.size) {
+				val entity = addQueue.items[i];
 				entity.dispose();
+			}
 	}
 
 	/**
@@ -200,7 +204,8 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 			val existing = entityArrayPool.obtain();
 			entities.clone(existing);
 			entities.clear();
-			for(entity in existing.items) {
+			for(i in 0 until existing.size) {
+				val entity = existing[i];
 				val child = getFittingChild(children!!, entity);
 				if(child != null) {
 					child.insert(entity);
@@ -231,14 +236,17 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 				val children = node.children;
 				if(children != null) {
 					var total = node.entities.size;
-					for(child in children.items) {
+					for(i in 0 until children.size) {
+						val child = children.items[i];
 						if(child.children != null) return;
 						total += child.entities.size;
 					}
 					if(total > maxNodeEntities / 2) return;
 
-					for(child in children.items) {
-						for(entity in child.entities.items) {
+					for(i in 0 until children.size) {
+						val child = children.items[i];
+						for(j in 0 until child.entities.size) {
+							val entity = child.entities.items[j];
 							node.entities.add(entity);
 							entityNodeMap.put(entity, node);
 						}
@@ -254,13 +262,17 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 		fun query(entity: Entity, qx0: Float, qy0: Float, qx1: Float, qy1: Float, output: GdxArray<Entity>) {
 			if(depth > 0 && (qx1 < looseX0 || qx0 > looseX1 || qy1 < looseY0 || qy0 > looseY1)) return;
 
-			for(e in entities.items)
+			for(i in 0 until entities.size) {
+				val e = entities.items[i];
 				if(e !== entity && e.distanceTo(entity) <= nearbyThreshold)
 					output.add(e);
+			}
 
 			children?.let {
-				for(child in it.items)
+				for(i in 0 until it.size) {
+					val child = it[i];
 					child.query(entity, qx0, qy0, qx1, qy1, output);
+				}
 			};
 		}
 	}

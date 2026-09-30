@@ -64,7 +64,8 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 
 		// 제거 큐 처리
 		if(removeQueue.size > 0) {
-			for(entity in removeQueue.items) {
+			for(i in 0 until removeQueue.size) {
+				val entity = removeQueue.items[i];
 				val hashes = tilesOfEntity.remove(entity);
 				if(hashes != null) {
 					val iterator = hashes.iterator();
@@ -86,7 +87,8 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 
 		// 추가 큐 처리
 		if(addQueue.size > 0) {
-			for(entity in addQueue.items) {
+			for(i in 0 until addQueue.size) {
+				val entity = addQueue.items[i];
 				val hashes = hashPool.obtain();
 				calculateTileHashes(entity, hashes);
 
@@ -162,9 +164,11 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 			for(tileY in minTileY..maxTileY) {
 				val hash = (tileX.toLong() shl 32) or (tileY.toLong() and 0xffffffffL);
 				val entities = entitiesOfTile[hash] ?: continue;
-				for(e in entities.items)
+				for(i in 0 until entities.size) {
+					val e = entities.items[i];
 					if(visited.add(e) && e !== entity)
 						output.add(e);
+				}
 			}
 		visitedPool.free(visited);
 	}
@@ -174,8 +178,10 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 
 		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
 		if(addQueue.size > 0)
-			for(entity in addQueue.items)
+			for(i in 0 until addQueue.size) {
+				val entity = addQueue.items[i];
 				entity.dispose();
+			}
 	}
 
 	private fun calculateTileHashes(entity: Entity, output: LongSet) {

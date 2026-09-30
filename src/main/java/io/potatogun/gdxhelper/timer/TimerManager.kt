@@ -55,12 +55,14 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 		timers.toArray(iterableClone);
 
 		// 각 타이머 갱신
-		for(timer in iterableClone.items)
+		for(i in 0 until iterableClone.size) {
+			val timer = iterableClone.items[i];
 			if(timer.condition?.getAsBoolean() ?: true) {
 				timer.update(delta);
 				if(timer.executed)
 					timers.remove(timer);
 			}
+		}
 
 		// 참조 누수 방지
 		iterableClone.clear();
