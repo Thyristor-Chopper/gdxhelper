@@ -18,7 +18,14 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 	override val isEmpty: Boolean
 		get() = (array.size == 0);
 
-	override operator fun get(index: Int): T = array[index];
+	override operator fun get(index: Int): T {
+		// 아래 첨자 범위 검사
+		if(index < 0 || index >= array.size)
+			throw IndexOutOfBoundsException("index out of bounds");
+
+		// 여기서만큼은 자료형에 맞는 supplier가 없어도 array.items[index]가 가능하다 (https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils/Array.java#L222 참고. 동일한 구현임)
+		return array.items[index];
+	}
 
 	override fun contains(element: T): Boolean = array.contains(element, false);
 
