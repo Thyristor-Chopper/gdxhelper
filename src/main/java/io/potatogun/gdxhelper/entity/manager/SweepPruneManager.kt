@@ -31,33 +31,33 @@ class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold
 		// when 문 쓰면 쓸 데 없이 WhenMappings가 생겨서
 		if(axis == Axis.Y) {
 			for(i in 1 until size) {
-				val entity = allEntities[i];
+				val entity = allEntities.items[i];
 				val y = entity.y;
 				var j = i - 1;
-				while(j >= 0 && allEntities[j].y > y) {
-					allEntities[j + 1] = allEntities[j];
+				while(j >= 0 && allEntities.items[j].y > y) {
+					allEntities.items[j + 1] = allEntities.items[j];
 					j--;
 				}
-				allEntities[j + 1] = entity;
+				allEntities.items[j + 1] = entity;
 			}
 
 			for(i in 0 until size)
-				keys[i] = allEntities[i].y;
+				keys.items[i] = allEntities.items[i].y;
 		} else {
 			for(i in 1 until size) {
-				val entity = allEntities[i];
+				val entity = allEntities.items[i];
 				val x = entity.x;
 				// 빌어먹을 코틀린 왜 for(초기식; 조건식; 증감식) 문법 없어 확 그냥
 				var j = i - 1;
-				while(j >= 0 && allEntities[j].x > x) {
-					allEntities[j + 1] = allEntities[j];
+				while(j >= 0 && allEntities.items[j].x > x) {
+					allEntities.items[j + 1] = allEntities.items[j];
 					j--;
 				}
-				allEntities[j + 1] = entity;
+				allEntities.items[j + 1] = entity;
 			}
 
 			for(i in 0 until size)
-				keys[i] = allEntities[i].x;
+				keys.items[i] = allEntities.items[i].x;
 		}
 	}
 
@@ -72,8 +72,8 @@ class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold
 		val size = allEntities.size;
 
 		var i = lowerBound(base - range, size);
-		while(i < size && keys[i] <= maxKey) {
-			val e = allEntities[i];
+		while(i < size && keys.items[i] <= maxKey) {
+			val e = allEntities.items[i];
 			if(e !== entity && abs(e.x - x) <= nearbyThreshold && abs(e.y - y) <= nearbyThreshold && e.distanceTo(entity) <= nearbyThreshold)
 				output.add(e);
 			i++;
@@ -85,7 +85,7 @@ class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold
 		var hi = size;
 		while(lo < hi) {
 			val mid = (lo + hi) ushr 1;
-			if(keys[mid] < key)
+			if(keys.items[mid] < key)
 				lo = mid + 1;
 			else
 				hi = mid;
