@@ -37,8 +37,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 		val offsetX = world.cameraX;
 		val offsetY = world.cameraY;
 
-		for(i in 0 until allEntities.size) {
-			val entity = allEntities.items[i];
+		for(entity in allEntities.items) {
 			// 보이는 개체만 그리기 (자원 낭비 감소)
 			val maxEntityLength = max2(entity.width, entity.height);
 			val entityX = entity.x;
@@ -54,8 +53,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 		val world = allEntities.items[0].world;
 		val isFrozen = (world is Freezable && world.isFrozen);
 
-		for(i in 0 until allEntities.size) {
-			val entity = allEntities.items[i];
+		for(entity in allEntities.items) {
 			if(!isFrozen || entity.isUpdatableWhileFrozen)
 				entity.update(delta);
 			entity.forceUpdate(delta);
@@ -63,7 +61,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	}
 
 	override fun dispose() {
-		for(i in 0 until allEntities.size)
-			allEntities.items[i].dispose();
+		for(entity in allEntities.items)
+			entity.dispose();
 	}
 }

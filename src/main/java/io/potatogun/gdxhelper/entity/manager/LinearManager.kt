@@ -50,19 +50,15 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 
 		// 제거 큐 처리
 		if(removeQueue.size > 0) {
-			for(i in 0 until removeQueue.size) {
-				val entity = removeQueue.items[i];
+			for(entity in removeQueue.items)
 				allEntities.removeValue(entity, true);
-			}
 			removeQueue.clear();
 		}
 
 		// 추가 큐 처리
 		if(addQueue.size > 0) {
-			for(i in 0 until addQueue.size) {
-				val entity = addQueue.items[i];
+			for(entity in addQueue.items)
 				allEntities.add(entity);
-			}
 			addQueue.clear();
 		}
 	}
@@ -85,9 +81,7 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 
 		// Entity#setWorld를 했는데 새 월드를 한 번도 연 적이 없어서 update가 되지 않아 실제로는 추가되지 않고 고립되는 상황 방지
 		if(addQueue.size > 0)
-			for(i in 0 until addQueue.size) {
-				val entity = addQueue.items[i];
+			for(entity in addQueue.items)
 				entity.dispose();
-			}
 	}
 }
