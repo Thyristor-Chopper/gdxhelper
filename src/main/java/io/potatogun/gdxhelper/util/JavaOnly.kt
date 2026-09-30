@@ -15,7 +15,7 @@ package io.potatogun.gdxhelper.util;
  */
 @RequiresOptIn(
 	level = RequiresOptIn.Level.ERROR,
-	message = "this class, constructor, field, function or property is meant to be used in Java only"
+	message = "this class, constructor, field, function or property is meant to be used in Java only (pass '@OptIn(JavaOnly::class)' to override)"
 )
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD, AnnotationTarget.CLASS, AnnotationTarget.CONSTRUCTOR, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
