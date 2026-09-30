@@ -2,7 +2,6 @@
 package io.potatogun.gdxhelper.collections;
 
 import com.badlogic.gdx.utils.Array as GdxArray;
-import com.badlogic.gdx.utils.ArraySupplier;
 
 import kotlin.random.Random;
 
@@ -22,7 +21,7 @@ inline fun <T> GdxArray<T>.createView(): ArrayView<T> = ArrayView<T>(this);
  *
  * @return 복사된 배열
  */
-@JvmOverloads fun <T> GdxArray<T>.clone(): GdxArray<T> {
+fun <T> GdxArray<T>.clone(): GdxArray<T> {
 	val output = GdxArray<T>(ordered, size);
 	for(i in 0 until size)
 		output.add(this[i]);
@@ -34,7 +33,7 @@ inline fun <T> GdxArray<T>.createView(): ArrayView<T> = ArrayView<T>(this);
  *
  * @param output   대상 배열
  */
-@JvmOverloads fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
+fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
 	output.clear();
 	for(i in 0 until size)
 		output.add(this[i]);
