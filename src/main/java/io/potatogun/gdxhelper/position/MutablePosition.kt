@@ -35,7 +35,7 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	 *
 	 * @param toAdd 더할 양
 	 */
-	fun addX(toAdd: Float) {
+	open fun addX(toAdd: Float) {
 		x += toAdd;
 	}
 
@@ -44,7 +44,7 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	 *
 	 * @param toAdd 더할 양
 	 */
-	fun addY(toAdd: Float) {
+	open fun addY(toAdd: Float) {
 		y += toAdd;
 	}
 
@@ -54,7 +54,7 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	 * @param x 더할 X 양
 	 * @param y 더할 Y 양
 	 */
-	fun add(x: Float, y: Float) {
+	open fun add(x: Float, y: Float) {
 		this.x += x;
 		this.y += y;
 	}
@@ -65,7 +65,7 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	 * @param x 새 X 좌표
 	 * @param y 새 Y 좌표
 	 */
-	fun set(x: Float, y: Float) {
+	open fun set(x: Float, y: Float) {
 		this.x = x;
 		this.y = y;
 	}
@@ -76,7 +76,7 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	 * @param x 새 X 좌표
 	 * @param y 새 Y 좌표
 	 */
-	fun set(position: Position) {
+	open fun set(position: Position) {
 		this.x = position.x;
 		this.y = position.y;
 	}
