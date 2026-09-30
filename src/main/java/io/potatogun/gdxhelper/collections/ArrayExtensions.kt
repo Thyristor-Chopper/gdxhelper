@@ -20,13 +20,12 @@ inline fun <T> GdxArray<T>.createView(): ArrayView<T> = ArrayView<T>(this);
 /**
  * 배열의 모든 원소를 지정한 배열로 복사한다.(각 원소는 얕은 복사)
  *
- * @param supplier 내장 배열 생성기 (경고: 반드시 원래 배열과 동일해야 한다.)
  * @return 복사된 배열
  */
-@JvmOverloads fun <T> GdxArray<T>.clone(supplier: ArraySupplier<Array<T>>? = null): GdxArray<T> {
-	val output = if(supplier != null) GdxArray<T>(ordered, size, supplier) else GdxArray<T>(ordered, size);
+@JvmOverloads fun <T> GdxArray<T>.clone(): GdxArray<T> {
+	val output = GdxArray<T>(ordered, size);
 	for(i in 0 until size)
-		output.add(this.items[i]);
+		output.add(this[i]);
 	return output;
 }
 
@@ -34,14 +33,9 @@ inline fun <T> GdxArray<T>.createView(): ArrayView<T> = ArrayView<T>(this);
  * 배열의 모든 원소를 지정한 배열로 복사한다.(각 원소는 얕은 복사)
  *
  * @param output   대상 배열
- * @param optimize 최적화 여부 (경고: 원 배열에 ArraySupplier를 사용했고 그 자료형이 대상 배열과 동일한 경우에만 써야 한다.)
  */
-@JvmOverloads fun <T> GdxArray<T>.clone(output: GdxArray<T>, optimize: Boolean = false) {
+@JvmOverloads fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
 	output.clear();
-	if(optimize)
-		for(i in 0 until size)
-			output.add(this.items[i]);
-	else
-		for(i in 0 until size)
-			output.add(this[i]);
+	for(i in 0 until size)
+		output.add(this[i]);
 }

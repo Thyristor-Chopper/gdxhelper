@@ -202,7 +202,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 			children!!.add(node1, node2, node3, node4);
 
 			val existing = entityArrayPool.obtain();
-			entities.clone(existing, true);
+			entities.clone(existing);
 			entities.clear();
 			for(i in 0 until existing.size) {
 				val entity = existing[i];
