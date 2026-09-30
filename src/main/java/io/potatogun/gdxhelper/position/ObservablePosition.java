@@ -32,6 +32,7 @@ public final class ObservablePosition extends MutablePosition {
 	@Override
 	public void setX(float x) {
 		if(this.x == x) return;
+
 		this.x = x;
 
 		for(int i=0; i<changeHandlers.size; i++)
@@ -40,6 +41,8 @@ public final class ObservablePosition extends MutablePosition {
 
 	@Override
 	public void addX(float toAdd) {
+		if(toAdd == 0f) return;
+
 		x += toAdd;
 
 		for(int i=0; i<changeHandlers.size; i++)
@@ -54,6 +57,7 @@ public final class ObservablePosition extends MutablePosition {
 	@Override
 	public void setY(float y) {
 		if(this.y == y) return;
+
 		this.y = y;
 
 		for(int i=0; i<changeHandlers.size; i++)
@@ -62,6 +66,8 @@ public final class ObservablePosition extends MutablePosition {
 
 	@Override
 	public void addY(float toAdd) {
+		if(toAdd == 0f) return;
+
 		y += toAdd;
 
 		for(int i=0; i<changeHandlers.size; i++)
@@ -70,6 +76,8 @@ public final class ObservablePosition extends MutablePosition {
 
 	@Override
 	public void set(float x, float y) {
+		if(this.x == x && this.y == y) return;
+
 		this.x = x;
 		this.y = y;
 
@@ -79,8 +87,12 @@ public final class ObservablePosition extends MutablePosition {
 
 	@Override
 	public void set(Position position) {
-		x = position.getX();
-		y = position.getY();
+		final float newX = position.getX();
+		final float newY = position.getY();
+		if(x == newX && y == newY) return;
+
+		x = newX;
+		y = newY;
 
 		for(int i=0; i<changeHandlers.size; i++)
 			changeHandlers.items[i].accept(x, y);
@@ -88,6 +100,8 @@ public final class ObservablePosition extends MutablePosition {
 
 	@Override
 	public void add(float x, float y) {
+		if(x == 0f && y == 0f) return;
+
 		this.x += x;
 		this.y += y;
 
