@@ -61,7 +61,6 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 			if(wasRegistered) value.entities.add(this);
 
 			// 별칭에 반영
-			@OptIn(JavaOnly::class)
 			level = value;
 		};
 	/**
