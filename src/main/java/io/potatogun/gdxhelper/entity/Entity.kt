@@ -88,7 +88,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	@JvmField val position = ObservablePosition(x, y).apply {
 		attachObserver { x, y ->
 			polygon.setPosition(x, y);
-			world.entities.updatePosition(this@Entity);
+			this.world.entities.updatePosition(this@Entity);
 		};
 	};
 	// x과 y를 필드로 바로 노출 (내부적으로 position과 상호작용)
