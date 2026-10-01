@@ -92,9 +92,9 @@ interface View<T> : Iterable<T> {
 	fun toArray(output: GdxArray<T>);
 
 	/**
-	 * 순회기를 반환한다.
+	 * 반복자를 반환한다.
 	 *
-	 * @return 순회기
+	 * @return 반복자
 	 */
 	override fun iterator(): Iterator<T>;
 }
