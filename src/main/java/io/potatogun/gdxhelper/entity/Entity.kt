@@ -71,7 +71,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 *
 	 * 외부에서는 여전히 getWorld()/setWorld(world)를 사용한다.
 	 */
-	@JavaOnly @JvmField protected var level = world;  // 자바는 requiresoptin 주석을 무시하는 특성 이용
+	@JvmField protected var level = world;
 	/**
 	 * draw에서 사용하는 절반 가로 길이 캐시
 	 */
@@ -88,7 +88,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	@JvmField val position = ObservablePosition(x, y).apply {
 		attachObserver { x, y ->
 			polygon.setPosition(x, y);
-			this.world.entities.updatePosition(this@Entity);
+			this@Entity.world.entities.updatePosition(this@Entity);
 		};
 	};
 	// x과 y를 필드로 바로 노출 (내부적으로 position과 상호작용)
@@ -288,7 +288,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 		// 샷건 내 360도 구현 참고함
 		val x = Input.mouseX.toFloat();
 		val y = Input.mouseY.toFloat();
-		rotation = toDegrees(atan2((Window.height - y) - (this.y - world.cameraY + Window.height * 0.5f), x - (this.x - world.cameraX + Window.width * 0.5f)).toDouble()).toFloat() - 90f;
+		rotation = toDegrees(atan2((Window.height - y) - (this.y - level.cameraY + Window.height * 0.5f), x - (this.x - level.cameraX + Window.width * 0.5f)).toDouble()).toFloat() - 90f;
 	}
 
 	/**
@@ -350,7 +350,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 * 개체를 월드에서 제거하고 등록을 해제하고 자원도 해제한다.
 	 */
 	fun remove() {
-		world.entities.remove(this);
+		level.entities.remove(this);
 		dispose();
 	}
 
