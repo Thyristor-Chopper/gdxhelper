@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input as GdxInput;
 import com.badlogic.gdx.InputProcessor;
 
+import io.potatogun.gdxhelper.collections.WeakMutableSet;
+
 /**
  * 키보드 입력을 편리하게 읽는 도우미
  */
 object Input {
-	private var scrolledUp = false;
-	private var scrolledDown = false;
-	private var keyDown = false;
-	private var keyJustDown = false;
 	/**
 	 * 현재 반디의 X 좌표
 	 */
@@ -22,48 +20,47 @@ object Input {
 	 */
 	@JvmStatic val mouseY: Int
 		inline get() = Gdx.input.getY();
+	private val inputListeners = WeakMutableSet<InputListener>();
 
 	init {
 		// https://stackoverflow.com/questions/17644429/libgdx-mouse-just-clicked 참고함
 		Gdx.input.setInputProcessor(object : InputProcessor {
-			override fun scrolled(amountX: Float, amountY: Float): Boolean {
-				if(amountY > 0f) {
-					scrolledDown = true;
-					Gdx.app.postRunnable { scrolledDown = false };
-					return true;
-				} else if(amountY < 0f) {
-					scrolledUp = true;
-					Gdx.app.postRunnable { scrolledUp = false };
-					return true;
-				}
-				return false;
-			}
+			override fun scrolled(amountX: Float, amountY: Float): Boolean = forEachListeners { it.onScroll(amountX, amountY) };
 
-			override fun keyDown(code: Int): Boolean {
-				keyJustDown = true;
-				keyDown = true;
-				Gdx.app.postRunnable { keyJustDown = false };
-				return true;
-			}
+			override fun keyDown(code: Int): Boolean = forEachListeners { it.onKeyDown(code) };
 
-			override fun keyUp(code: Int): Boolean {
-				keyDown = false;
-				keyJustDown = false;
-				return true;
-			}
+			override fun keyUp(code: Int): Boolean = forEachListeners { it.onKeyUp(code) };
 
-			override fun mouseMoved(x: Int, y: Int): Boolean = false;
+			override fun mouseMoved(x: Int, y: Int): Boolean = forEachListeners { it.onMouseMove(x, y) };
 
-			override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean = false;
+			override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean = forEachListeners { it.onTouchDrag(x, y, pointer) };
 
-			override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = false;
+			override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchDown(x, y, pointer, button) };
 
-			override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = false;
+			override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchUp(x, y, pointer, button) };
 
-			override fun touchCancelled(x: Int, y: Int, pointer: Int, button: Int): Boolean = false;
+			override fun touchCancelled(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchCancel(x, y, pointer, button) };
 			
-			override fun keyTyped(char: Char): Boolean = false;
+			override fun keyTyped(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
 		});
+	}
+
+	private inline fun forEachListeners(callback: (InputListener) -> Boolean): Boolean {
+		var processed = false;
+		val iterator = inputListeners.iterator();
+		while(iterator.hasNext()) {
+			val listener = iterator.next();
+			processed = callback(listener) || processed;
+		}
+		return processed;
+	}
+
+	fun registerListener(listener: InputListener) {
+		inputListeners.add(listener);
+	}
+
+	fun unregisterListener(listener: InputListener) {
+		inputListeners.remove(listener);
 	}
 
 	/**
@@ -85,20 +82,6 @@ object Input {
 	@JvmStatic inline fun isKeyJustPressed(key: Int): Boolean = Gdx.input.isKeyJustPressed(key);
 
 	/**
-	 * 아무 키라도 눌려 있는지의 여부
-	 *
-	 * @return 눌렸으면 true
-	 */
-	@JvmStatic fun isAnyKeyPressed(): Boolean = keyDown;
-
-	/**
-	 * 아무 키를 방금 눌렀는지의 여부
-	 *
-	 * @return 눌렀으면 true
-	 */
-	@JvmStatic fun isAnyKeyJustPressed(): Boolean = keyJustDown;
-
-	/**
 	 * 지정한 마우스 단추가 눌려 있는지의 여부
 	 *
 	 * @param button 단추의 종류
@@ -113,20 +96,6 @@ object Input {
 	 * @return 눌렀으면 true
 	 */
 	@JvmStatic inline fun isButtonJustPressed(button: Int): Boolean = Gdx.input.isButtonJustPressed(button);
-
-	/**
-	 * 방금 아래로 스크롤됐는지의 여부
-	 *
-	 * @return 이동했으면 true
-	 */
-	@JvmStatic fun isScrolledDown(): Boolean = scrolledDown;
-
-	/**
-	 * 방금 위로 스크롤됐는지의 여부
-	 *
-	 * @return 이동했으면 true
-	 */
-	@JvmStatic fun isScrolledUp(): Boolean = scrolledUp;
 
 	// 자주 쓰는 키 상수를 짧은 이름으로 재노출.
 	//   원본은 Input.Keys.LEFT 처럼 길어서 자주 쓸수록 번거롭다.

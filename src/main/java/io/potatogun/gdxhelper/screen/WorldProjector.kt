@@ -3,7 +3,7 @@ package io.potatogun.gdxhelper.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import io.potatogun.gdxhelper.collections.weakMutableSetOf;
+import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.world.World;
 
@@ -88,7 +88,7 @@ open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 
 	companion object {
 		// 생성된 모든 인스턴스를 관리하는 목록이다. 생성자에서 자동으로 추가한다. 누가 설마 자바 unsafe의 allocateInstance를 쓰진 않겠지
-		private val instances = weakMutableSetOf<WorldProjector>();
+		private val instances = WeakMutableSet<WorldProjector>();
 
 		/**
 		 * 지정한 월드를 보여주고 있는 뷰어를 찾는다.
