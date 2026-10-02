@@ -99,6 +99,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
 	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
 		val e = view[i];
+		if(e === entity) continue;
 		val distance = e.distanceTo(entity);
 		if(distance < minDistance) {
 			minDistance = distance;
@@ -126,7 +127,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
 	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
 		val e = view[i];
-		if(condition(e)) {
+		if(e !== entity && condition(e)) {
 			val distance = e.distanceTo(entity);
 			if(distance < minDistance) {
 				minDistance = distance;
@@ -170,7 +171,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
 	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
 		val e = view[i];
-		if(!type.isInstance(e)) continue;
+		if(e === entity || !type.isInstance(e)) continue;
 		val distance = e.distanceTo(entity);
 		if(distance < minDistance) {
 			minDistance = distance;
@@ -198,7 +199,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
 	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
 		val e = view[i];
-		if(e is T && condition(e)) {
+		if(e !== entity && e is T && condition(e)) {
 			val distance = e.distanceTo(entity);
 			if(distance < minDistance) {
 				minDistance = distance;
@@ -226,7 +227,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>, cond
 	var minDistance = Float.MAX_VALUE;
 	for(i in 0 until view.size) {
 		val e = view[i];
-		if(type.isInstance(e) && condition.test(e as T)) {
+		if(e !== entity && type.isInstance(e) && condition.test(e as T)) {
 			val distance = e.distanceTo(entity);
 			if(distance < minDistance) {
 				minDistance = distance;
