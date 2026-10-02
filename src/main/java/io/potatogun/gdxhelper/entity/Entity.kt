@@ -38,30 +38,39 @@ import kotlin.math.atan2;
  * @property height  세로 크기
  * @property texture 개체 텍스처(없을 수도 있음)
  */
-abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
+abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: Float = 0f, @JvmField val width: Float, @JvmField val height: Float, @JvmField protected val texture: Texture? = null) : Disposable, Updatable {
 	/**
 	 * 개체가 속한 월드
 	 */
-	var world = world
-		set(value) {
+	var world: World? = world
+		set(newWorld) {
+			val previousWorld = field;
+
 			// 동일 값이면 패스
-			if(field === value) return;
+			if(previousWorld === newWorld) return;
 
 			// 개체 관리자에 등록됐는지 먼저 확인
-			val entityView = field.entities.view;
-			val wasRegistered = if(entityView is ArrayView) entityView.contains(this, true) else entityView.contains(this);
+			val wasRegistered: Boolean;
+			if(previousWorld != null) {
+				val entityView = previousWorld.entities.view;
+				wasRegistered = if(entityView is ArrayView) entityView.contains(this, true) else entityView.contains(this);
+			} else {
+				wasRegistered = false;
+			}
 
 			// 등록됐다면 월드 이동 (1)
-			if(wasRegistered) field.entities.remove(this);
+			if(wasRegistered)
+				previousWorld!!.entities.remove(this);  // wasRegistered이 참이 되는 조건은 위를 보면 알겠지만 previousWorld가 not null여야 함
 
 			// 새 월드 할당
-			field = value;
+			field = newWorld;
 
 			// 등록됐다면 월드 이동 (2)
-			if(wasRegistered) value.entities.add(this);
+			if(wasRegistered && newWorld != null)
+				newWorld.entities.add(this);
 
 			// 별칭에 반영
-			level = value;
+			level = newWorld;
 		};
 	/**
 	 * 자바 개발자가 자식 클래스(구현체) 내에서 getWorld()하는 번거로움이나 오버헤드를 줄이기 위한 별칭
@@ -70,7 +79,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 *
 	 * 외부에서는 여전히 getWorld()/setWorld(world)를 사용한다.
 	 */
-	@JvmField protected var level = world;
+	@JvmField protected var level: World? = world;
 	/**
 	 * draw에서 사용하는 절반 가로 길이 캐시
 	 */
@@ -87,7 +96,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	@JvmField val position = ObservablePosition(x, y).apply {
 		attachObserver { x, y ->
 			polygon.setPosition(x, y);
-			this@Entity.world.entities.updatePosition(this@Entity);
+			this@Entity.world?.let { it.entities.updatePosition(this@Entity) };
 		};
 	};
 	// x과 y를 필드로 바로 노출 (내부적으로 position과 상호작용)
@@ -284,10 +293,13 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 * 마우스를 향해 회전한다.
 	 */
 	fun rotateToCursor() {
+		val world = level;
+		val cameraX = world?.cameraX ?: 0f;
+		val cameraY = world?.cameraY ?: 0f;
 		// 샷건 내 360도 구현 참고함
 		val x = Input.mouseX.toFloat();
 		val y = Input.mouseY.toFloat();
-		rotation = toDegrees(atan2((Window.height - y) - (this.y - level.cameraY + Window.height * 0.5f), x - (this.x - level.cameraX + Window.width * 0.5f)).toDouble()).toFloat() - 90f;
+		rotation = toDegrees(atan2((Window.height - y) - (this.y - cameraY + Window.height * 0.5f), x - (this.x - cameraX + Window.width * 0.5f)).toDouble()).toFloat() - 90f;
 	}
 
 	/**
@@ -349,7 +361,7 @@ abstract class Entity(world: World, val name: String, x: Float, y: Float, @JvmFi
 	 * 개체를 월드에서 제거하고 등록을 해제하고 자원도 해제한다.
 	 */
 	fun remove() {
-		level.entities.remove(this);
+		world = null;
 		dispose();
 	}
 

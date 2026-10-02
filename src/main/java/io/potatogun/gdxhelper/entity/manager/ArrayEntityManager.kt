@@ -33,7 +33,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
 
-		val world = allEntities.items[0].world;
+		val world = allEntities.items[0].world!!;  // setWorld(null)을 하면 자동으로 개체 관리자에서 빠지게 됨
 		val offsetX = world.cameraX;
 		val offsetY = world.cameraY;
 
@@ -51,7 +51,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	override fun update(delta: Float) {
 		if(allEntities.size == 0) return;
 
-		val world = allEntities.items[0].world;
+		val world = allEntities.items[0].world!!;  // setWorld(null)을 하면 자동으로 개체 관리자에서 빠지게 됨...
 		val isFrozen = (world is Freezable && world.isFrozen);
 
 		for(i in 0 until allEntities.size) {

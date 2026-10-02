@@ -49,7 +49,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 	override fun add(entity: Entity): Boolean {
 		if(entity.isDisposed)
 			throw IllegalStateException("entity is disposed");
-		if(entity.world.entities !== this)
+		if(entity.world?.entities !== this)
 			throw IllegalStateException("entity belongs to a different world");
 		if(removeQueue.contains(entity, true)) {
 			removeQueue.removeValue(entity, true);

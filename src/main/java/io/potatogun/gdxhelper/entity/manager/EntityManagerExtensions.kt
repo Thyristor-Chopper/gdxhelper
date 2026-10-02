@@ -93,6 +93,7 @@ fun <T : Entity> EntityManager.getRandomOf(type: Class<T>): T? {
  * @return 개체 (없으면 null)
  */
 fun EntityManager.getClosest(entity: Entity): Entity? {
+	if(entity.world?.entities !== this) return null;
 	if(view.isEmpty) return null;
 	var closest = view[0];
 	var minDistance = Float.MAX_VALUE;
@@ -119,6 +120,7 @@ fun EntityManager.getClosest(entity: Entity): Entity? {
  * @return 개체 (없으면 null)
  */
 @JvmSynthetic inline fun EntityManager.getClosest(entity: Entity, crossinline condition: (Entity) -> Boolean): Entity? {
+	if(entity.world?.entities !== this) return null;
 	if(view.isEmpty) return null;
 	var closest: Entity? = null;
 	var minDistance = Float.MAX_VALUE;
@@ -162,6 +164,7 @@ fun EntityManager.getClosest(entity: Entity, condition: Predicate<Entity>): Enti
  * @return 개체 (없으면 null)
  */
 fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? {
+	if(entity.world?.entities !== this) return null;
 	if(view.isEmpty) return null;
 	var closest: T? = null;
 	var minDistance = Float.MAX_VALUE;
@@ -189,6 +192,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
  * @return 개체 (없으면 null)
  */
 @JvmSynthetic inline fun <reified T : Entity> EntityManager.getClosestOf(entity: Entity, crossinline condition: (T) -> Boolean): T? {
+	if(entity.world?.entities !== this) return null;
 	if(view.isEmpty) return null;
 	var closest: T? = null;
 	var minDistance = Float.MAX_VALUE;
@@ -216,6 +220,7 @@ fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>): T? 
  * @return 개체 (없으면 null)
  */
 fun <T : Entity> EntityManager.getClosestOf(entity: Entity, type: Class<T>, condition: Predicate<T>): T? {
+	if(entity.world?.entities !== this) return null;
 	if(view.isEmpty) return null;
 	var closest: T? = null;
 	var minDistance = Float.MAX_VALUE;
