@@ -60,7 +60,12 @@ open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 		val currentWorld: World? = projectingWorld;
 		if(currentWorld == null) return false;
 		projectingWorld = null;
-		if(dispose) Gdx.app.postRunnable { currentWorld.dispose() };
+		if(dispose)
+			Gdx.app.postRunnable {
+				try {
+					currentWorld.dispose();
+				} catch(e: IllegalArgumentException) {}
+			};
 		return true;
 	}
 
