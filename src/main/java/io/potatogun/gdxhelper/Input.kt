@@ -1,10 +1,11 @@
-package io.potatogun.gdxhelper.util;
+package io.potatogun.gdxhelper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input as GdxInput;
 import com.badlogic.gdx.InputProcessor;
 
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
+import io.potatogun.gdxhelper.util.InputListener;
 
 /**
  * 키보드 입력을 편리하게 읽는 도우미
