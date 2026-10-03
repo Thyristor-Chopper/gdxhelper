@@ -73,12 +73,6 @@ open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 		projectingWorld?.updateCamera();
 	}
 
-	// 월드 갱신
-	override fun update(delta: Float) {
-		// 월드 갱신
-		projectingWorld?.update(delta);
-	}
-
 	// 일반적으로 월드가 아닌 뷰어 자체의 배경은 없다(그려봤자 월드의 배경이 반투명하지 않는 이상 월드의 배경에 가려질 것이다).
 	override fun drawBackground() {}
 

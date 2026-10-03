@@ -34,7 +34,9 @@ abstract class Game : GdxGame(), Updatable {
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	override fun update(delta: Float) {}
+	override fun update(delta: Float) {
+		UpdateListeners.update(delta);
+	}
 
 	override fun render() {
 		// 상태 갱신
