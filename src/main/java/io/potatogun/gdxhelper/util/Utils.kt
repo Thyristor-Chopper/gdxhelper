@@ -108,3 +108,14 @@ inline fun getTime(): Double = (TimeUtils.millis() * 0.001);
 		callback();
 	} catch(e: Exception) {}
 }
+
+/**
+ * 지정한 종류의 예외를 무시하고 서브루틴을 실행한다.
+ *
+ * @param callback 실행할 서브루틴
+ */
+@JvmSynthetic @JvmName("safeRunOf") inline fun <reified T : Throwable> safeRun(callback: () -> Unit) {
+	try {
+		callback();
+	} catch(e: T) {}
+}

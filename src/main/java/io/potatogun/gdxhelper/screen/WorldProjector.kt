@@ -49,7 +49,7 @@ open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 		projectingWorld = world;
 		world.updateCamera();
 		if(disposePreviousWorld && previousWorld != null)
-			Gdx.app.postRunnable { safeRun { previousWorld.dispose() } };
+			Gdx.app.postRunnable { safeRun<IllegalArgumentException> { previousWorld.dispose() } };
 	}
 
 	/**
@@ -63,7 +63,7 @@ open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 		if(currentWorld == null) return false;
 		projectingWorld = null;
 		if(dispose)
-			Gdx.app.postRunnable { safeRun { currentWorld.dispose() } };
+			Gdx.app.postRunnable { safeRun<IllegalArgumentException> { currentWorld.dispose() } };
 		return true;
 	}
 
