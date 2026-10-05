@@ -43,7 +43,7 @@ interface EntityManager : Disposable, Updatable {
 	fun remove(entity: Entity): Boolean;
 
 	/**
-	 * 개체 등록, 제거 대기열을 커밋한다.
+	 * 개체 등록, 제거 대기열을 반영한다.
 	 */
 	fun commit();
 
