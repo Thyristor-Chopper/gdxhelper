@@ -365,6 +365,8 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 		dispose();
 	}
 
+	override fun toString(): String = "$name$position";
+
 	/**
 	 * 이 객체가 갖고 있는 GPU 자원을 정리한다.
 	 *   화면이 닫힐 때 한 번 호출된다.
