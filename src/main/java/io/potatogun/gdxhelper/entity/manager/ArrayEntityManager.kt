@@ -49,7 +49,7 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	}
 
 	override fun update(delta: Float) {
-		if(allEntities.size >= 0) {
+		if(allEntities.size > 0) {
 			val world = allEntities.items[0].world!!;  // setWorld(null)을 하면 자동으로 개체 관리자에서 빠지게 됨...
 			val isFrozen = (world is Freezable && world.isFrozen);
 
