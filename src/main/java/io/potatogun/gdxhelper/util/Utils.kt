@@ -95,7 +95,7 @@ inline fun <T> sortWith(array: GdxArray<T>, comparator: Comparator<T>) {
 inline fun getTime(): Double = (TimeUtils.millis() * 0.001);
 
 /**
- * 예외를 무시하고 서브루틴을 실행한다.
+ * 예외를 무시하고 서브루틴을 실행한다. (코틀린 전용)
  *
  * Throwable이 아닌 Exception을 catch하기 때문에 예외가 아닌 오류(AbstractMethodError 등)는 잡지 않는다.
  *
@@ -110,12 +110,45 @@ inline fun getTime(): Double = (TimeUtils.millis() * 0.001);
 }
 
 /**
- * 지정한 종류의 예외를 무시하고 서브루틴을 실행한다.
+ * 예외를 무시하고 서브루틴을 실행한다. (자바 전용)
+ *
+ * Throwable이 아닌 Exception을 catch하기 때문에 예외가 아닌 오류(AbstractMethodError 등)는 잡지 않는다.
+ *
+ * 사용을 권장하지 않는다.
  *
  * @param callback 실행할 서브루틴
  */
-@JvmSynthetic @JvmName("safeRunOf") inline fun <reified T : Throwable> safeRun(callback: () -> Unit) {
+@Deprecated(message = "using this function is discouraged due to lambda overhead such as variable capturing; manually use the try..catch block", level = DeprecationLevel.WARNING)
+@SinceKotlin("9999.9")
+fun safeRun(callback: Runnable) {
+	safeRun(callback::run);
+}
+
+/**
+ * 지정한 종류의 예외를 무시하고 서브루틴을 실행한다. (코틀린 전용)
+ *
+ * @param callback 실행할 서브루틴
+ */
+@JvmSynthetic
+@JvmName("safeRunFrom")
+inline fun <reified T : Throwable> safeRun(callback: () -> Unit) {
 	try {
 		callback();
 	} catch(e: T) {}
+}
+
+/**
+ * 지정한 종류의 예외를 무시하고 서브루틴을 실행한다. (자바 전용)
+ *
+ * @param callback 실행할 서브루틴
+ */
+@Deprecated(message = "using this function is discouraged due to lambda overhead such as variable capturing; manually use the try..catch block", level = DeprecationLevel.WARNING)
+@SinceKotlin("9999.9")
+fun <T : Throwable> safeRunFrom(throwable: Class<T>, callback: Runnable) {
+	try {
+		callback.run();
+	} catch(e: Throwable) {
+		if(!throwable.isInstance(e))
+			throw e;
+	}
 }
