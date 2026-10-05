@@ -1,4 +1,3 @@
-@file:JvmSynthetic
 @file:JvmName("PoolUtils")
 package io.potatogun.gdxhelper.pools;
 
