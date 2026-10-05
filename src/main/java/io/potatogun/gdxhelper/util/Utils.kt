@@ -93,3 +93,18 @@ inline fun <T> sortWith(array: GdxArray<T>, comparator: Comparator<T>) {
  * 현재 유닉스 시간(초 단위)을 가져온다.
  */
 inline fun getTime(): Double = (TimeUtils.millis() * 0.001);
+
+/**
+ * 예외를 무시하고 서브루틴을 실행한다.
+ *
+ * Throwable이 아닌 Exception을 catch하기 때문에 예외가 아닌 오류(AbstractMethodError 등)는 잡지 않는다.
+ *
+ * 코틀린의 runCatching은 디컴파일해서 확인한 결과 주변에 쓸 데 없는 코드들이 달라붙으므로 그냥 실행만 하는 게 목적이면 이 함수를 사용한다.
+ *
+ * @param callback 실행할 서브루틴
+ */
+@JvmSynthetic inline fun safeRun(callback: () -> Unit) {
+	try {
+		callback();
+	} catch(e: Exception) {}
+}
