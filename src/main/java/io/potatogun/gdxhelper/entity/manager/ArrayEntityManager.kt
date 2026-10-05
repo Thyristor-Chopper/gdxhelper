@@ -60,6 +60,8 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 				entity.update(delta);
 			entity.forceUpdate(delta);
 		}
+
+		commit();
 	}
 
 	override fun dispose() {

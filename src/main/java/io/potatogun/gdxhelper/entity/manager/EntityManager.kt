@@ -24,6 +24,8 @@ interface EntityManager : Disposable, Updatable {
 	/**
 	 * 개체를 등록한다. 구현자는 개체의 자원이 살아있는지 확인해야 한다.
 	 *
+	 * 대기열을 사용하여 구현해야 한다.
+	 *
 	 * @param entity 등록할 개체
 	 * @return 성공 여부(중복 시 실패)
 	 * @throws IllegalArgumentException 추가하려는 개체가 다른 월드에 속해 있거나 개체의 자원이 이미 해제됐을 때
@@ -33,10 +35,17 @@ interface EntityManager : Disposable, Updatable {
 	/**
 	 * 개체를 제거한다.
 	 *
+	 * 대기열을 사용하여 구현해야 한다.
+	 *
 	 * @param entity 제거할 개체
 	 * @return 성공 여부
 	 */
 	fun remove(entity: Entity): Boolean;
+
+	/**
+	 * 개체 등록, 제거 대기열을 커밋한다.
+	 */
+	fun commit();
 
 	/**
 	 * 이동한 개체의 새 위치에 맞게 데이타를 갱신한다.
@@ -76,6 +85,8 @@ interface EntityManager : Disposable, Updatable {
 	/**
 	 * 등록된 모든 개체에게 'update(delta) 한 프레임 진행'을 시킨다.
 	 *   개체 관리자 자체도 갱신사항이 있다면 여기서 처리하면 된다.
+	 *
+	 * 갱신 이후 commit()도 호출하여 추가/제거 대기열을 처리한다.
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */

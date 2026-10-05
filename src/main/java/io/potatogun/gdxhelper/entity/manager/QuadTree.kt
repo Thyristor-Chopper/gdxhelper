@@ -72,9 +72,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 		return true;
 	}
 
-	override fun update(delta: Float) {
-		super.update(delta);
-
+	override fun commit() {
 		if(removeQueue.size > 0) {
 			for(i in 0 until removeQueue.size) {
 				val entity = removeQueue.items[i];

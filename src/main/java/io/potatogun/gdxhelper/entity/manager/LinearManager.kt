@@ -44,10 +44,7 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 		return true;
 	}
 
-	override fun update(delta: Float) {
-		// 매 프레임 개체 갱신
-		super.update(delta);
-
+	override fun commit() {
 		// 제거 큐 처리
 		if(removeQueue.size > 0) {
 			for(i in 0 until removeQueue.size) {
