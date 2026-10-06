@@ -140,6 +140,8 @@ inline fun <reified T : Throwable> safeRun(callback: () -> Unit) {
 /**
  * 지정한 종류의 예외를 무시하고 서브루틴을 실행한다. (자바 전용)
  *
+ * 사용을 권장하지 않는다.
+ *
  * @param callback 실행할 서브루틴
  */
 @Deprecated(message = "using this function is discouraged due to lambda overhead such as variable capturing; manually use the try..catch block", level = DeprecationLevel.WARNING)
