@@ -244,8 +244,6 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 	/**
 	 * 다른 객체와 충돌했는지 검사한다.
 	 *
-	 * AABB(축 정렬 경계 상자) 방식이다.
-	 *
 	 * 두 사각형 영역이 한 픽셀이라도 겹치면 true.
 	 *   더 정밀한 판정(원, 다각형, 픽셀 단위)이 필요하면 서브클래스에서
 	 *   별도 메서드를 만들거나 이 메서드를 override해서 바꿀 수 있다.
