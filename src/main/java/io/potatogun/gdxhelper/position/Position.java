@@ -84,7 +84,7 @@ public class Position {
 
 	@Override
 	public String toString() {
-		return "($x, $y)";
+		return "(" + x + ", " + y + ")";
 	}
 
 	public final float component1() {
