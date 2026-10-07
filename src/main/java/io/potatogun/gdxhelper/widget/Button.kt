@@ -22,7 +22,7 @@ import io.potatogun.gdxhelper.Window;
  * @param    y       Y 좌표 계산 함수
  * @param    width   단추 너비 계산 함수
  * @param    height  단추 높이 계산 함수
- * @param    caption 단추 라벨
+ * @param    caption 단추 라벨 - 영문자 앞에 '&'를 붙이면 단축키가 되며 Windows와 다르게 Alt를 안 눌러도 작동한다. 영문자 이외에는 지원하지 않는다.
  * @property skin    단추의 스킨(텍스처 묶음)
  * @property tint    단추의 오버레이 색(흰색: 변경없음)
  * @property onClick 단추를 눌렀을 때 실행할 서브루틴
