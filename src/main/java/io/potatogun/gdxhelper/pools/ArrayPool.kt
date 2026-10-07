@@ -17,13 +17,15 @@ open class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, pri
 	 *
 	 * 간단한 함수고 원래는 직접 호출처에서 작성했을 코드라서 인라인이다.
 	 *
+	 * 지정한 크기보다 작다고 shrinking을 하지는 않는다.
+	 *
 	 * @param capacity 필요한 배열 크기
 	 */
 	inline fun obtain(capacity: Int): GdxArray<T> {
 		val array = obtain();
 		val length = array.items.size;  // 디컴파일해서 확인한 결과 메쏘드 호출 오버헤드 없이 jvm arraylength 바이트코드를 쓰는 .length 접근으로 바뀐다.
 		if(length < capacity)
-			array.ensureCapacity(capacity - length);
+			array.ensureCapacity(capacity - length);  // 소스코드를 보면 원래보다 크면 크기 증가 (https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils/Array.java)
 		return array;
 	}
 
