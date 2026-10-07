@@ -17,7 +17,7 @@ abstract class Game : GdxGame(), Updatable {
 	// Gdx.graphics.width를 매번 실수형으로 변환하는 오버헤드를 없애기 위해 창 크기를 캐시하고 크기가 바뀔 때만 업데이트한다.
 	override fun resize(width: Int, height: Int) {
 		// 창 크기 캐시
-		Window.updateWindowDimensions();
+		Window.updateWindowSize(width, height);
 
 		// 화면에 크기 조절 이벤트 발생
 		val screen = getScreen();
