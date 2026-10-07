@@ -77,6 +77,9 @@ object Window {
 
 	/**
 	 * 창 크기 캐시를 최신화한다.
+	 *
+	 * @param intWidth  정수 너비
+	 * @param intHeight 정수 높이
 	 */
 	@JvmSynthetic internal fun updateWindowSize(intWidth: Int, intHeight: Int) {
 		this.intWidth = intWidth;
