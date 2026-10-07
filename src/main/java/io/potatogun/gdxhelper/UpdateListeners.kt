@@ -1,13 +1,13 @@
 package io.potatogun.gdxhelper;
 
 import com.badlogic.gdx.utils.Array as GdxArray;
+import com.badlogic.gdx.utils.IdentityMap;
+import com.badlogic.gdx.utils.IdentitySet;
 
-import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.collections.toArray;
 import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.Updatable;
 
-import java.util.WeakHashMap;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -17,11 +17,11 @@ object UpdateListeners {
 	/**
 	 * 등록된 리스너
 	 */
-	private val listeners = WeakMutableSet<Updatable>();
+	private val listeners = IdentitySet<Updatable>();
 	/**
 	 * 갱신 조건
 	 */
-	private val conditions = WeakHashMap<Updatable, BooleanSupplier>();
+	private val conditions = IdentityMap<Updatable, BooleanSupplier>();
 	private val iterableClone = GdxArray<Updatable>(false, 128, ArraySuppliers.updatable);
 
 	/**
