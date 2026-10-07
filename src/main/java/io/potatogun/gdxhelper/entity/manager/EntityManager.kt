@@ -55,9 +55,11 @@ interface EntityManager : Disposable, Updatable {
 	fun updatePosition(entity: Entity) {}
 
 	/**
-	 * 기준 개체의 주변 개체를 가져온다.
+	 * 기준 개체의 주변 개체를 가져온다. (편의 버전)
 	 *
 	 * 구현자는 기준 개체는 제외해야 한다.
+	 *
+	 * 구현체마다 주변의 기준은 다를 수 있다.
 	 *
 	 * @param entity 기준 개체
 	 * @return 주변 개체들의 배열
@@ -65,7 +67,11 @@ interface EntityManager : Disposable, Updatable {
 	fun getNearby(entity: Entity): GdxArray<Entity>;
 
 	/**
-	 * 현재 개체의 주변 개체를 가져온다.
+	 * 현재 개체의 주변 개체를 가져온다. (GC 방지 버전)
+	 *
+	 * 구현자는 기준 개체는 제외해야 한다.
+	 *
+	 * 구현체마다 주변의 기준은 다를 수 있다.
 	 *
 	 * @param entity 기준 개체
 	 * @param output 주변 개체들의 배열
