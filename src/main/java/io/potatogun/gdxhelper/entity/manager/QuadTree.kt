@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Pool;
 import io.potatogun.gdxhelper.collections.clone;
 import io.potatogun.gdxhelper.entity.Entity;
 import io.potatogun.gdxhelper.pools.ArrayPool;
-import io.potatogun.gdxhelper.pools.UnorderedArrayPool;
 import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.max2;
 import io.potatogun.gdxhelper.util.min2;
@@ -28,7 +27,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 	private val addQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
 	private val removeQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
 	private val entityNodeMap = IdentityMap<Entity, Node>(capacity);
-	private val entityArrayPool = UnorderedArrayPool<Entity>(maxNodeEntities, supplier = ArraySuppliers.entity);
+	private val entityArrayPool = ArrayPool<Entity>(maxNodeEntities, ordered = false, supplier = ArraySuppliers.entity);
 	private val childrenPool = ArrayPool<Node>(4);
 	private val nodePool = NodePool();
 	private val root: Node;

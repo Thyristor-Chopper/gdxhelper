@@ -9,8 +9,8 @@ import io.potatogun.gdxhelper.util.ArraySuppliers;
 /**
  * 배열 풀
  */
-class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, private val autoClear: Boolean = true, private val supplier: ArraySupplier<Array<T>>? = null) : Pool<GdxArray<T>>() {
-	override fun newObject(): GdxArray<T> = if(supplier != null) GdxArray<T>(true, capacity, supplier) else GdxArray<T>(true, capacity);
+open class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, private val ordered: Boolean = true, private val autoClear: Boolean = true, private val supplier: ArraySupplier<Array<T>>? = null) : Pool<GdxArray<T>>() {
+	override fun newObject(): GdxArray<T> = if(supplier != null) GdxArray<T>(ordered, capacity, supplier) else GdxArray<T>(ordered, capacity);
 
 	override fun reset(array: GdxArray<T>) {
 		if(autoClear)
