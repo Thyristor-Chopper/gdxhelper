@@ -29,13 +29,15 @@ package io.potatogun.gdxhelper.position;
  * @property x 처음 X 좌표
  * @property y 처음 Y 좌표
  */
-open class MutablePosition(override var x: Float, override var y: Float) : Position(x, y) {
+open class KMutablePosition(override var x: Float, override var y: Float) : Position(x, y) {
 	/**
 	 * X 좌표에 지정한 값만큼 더한다.
 	 *
 	 * @param toAdd 더할 양
 	 */
 	open fun addX(toAdd: Float) {
+		if(toAdd == 0f) return;
+
 		x += toAdd;
 	}
 
@@ -45,6 +47,8 @@ open class MutablePosition(override var x: Float, override var y: Float) : Posit
 	 * @param toAdd 더할 양
 	 */
 	open fun addY(toAdd: Float) {
+		if(toAdd == 0f) return;
+
 		y += toAdd;
 	}
 

@@ -8,25 +8,16 @@ import io.potatogun.gdxhelper.function.FloatBiConsumer;
  * 위치(평면좌표)를 저장하는 좌표변경을 감지할 수 있는 레코드이다.
  */
 public final class ObservablePosition extends MutablePosition {
-	private float x;
-	private float y;
 	private final Array<FloatBiConsumer> changeHandlers = new Array<>(false, 4, FloatBiConsumer[]::new);
 
 	/**
-	 * 변경 감지 가능 좌표를 생성한다.
+	 * 변경 감지 가능 좌표객체를 생성한다.
 	 *
 	 * @param x 처음 X 좌표
 	 * @param y 처음 Y 좌표
 	 */
 	public ObservablePosition(float x, float y) {
 		super(x, y);
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public float getX() {
-		return x;
 	}
 
 	@Override
@@ -40,18 +31,13 @@ public final class ObservablePosition extends MutablePosition {
 	}
 
 	@Override
-	public void addX(float toAdd) {
-		if(toAdd == 0f) return;
+	public void addX(float addend) {
+		if(addend == 0f) return;
 
-		x += toAdd;
+		this.x += addend;
 
 		for(int i=0; i<changeHandlers.size; i++)
 			changeHandlers.items[i].accept(x, y);
-	}
-
-	@Override
-	public float getY() {
-		return y;
 	}
 
 	@Override
@@ -65,10 +51,10 @@ public final class ObservablePosition extends MutablePosition {
 	}
 
 	@Override
-	public void addY(float toAdd) {
-		if(toAdd == 0f) return;
+	public void addY(float addend) {
+		if(addend == 0f) return;
 
-		y += toAdd;
+		this.y += addend;
 
 		for(int i=0; i<changeHandlers.size; i++)
 			changeHandlers.items[i].accept(x, y);
@@ -125,10 +111,5 @@ public final class ObservablePosition extends MutablePosition {
 	 */
 	public void detachObserver(FloatBiConsumer handler) {
 		changeHandlers.removeValue(handler, true);
-	}
-
-	@Override
-	public ObservablePosition copy(float x, float y) {
-		return new ObservablePosition(x, y);
 	}
 }

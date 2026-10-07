@@ -13,7 +13,7 @@ import kotlin.math.sqrt;
  * @property x X 좌표
  * @property y Y 좌표
  */
-open class Position(open val x: Float, open val y: Float) {
+open class KPosition(open val x: Float, open val y: Float) {
 	/**
 	 * 두 위치 사이의 거리를 구한다.
 	 *
