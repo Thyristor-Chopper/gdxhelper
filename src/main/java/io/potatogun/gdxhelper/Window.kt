@@ -43,7 +43,7 @@ object Window {
 	@JvmStatic var titleBarStats: String? by Delegates.observable(null) { _, _, _ -> updateTitle() };
 
 	init {
-		updateWindowDimensions();
+		updateWindowSize(Gdx.graphics.width, Gdx.graphics.height);
 	}
 
 	/**
