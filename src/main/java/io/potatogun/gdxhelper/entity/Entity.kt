@@ -135,6 +135,8 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 	protected open val tint = Color.WHITE;
 	/**
 	 * 개체의 투명도
+	 *
+	 * 주의: tint가 공유 객체(기본값인 Color.WHITE도 포함)인 경우 이 값을 직접 변경하면 안 된다.
 	 */
 	protected var opacity: Float
 		inline get() = tint.a
