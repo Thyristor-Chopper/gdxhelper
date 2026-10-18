@@ -28,7 +28,7 @@ import io.potatogun.gdxhelper.Window;
  * @property onClick 단추를 눌렀을 때 실행할 서브루틴
  */
 class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 25f }, caption: String, private val skin: Skin, private val tint: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
-	private val font = BitmapFont();
+	private val font = skin.font;
 	private val accessKey: Char?;
 	private val caption: String;
 	private var previouslyPressed = false;
@@ -161,17 +161,20 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * @property hoverCaptionColor    마우스를 올렸을 때 단추 글자 색
 	 * @property pressedCaptionColor  누르고 있을 때 단추 글자 색
 	 * @property disabledCaptionColor 비활성화된 단추 글자 색
+	 * @property font                 단추 글자 글꼴
 	 */
-	data class Skin(@JvmField val normal: NinePatch, @JvmField val hover: NinePatch, @JvmField val pressed: NinePatch, @JvmField val disabled: NinePatch, @JvmField val captionColor: Color, @JvmField val hoverCaptionColor: Color, @JvmField val pressedCaptionColor: Color, @JvmField val disabledCaptionColor: Color) {
-		constructor(normal: NinePatch) : this(normal, normal, normal, normal, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR);
+	data class Skin(@JvmField val normal: NinePatch, @JvmField val hover: NinePatch, @JvmField val pressed: NinePatch, @JvmField val disabled: NinePatch, @JvmField val captionColor: Color, @JvmField val hoverCaptionColor: Color, @JvmField val pressedCaptionColor: Color, @JvmField val disabledCaptionColor: Color, @JvmField val font: BitmapFont) {
+		constructor(normal: NinePatch) : this(normal, normal, normal, normal, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
 
-		constructor(normal: NinePatch, captionColor: Color) : this(normal, normal, normal, normal, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR);
+		constructor(normal: NinePatch, captionColor: Color) : this(normal, normal, normal, normal, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
 
-		constructor(normal: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, normal, normal, normal, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor);
+		constructor(normal: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, normal, normal, normal, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor, BitmapFont());
 
-		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch) : this(normal, hover, pressed, disabled, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR);
+		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch) : this(normal, hover, pressed, disabled, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
 
-		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color) : this(normal, hover, pressed, disabled, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR);
+		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color) : this(normal, hover, pressed, disabled, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
+
+		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, hover, pressed, disabled, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor, BitmapFont());
 
 		companion object {
 			private val DEFAULT_CAPTION_COLOR = Color.BLACK;
