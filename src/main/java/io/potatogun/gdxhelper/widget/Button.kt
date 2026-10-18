@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.Input;
 import io.potatogun.gdxhelper.function.FloatSupplier;
@@ -147,7 +148,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	}
 
 	/**
-	 * 버튼의 스킨이다.
+	 * 단추의 스킨이다.
 	 *
 	 * @property normal               기본 상태에서의 9-patch 텍스처
 	 * @property hover                마우스를 올렸을 때의 9-patch 텍스처
@@ -157,20 +158,41 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * @property hoverCaptionColor    마우스를 올렸을 때 단추 글자 색
 	 * @property pressedCaptionColor  누르고 있을 때 단추 글자 색
 	 * @property disabledCaptionColor 비활성화된 단추 글자 색
-	 * @property font                 단추 글자 글꼴 - 이 글꼴은 종료 시 개발자가 수동으로 dispose해야 한다.
+	 * @param    font                 단추 글자 글꼴 - 이 글꼴은 종료 시 개발자가 수동으로 dispose해야 한다.
 	 */
-	data class Skin(@JvmField val normal: NinePatch, @JvmField val hover: NinePatch, @JvmField val pressed: NinePatch, @JvmField val disabled: NinePatch, @JvmField val captionColor: Color, @JvmField val hoverCaptionColor: Color, @JvmField val pressedCaptionColor: Color, @JvmField val disabledCaptionColor: Color, @JvmField val font: BitmapFont) {
-		constructor(normal: NinePatch) : this(normal, normal, normal, normal, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
+	class Skin(@JvmField val normal: NinePatch, @JvmField val hover: NinePatch, @JvmField val pressed: NinePatch, @JvmField val disabled: NinePatch, @JvmField val captionColor: Color, @JvmField val hoverCaptionColor: Color, @JvmField val pressedCaptionColor: Color, @JvmField val disabledCaptionColor: Color, font: BitmapFont?) : Disposable {
+		/**
+		 * 단추의 글꼴
+		 */
+		@JvmField val font: BitmapFont;
+		@JvmField @JvmSynthetic internal val fontDisposable: Boolean;
 
-		constructor(normal: NinePatch, captionColor: Color) : this(normal, normal, normal, normal, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
+		constructor(normal: NinePatch) : this(normal, normal, normal, normal, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, null);
 
-		constructor(normal: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, normal, normal, normal, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor, BitmapFont());
+		constructor(normal: NinePatch, captionColor: Color) : this(normal, normal, normal, normal, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR, null);
 
-		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch) : this(normal, hover, pressed, disabled, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
+		constructor(normal: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, normal, normal, normal, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor, null);
 
-		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color) : this(normal, hover, pressed, disabled, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());
+		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch) : this(normal, hover, pressed, disabled, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, null);
 
-		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, hover, pressed, disabled, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor, BitmapFont());
+		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color) : this(normal, hover, pressed, disabled, captionColor, captionColor, captionColor, DEFAULT_DISABLED_CAPTION_COLOR, null);
+
+		constructor(normal: NinePatch, hover: NinePatch, pressed: NinePatch, disabled: NinePatch, captionColor: Color, hoverCaptionColor: Color, pressedCaptionColor: Color, disabledCaptionColor: Color) : this(normal, hover, pressed, disabled, captionColor, hoverCaptionColor, pressedCaptionColor, disabledCaptionColor, null);
+
+		init {
+			if(font == null) {
+				this.font = BitmapFont();
+				fontDisposable = true;
+			} else {
+				this.font = font;
+				fontDisposable = false;
+			}
+		}
+
+		override fun dispose() {
+			if(fontDisposable)
+				font.dispose();
+		}
 
 		companion object {
 			private val DEFAULT_CAPTION_COLOR = Color.BLACK;

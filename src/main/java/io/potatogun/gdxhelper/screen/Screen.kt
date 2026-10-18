@@ -25,7 +25,7 @@ import io.potatogun.gdxhelper.widget.Widget;
  * @constructor Named argument를 쓸 수 있는 코틀린용 생성자
  * @property font   화면 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
  */
-abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updatable {
+abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구.
 	 *
@@ -33,9 +33,10 @@ abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updata
 	 */
 	@JvmField protected val batch = SpriteBatch();
 	/**
-	 * 화면의 기본 글꼴
+	 * 화면의 글꼴
 	 */
-	@JvmField protected val font = font;
+	@JvmField protected val font: BitmapFont;
+	private val autoDisposeFont: Boolean;
 	/**
 	 * 등록된 위젯들
 	 */
@@ -54,7 +55,17 @@ abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updata
 	@OptIn(JavaOnly::class)
 	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
 	@JvmOverloads
-	constructor(settings: Properties = Properties()) : this(settings.font!!);
+	constructor(settings: Properties = Properties()) : this(settings.font);
+
+	init {
+		if(font == null) {
+			this.font = BitmapFont();
+			autoDisposeFont = true;
+		} else {
+			this.font = font;
+			autoDisposeFont = false;
+		}
+	}
 
 	// ────────────────────────────────────────────────────────
 	//  위젯 객체 관리
@@ -322,6 +333,8 @@ abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updata
 	 */
 	override fun dispose() {
 		batch.dispose();
+		if(autoDisposeFont)
+			font.dispose();
 		val iterator = widgets.values();
 		while(iterator.hasNext) {
 			val widget = iterator.next();
@@ -333,12 +346,7 @@ abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updata
 	 * 스크린 옵션 (자바용)
 	 */
 	@JavaOnly open class Properties {
-		internal var font: BitmapFont? = null
-			@JvmSynthetic get() {
-				if(field == null)
-					field = BitmapFont();
-				return field;
-			}
+		@get:JvmSynthetic internal var font: BitmapFont? = null
 			private set;
 
 		/**

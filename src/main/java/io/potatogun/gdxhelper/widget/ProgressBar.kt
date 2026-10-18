@@ -97,7 +97,7 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 	 * @property chunkWidth        각 청크의 너비
 	 * @property chunkMargin       각 청크 사이의 간격
 	 */
-	data class Skin(@JvmField val bar: NinePatch, @JvmField val fill: NinePatch, @JvmField val horizontalPadding: Float = DEFAULT_HORIZONTAL_PADDING, @JvmField val verticalPadding: Float = DEFAULT_VERTICAL_PADDING, @JvmField val chunkWidth: Float = DEFAULT_CHUNK_WIDTH, @JvmField val chunkMargin: Float = DEFAULT_CHUNK_MARGIN) {
+	class Skin(@JvmField val bar: NinePatch, @JvmField val fill: NinePatch, @JvmField val horizontalPadding: Float = DEFAULT_HORIZONTAL_PADDING, @JvmField val verticalPadding: Float = DEFAULT_VERTICAL_PADDING, @JvmField val chunkWidth: Float = DEFAULT_CHUNK_WIDTH, @JvmField val chunkMargin: Float = DEFAULT_CHUNK_MARGIN) {
 		/**
 		 * smooth 스타일용 스킨을 생성한다.
 		 *

@@ -30,13 +30,18 @@ import java.util.Collections;
  * @property height   월드 전체 높이
  * @property entities 개체 관리자
  * @property camera   월드의 카메라
- * @property font     월드의 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
+ * @param    font     월드의 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
  */
-abstract class World(@JvmField val width: Float, @JvmField val height: Float, @JvmField val entities: EntityManager, private val camera: Camera = OrthographicCamera(), @JvmField protected val font: BitmapFont = BitmapFont()) : Disposable, Updatable {
+abstract class World(@JvmField val width: Float, @JvmField val height: Float, @JvmField val entities: EntityManager, private val camera: Camera = OrthographicCamera(), font: BitmapFont? = null) : Disposable, Updatable {
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구
 	 */
 	@JvmField protected val batch = SpriteBatch();
+	/**
+	 * 월드의 글꼴
+	 */
+	@JvmField protected val font: BitmapFont;
+	private val autoDisposeFont: Boolean;
 	/**
 	 * 월드를 보여주는 스크린. 만약 이 월드를 띄우는 뷰어가 없으면 null일 수도 있음에 주의
 	 */
@@ -80,7 +85,7 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 	@OptIn(JavaOnly::class)
 	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
 	@JvmOverloads
-	constructor(width: Float, height: Float, entities: EntityManager, settings: Properties = Properties()) : this(width, height, entities, settings.camera!!, settings.font!!);
+	constructor(width: Float, height: Float, entities: EntityManager, settings: Properties = Properties()) : this(width, height, entities, settings.camera!!, settings.font);
 
 	init {
 		if(usedEntityManagers.contains(entities))
@@ -90,6 +95,14 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 			throw IllegalStateException("the specified entity manager is not empty");
 
 		usedEntityManagers.add(entities);
+
+		if(font == null) {
+			this.font = BitmapFont();
+			autoDisposeFont = true;
+		} else {
+			this.font = font;
+			autoDisposeFont = false;
+		}
 
 		updateViewport();
 
@@ -203,6 +216,8 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 	override fun dispose() {
 		isDisposed = true;
 		batch.dispose();
+		if(autoDisposeFont)
+			font.dispose();
 		entities.dispose();
 	}
 
@@ -218,11 +233,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 			}
 			private set;
 		@get:JvmSynthetic internal var font: BitmapFont? = null
-			get() {
-				if(field == null)
-					field = BitmapFont();
-				return field;
-			}
 			private set;
 
 		/**
