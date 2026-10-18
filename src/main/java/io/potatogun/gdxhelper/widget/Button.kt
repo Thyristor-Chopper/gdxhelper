@@ -146,10 +146,6 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 		previouslyPressed = false;
 	}
 
-	override fun dispose() {
-		font.dispose();
-	}
-
 	/**
 	 * 버튼의 스킨이다.
 	 *
@@ -161,7 +157,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * @property hoverCaptionColor    마우스를 올렸을 때 단추 글자 색
 	 * @property pressedCaptionColor  누르고 있을 때 단추 글자 색
 	 * @property disabledCaptionColor 비활성화된 단추 글자 색
-	 * @property font                 단추 글자 글꼴
+	 * @property font                 단추 글자 글꼴 - 이 글꼴은 종료 시 개발자가 수동으로 dispose해야 한다.
 	 */
 	data class Skin(@JvmField val normal: NinePatch, @JvmField val hover: NinePatch, @JvmField val pressed: NinePatch, @JvmField val disabled: NinePatch, @JvmField val captionColor: Color, @JvmField val hoverCaptionColor: Color, @JvmField val pressedCaptionColor: Color, @JvmField val disabledCaptionColor: Color, @JvmField val font: BitmapFont) {
 		constructor(normal: NinePatch) : this(normal, normal, normal, normal, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_CAPTION_COLOR, DEFAULT_DISABLED_CAPTION_COLOR, BitmapFont());

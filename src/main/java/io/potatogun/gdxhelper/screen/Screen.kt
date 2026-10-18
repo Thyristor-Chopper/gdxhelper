@@ -23,7 +23,7 @@ import io.potatogun.gdxhelper.widget.Widget;
  *   안에는 배경과 위젯(컨트롤)을 추가할 수 있다.
  *
  * @constructor Named argument를 쓸 수 있는 코틀린용 생성자
- * @property font   화면 기본 글꼴
+ * @property font   화면 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
  */
 abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updatable {
 	/**
@@ -322,7 +322,6 @@ abstract class Screen(font: BitmapFont = BitmapFont()) : ScreenAdapter(), Updata
 	 */
 	override fun dispose() {
 		batch.dispose();
-		font.dispose();
 		val iterator = widgets.values();
 		while(iterator.hasNext) {
 			val widget = iterator.next();

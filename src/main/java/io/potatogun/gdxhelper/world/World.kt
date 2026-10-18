@@ -30,7 +30,7 @@ import java.util.Collections;
  * @property height   월드 전체 높이
  * @property entities 개체 관리자
  * @property camera   월드의 카메라
- * @property font     월드의 기본 글꼴
+ * @property font     월드의 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
  */
 abstract class World(@JvmField val width: Float, @JvmField val height: Float, @JvmField val entities: EntityManager, private val camera: Camera = OrthographicCamera(), @JvmField protected val font: BitmapFont = BitmapFont()) : Disposable, Updatable {
 	/**
@@ -203,7 +203,6 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 	override fun dispose() {
 		isDisposed = true;
 		batch.dispose();
-		font.dispose();
 		entities.dispose();
 	}
 
