@@ -12,9 +12,8 @@ import io.potatogun.gdxhelper.util.abs;
  * @param    capacity        처음 개체 목록 크기
  * @param    nearbyThreshold getNearby에서 사용할 가깝다의 기준
  * @property axis            정렬 기준 축
- * @property slack           스냅샷 이후 개체가 기준 축으로 이동해 생기는 조회 누락을 줄이는 여유분
  */
-class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold: Float, private val axis: Axis = Axis.X, private val slack: Float = 0f) : LinearManager(capacity, nearbyThreshold, true) {
+class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold: Float, private val axis: Axis = Axis.X) : LinearManager(capacity, nearbyThreshold, true) {
 	private val keys = FloatArray(capacity);
 
 	override fun update(delta: Float) {
@@ -66,12 +65,11 @@ class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold
 
 		val x = entity.x;
 		val y = entity.y;
-		val range = nearbyThreshold + slack;
 		val base = if(axis == Axis.Y) y else x;
-		val maxKey = base + range;
+		val maxKey = base + nearbyThreshold;
 		val size = allEntities.size;
 
-		var i = lowerBound(base - range, size);
+		var i = lowerBound(base - nearbyThreshold, size);
 		while(i < size && keys.items[i] <= maxKey) {
 			val e = allEntities.items[i];
 			if(e !== entity && abs(e.x - x) <= nearbyThreshold && abs(e.y - y) <= nearbyThreshold && e.distanceTo(entity) <= nearbyThreshold)
