@@ -13,9 +13,7 @@ import io.potatogun.gdxhelper.collections.ArrayView;
 import io.potatogun.gdxhelper.position.ObservablePosition;
 import io.potatogun.gdxhelper.position.Position;
 import io.potatogun.gdxhelper.Input;
-import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
-import io.potatogun.gdxhelper.util.abs;
 import io.potatogun.gdxhelper.util.safeDispose;
 import io.potatogun.gdxhelper.world.World;
 
