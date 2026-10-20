@@ -40,10 +40,10 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 		for(i in 0 until allEntities.size) {
 			val entity = allEntities.items[i];
 			// 보이는 개체만 그리기 (자원 낭비 감소)
-			val maxEntityLength = max2(entity.width, entity.height);
+			val maxLength = max2(entity.width, entity.height);
 			val entityX = entity.x;
 			val entityY = entity.y;
-			if(entityX >= offsetX - halfScreenWidth - maxEntityLength && entityX <= offsetX + halfScreenWidth + maxEntityLength && entityY >= offsetY - halfScreenHeight - maxEntityLength && entityY <= offsetY + halfScreenHeight + maxEntityLength)
+			if(entityX >= offsetX - halfScreenWidth - maxLength && entityX <= offsetX + halfScreenWidth + maxLength && entityY >= offsetY - halfScreenHeight - maxLength && entityY <= offsetY + halfScreenHeight + maxLength)
 				entity.draw(batch);
 		}
 	}
