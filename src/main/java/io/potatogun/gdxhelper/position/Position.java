@@ -68,9 +68,7 @@ public class Position {
 
 	@Override
 	public int hashCode() {
-		int hash = Float.hashCode(x);
-		hash = 31 * hash + Float.hashCode(y);
-		return hash;
+		return Position.hashCodeOf(x, y);
 	}
 
 	/**
@@ -78,7 +76,7 @@ public class Position {
 	 *
 	 * @return identity hash code
 	 */
-	protected int identityHashCode() {
+	public int identityHashCode() {
 		return super.hashCode();
 	}
 
@@ -93,5 +91,18 @@ public class Position {
 
 	public final float component2() {
 		return y;
+	}
+
+	/**
+	 * 한 고정 좌표에 대해 해시맵에서 쓸 수 있는 해시코드를 가져온다.
+	 *
+	 * @param x X 좌표
+	 * @param y Y 좌표
+	 * @return 해시 코드
+	 */
+	public static int hashCodeOf(float x, float y) {
+		int hash = Float.hashCode(x);
+		hash = 31 * hash + Float.hashCode(y);
+		return hash;
 	}
 }
