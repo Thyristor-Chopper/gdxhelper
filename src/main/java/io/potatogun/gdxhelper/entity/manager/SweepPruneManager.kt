@@ -60,20 +60,20 @@ class SweepPruneManager @JvmOverloads constructor(capacity: Int, nearbyThreshold
 		}
 	}
 
-	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
+	override fun getNearby(base: Entity, output: GdxArray<Entity>) {
 		output.clear();
 
-		val x = entity.x;
-		val y = entity.y;
-		val base = if(axis == Axis.Y) y else x;
-		val maxKey = base + nearbyThreshold;
+		val x = base.x;
+		val y = base.y;
+		val baseKey = if(axis == Axis.Y) y else x;
+		val maxKey = baseKey + nearbyThreshold;
 		val size = allEntities.size;
 
-		var i = lowerBound(base - nearbyThreshold, size);
+		var i = lowerBound(baseKey - nearbyThreshold, size);
 		while(i < size && keys.items[i] <= maxKey) {
-			val e = allEntities.items[i];
-			if(e !== entity && abs(e.x - x) <= nearbyThreshold && abs(e.y - y) <= nearbyThreshold && e.distanceTo(entity) <= nearbyThreshold)
-				output.add(e);
+			val entity = allEntities.items[i];
+			if(entity !== base && abs(entity.x - x) <= nearbyThreshold && abs(entity.y - y) <= nearbyThreshold && entity.distanceTo(base) <= nearbyThreshold)
+				output.add(entity);
 			i++;
 		}
 	}

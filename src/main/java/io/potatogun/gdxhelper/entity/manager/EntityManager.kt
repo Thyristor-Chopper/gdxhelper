@@ -61,10 +61,10 @@ interface EntityManager : Disposable, Updatable {
 	 *
 	 * 구현체마다 주변의 기준은 다를 수 있다.
 	 *
-	 * @param entity 기준 개체
+	 * @param base 기준 개체
 	 * @return 주변 개체들의 배열
 	 */
-	fun getNearby(entity: Entity): GdxArray<Entity>;
+	fun getNearby(base: Entity): GdxArray<Entity>;
 
 	/**
 	 * 현재 개체의 주변 개체를 가져온다. (GC 방지 버전)
@@ -73,10 +73,10 @@ interface EntityManager : Disposable, Updatable {
 	 *
 	 * 구현체마다 주변의 기준은 다를 수 있다.
 	 *
-	 * @param entity 기준 개체
+	 * @param base 기준 개체
 	 * @param output 주변 개체들의 배열
 	 */
-	fun getNearby(entity: Entity, output: GdxArray<Entity>);
+	fun getNearby(base: Entity, output: GdxArray<Entity>);
 
 	/**
 	 * 등록된 모든 객체를 그린다.

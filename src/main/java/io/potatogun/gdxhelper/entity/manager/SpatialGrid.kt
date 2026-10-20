@@ -139,22 +139,24 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 		tilesOfEntity.put(entity, newHashes);
 	}
 
-	override fun getNearby(entity: Entity): GdxArray<Entity> {
+	override fun getNearby(base: Entity): GdxArray<Entity> {
 		val output = GdxArray<Entity>(false, allEntities.size, ArraySuppliers.entity);
-		getNearby(entity, output);
+		getNearby(base, output);
 		return output;
 	}
 
-	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
+	override fun getNearby(base: Entity, output: GdxArray<Entity>) {
 		output.clear();
 
 		val outerRange = 1;
-		val maxHalfLength = max2(entity.width, entity.height) * 0.5f;
+		val maxHalfLength = max2(base.width, base.height) * 0.5f;
 
-		val minTileX = floor((entity.x - maxHalfLength) / tileSize).toInt() - outerRange;
-		val maxTileX = floor((entity.x + maxHalfLength) / tileSize).toInt() + outerRange;
-		val minTileY = floor((entity.y - maxHalfLength) / tileSize).toInt() - outerRange;
-		val maxTileY = floor((entity.y + maxHalfLength) / tileSize).toInt() + outerRange;
+		val entityX = base.x;
+		val entityY = base.y;
+		val minTileX = floor((entityX - maxHalfLength) / tileSize).toInt() - outerRange;
+		val maxTileX = floor((entityX + maxHalfLength) / tileSize).toInt() + outerRange;
+		val minTileY = floor((entityY - maxHalfLength) / tileSize).toInt() - outerRange;
+		val maxTileY = floor((entityY + maxHalfLength) / tileSize).toInt() + outerRange;
 
 		val visited = visitedPool.obtain();
 		for(tileX in minTileX..maxTileX)
@@ -162,9 +164,9 @@ class SpatialGrid(capacity: Int, private val tileSize: Float) : ArrayEntityManag
 				val hash = (tileX.toLong() shl 32) or (tileY.toLong() and 0xffffffffL);
 				val entities = entitiesOfTile[hash] ?: continue;
 				for(i in 0 until entities.size) {
-					val e = entities.items[i];
-					if(visited.add(e) && e !== entity)
-						output.add(e);
+					val entity = entities.items[i];
+					if(entity !== base && visited.add(entity))
+						output.add(entity);
 				}
 			}
 		visitedPool.free(visited);

@@ -114,22 +114,24 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 			node.merge(target);
 	}
 
-	override fun getNearby(entity: Entity): GdxArray<Entity> {
+	override fun getNearby(base: Entity): GdxArray<Entity> {
 		val output = GdxArray<Entity>(false, allEntities.size, ArraySuppliers.entity);
-		getNearby(entity, output);
+		getNearby(base, output);
 		return output;
 	}
 
-	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
+	override fun getNearby(base: Entity, output: GdxArray<Entity>) {
 		output.clear();
 
-		val halfLength = max2(entity.width, entity.height) * 0.5f + nearbyThreshold;
-		val qx0 = entity.x - halfLength;
-		val qy0 = entity.y - halfLength;
-		val qx1 = entity.x + halfLength;
-		val qy1 = entity.y + halfLength;
+		val halfLength = max2(base.width, base.height) * 0.5f + nearbyThreshold;
+		val entityX = base.x;
+		val entityY = base.y;
+		val qx0 = entityX - halfLength;
+		val qy0 = entityY - halfLength;
+		val qx1 = entityX + halfLength;
+		val qy1 = entityY + halfLength;
 
-		root.query(entity, qx0, qy0, qx1, qy1, output);
+		root.query(base, qx0, qy0, qx1, qy1, output);
 	}
 
 	override fun dispose() {

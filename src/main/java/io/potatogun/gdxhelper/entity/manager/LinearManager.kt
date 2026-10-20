@@ -64,18 +64,18 @@ open class LinearManager @JvmOverloads constructor(capacity: Int, @JvmField prot
 		}
 	}
 
-	override fun getNearby(entity: Entity): GdxArray<Entity> {
+	override fun getNearby(base: Entity): GdxArray<Entity> {
 		val output = GdxArray<Entity>(false, allEntities.size, ArraySuppliers.entity);
-		getNearby(entity, output);
+		getNearby(base, output);
 		return output;
 	}
 
-	override fun getNearby(entity: Entity, output: GdxArray<Entity>) {
+	override fun getNearby(base: Entity, output: GdxArray<Entity>) {
 		output.clear();
 		for(i in 0 until allEntities.size) {
-			val e = allEntities.items[i];
-			if(e !== entity && e.distanceTo(entity) <= nearbyThreshold)
-				output.add(e);
+			val entity = allEntities.items[i];
+			if(entity !== base && entity.distanceTo(base) <= nearbyThreshold)
+				output.add(entity);
 		}
 	}
 
