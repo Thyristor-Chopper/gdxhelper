@@ -14,9 +14,9 @@ import io.potatogun.gdxhelper.world.World;
  * 상속받아서 HUD 등이 포함된 더 확장된 월드 뷰어를 만들 수 있지만
  *   가급적이면 같은 종류의 뷰어는 하나만 생성하는 것을 권한다.
  *
- * @param settings 스크린 옵션
+ * @param font 화면 글꼴
  */
-open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
+open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 	/**
 	 * 현재 보여주고 있는 월드를 반환한다.
 	 */
@@ -26,7 +26,7 @@ open class WorldProjector(font: BitmapFont = BitmapFont()) : Screen(font) {
 	@OptIn(JavaOnly::class)
 	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
 	@JvmOverloads
-	constructor(settings: Screen.Properties = Screen.Properties()) : this(settings.font!!);
+	constructor(settings: Screen.Properties = Screen.Properties()) : this(settings.font);
 
 	init {
 		instances.add(this);
