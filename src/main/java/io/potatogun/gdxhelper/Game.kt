@@ -24,9 +24,8 @@ abstract class Game : GdxGame(), Updatable {
 		if(screen is Screen) {
 			screen.updateProjectionMatrix();
 			screen.resize(width, height);
-		} else {
-			super.resize(width, height);
 		}
+		super.resize(width, height);
 	}
 
 	/**
@@ -43,14 +42,12 @@ abstract class Game : GdxGame(), Updatable {
 		val delta = Gdx.graphics.getDeltaTime();
 		update(delta);
 
-		// 스크린 그리기
+		// 스크린 갱신 및 그리기
 		val screen = getScreen();
 		if(screen is Screen) {
 			screen.updateAll(delta);
-			screen.render();
-		} else {
-			super.render();
 		}
+		super.render();
 	}
 
 	override fun setScreen(screen: GdxScreen) {
