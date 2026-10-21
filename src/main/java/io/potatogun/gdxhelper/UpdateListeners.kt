@@ -11,7 +11,7 @@ import java.util.WeakHashMap;
 import java.util.function.BooleanSupplier;
 
 /**
- * 게임 화면과 독힙적으로 매 프레임 상태 갱신을 하는 객체 관리자이다.
+ * 게임 화면과 독립적으로 매 프레임 상태 갱신을 하는 객체 관리자이다.
  */
 object UpdateListeners {
 	/**
