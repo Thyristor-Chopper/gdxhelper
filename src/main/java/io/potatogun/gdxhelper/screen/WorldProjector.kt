@@ -35,11 +35,11 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 	/**
 	 * 지정한 월드를 연다.
 	 *
-	 * @param world                불러올 월드
-	 * @param disposePreviousWorld 기존 월드의 자원을 정리할지의 여부
+	 * @param world           불러올 월드
+	 * @param disposePrevious 기존 월드의 자원을 정리할지의 여부
 	 * @throws IllegalStateException 다른 뷰어가 해당 월드를 이미 보여주고 있거나 월드의 자원이 이미 해제됐을 때
 	 */
-	@JvmOverloads open fun loadWorld(world: World, disposePreviousWorld: Boolean = false) {
+	@JvmOverloads open fun loadWorld(world: World, disposePrevious: Boolean = false) {
 		if(projectingWorld === world) return;  // 아무 작업도 할 필요 없음
 		if(world.isDisposed)
 			throw IllegalStateException("world is disposed");
@@ -48,8 +48,10 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		val previousWorld: World? = projectingWorld;
 		projectingWorld = world;
 		world.updateCamera();
-		if(disposePreviousWorld && previousWorld != null)
-			Gdx.app.postRunnable { safeRun<IllegalArgumentException> { previousWorld.dispose() } };
+		if(disposePrevious && previousWorld != null)
+			Gdx.app.postRunnable {
+				safeRun<IllegalArgumentException> { previousWorld.dispose() };
+			};
 	}
 
 	/**
@@ -63,7 +65,9 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		if(currentWorld == null) return false;
 		projectingWorld = null;
 		if(dispose)
-			Gdx.app.postRunnable { safeRun<IllegalArgumentException> { currentWorld.dispose() } };
+			Gdx.app.postRunnable {
+				safeRun<IllegalArgumentException> { currentWorld.dispose() };
+			};
 		return true;
 	}
 
