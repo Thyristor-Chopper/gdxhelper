@@ -6,6 +6,12 @@ import com.badlogic.gdx.utils.ObjectMap;
 import io.potatogun.gdxhelper.collections.CharMap;
 import io.potatogun.gdxhelper.collections.get;
 
+/**
+ * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
+ *
+ * @param args             매개변수 배열
+ * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵 - 자바에서 키로 문자 자체를 사용한다.
+ */
 @SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>): ObjectMap<String, String> {
 	val map = CharMap<String>(shortArgumentMap.size);
 	val iterator = shortArgumentMap.keys();
@@ -21,8 +27,12 @@ import io.potatogun.gdxhelper.collections.get;
  *
  * 중복된 매개변수는 마지막 항목이 반영된다.
  *
+ * 구현의 귀찮음으로 인해
+ *   리눅스와는 다르게 -abc 3라고 전달하면 -a, -b, -c에 모두 3이 할당되고
+ *   -abc=3이라고 쓰면 'a', 'b', 'c', '=', '3'을 각각 별칭으로 취급한다.
+ *
  * @param args             매개변수 배열
- * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵
+ * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵 - 자바에서는 키로 문자 코드를 사용한다.
  */
 @JvmOverloads fun parseArguments(args: Array<String>, shortArgumentMap: CharMap<String>? = null): ObjectMap<String, String> {
 	val length = args.size;
