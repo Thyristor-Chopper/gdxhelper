@@ -12,15 +12,11 @@ fun <T> ObjectSet<T>.toArray(): GdxArray<T> {
 
 fun <T> ObjectSet<T>.toArray(output: GdxArray<T>) {
 	output.clear();
+	output.ensureCapacity(size);
 	copyToArray(this, output);
 }
 
 private inline fun <T> copyToArray(objectSet: ObjectSet<T>, output: GdxArray<T>) {
-	val setSize = objectSet.size;
-	val outputSize = output.items.size;
-	if(setSize > outputSize)
-		output.ensureCapacity(setSize - outputSize);
-
 	val iterator = objectSet.iterator();
 	while(iterator.hasNext)
 		output.add(iterator.next());
@@ -34,15 +30,11 @@ fun <T> Set<T>.toArray(): GdxArray<T> {
 
 fun <T> Set<T>.toArray(output: GdxArray<T>) {
 	output.clear();
+	output.ensureCapacity(size);
 	copyToArray(this, output);
 }
 
 private inline fun <T> copyToArray(set: Set<T>, output: GdxArray<T>) {
-	val setSize = set.size;
-	val outputSize = output.items.size;
-	if(setSize > outputSize)
-		output.ensureCapacity(setSize - outputSize);
-
 	val iterator = set.iterator();
 	while(iterator.hasNext())
 		output.add(iterator.next());

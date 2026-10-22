@@ -23,9 +23,8 @@ open class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, pri
 	 */
 	inline fun obtain(capacity: Int): GdxArray<T> {
 		val array = obtain();
-		val length = array.items.size;  // 디컴파일해서 확인한 결과 메쏘드 호출 오버헤드 없이 jvm arraylength 바이트코드를 쓰는 .length 접근으로 바뀐다.
-		if(length < capacity)
-			array.ensureCapacity(capacity - length);  // 소스코드를 보면 원래보다 크면 크기 증가 (https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils/Array.java)
+		if(capacity > array.size)
+			array.ensureCapacity(capacity - array.size);
 		return array;
 	}
 

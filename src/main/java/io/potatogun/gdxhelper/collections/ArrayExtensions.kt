@@ -34,12 +34,8 @@ fun <T> GdxArray<T>.clone(): GdxArray<T> {
  * @param output   대상 배열
  */
 fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
-	val originalSize = size;
-	val outputSize = output.items.size;
-	if(originalSize > outputSize)
-		output.ensureCapacity(originalSize - outputSize);
-
 	output.clear();
+	output.ensureCapacity(size);
 	for(i in 0 until size)
 		output.add(this[i]);
 }
