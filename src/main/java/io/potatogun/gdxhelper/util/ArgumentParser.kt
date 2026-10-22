@@ -2,7 +2,6 @@
 package io.potatogun.gdxhelper.util;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.ObjectSet;
 
 import io.potatogun.gdxhelper.collections.CharMap;
 import io.potatogun.gdxhelper.collections.get;
@@ -11,25 +10,10 @@ import io.potatogun.gdxhelper.collections.toCharMap;
 /**
  * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
  *
- * @param args 매개변수 배열
- */
-fun parseArguments(args: Array<String>): ObjectMap<String, String> = parseArguments(args, null, null);
-
-/**
- * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
- *
  * @param args             매개변수 배열
  * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵 - 자바에서 키로 문자 자체를 사용한다.
  */
-@SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>): ObjectMap<String, String> = parseArguments(args, shortArgumentMap, null);
-
-/**
- * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
- *
- * @param args             매개변수 배열
- * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵 - 자바에서 키로 문자 자체를 사용한다.
- */
-@SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>, valueRequired: ObjectSet<String>?): ObjectMap<String, String> = parseArguments(args, shortArgumentMap.toCharMap(), valueRequired);
+@SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>): ObjectMap<String, String> = parseArguments(args, shortArgumentMap.toCharMap());
 
 /**
  * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
@@ -42,9 +26,8 @@ fun parseArguments(args: Array<String>): ObjectMap<String, String> = parseArgume
  *
  * @param args             매개변수 배열
  * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵 - 자바에서는 키로 문자 코드를 사용한다.
- * @param valueRequired    값이 반드시 요구되는 매개변수 키 목록. --option --abcd라고 입력하면 다음 
  */
-fun parseArguments(args: Array<String>, shortArgumentMap: CharMap<String>? = null, valueRequired: ObjectSet<String>? = null): ObjectMap<String, String> {
+@JvmOverloads fun parseArguments(args: Array<String>, shortArgumentMap: CharMap<String>? = null): ObjectMap<String, String> {
 	val length = args.size;
 	val options = ObjectMap<String, String>(length);
 	for(i in 0 until length) {  // 인덱스를 직접 써야 할 일이 있어서 for..in 안 씀
