@@ -3,8 +3,10 @@ package io.potatogun.gdxhelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input as GdxInput;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.utils.Array as GdxArray;
 
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
+import io.potatogun.gdxhelper.collections.toArray;
 import io.potatogun.gdxhelper.util.InputListener;
 
 /**
@@ -21,7 +23,9 @@ object Input {
 	 */
 	@JvmStatic val mouseY: Int
 		inline get() = Gdx.input.getY();
+	// 입력 이벤트 감지기 관련
 	private val inputListeners = WeakMutableSet<InputListener>();
+	private val iterableClone = GdxArray<InputListener>(16);
 
 	init {
 		// https://stackoverflow.com/questions/17644429/libgdx-mouse-just-clicked 참고함
@@ -46,13 +50,14 @@ object Input {
 		});
 	}
 
-	private inline fun forEachListeners(callback: (InputListener) -> Boolean): Boolean {
+	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
 		var processed = false;
-		val iterator = inputListeners.iterator();
-		while(iterator.hasNext()) {
-			val listener = iterator.next();
+		inputListeners.toArray(iterableClone);
+		for(i in 0 until iterableClone.size) {
+			val listener = iterableClone[i];
 			processed = callback(listener) || processed;
 		}
+		iterableClone.clear();
 		return processed;
 	}
 
