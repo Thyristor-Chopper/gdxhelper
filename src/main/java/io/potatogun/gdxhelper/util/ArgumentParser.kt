@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import io.potatogun.gdxhelper.collections.CharMap;
 import io.potatogun.gdxhelper.collections.get;
+import io.potatogun.gdxhelper.collections.toCharMap;
 
 /**
  * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
@@ -12,15 +13,7 @@ import io.potatogun.gdxhelper.collections.get;
  * @param args             매개변수 배열
  * @param shortArgumentMap 짧은 매개변수(작대기 한 개) 별칭 맵 - 자바에서 키로 문자 자체를 사용한다.
  */
-@SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>): ObjectMap<String, String> {
-	val map = CharMap<String>(shortArgumentMap.size);
-	val iterator = shortArgumentMap.keys();
-	while(iterator.hasNext) {
-		val key = iterator.next();
-		map.put(key.code, shortArgumentMap.get(key));
-	}
-	return parseArguments(args, map);
-}
+@SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>): ObjectMap<String, String> = parseArguments(args, shortArgumentMap.toCharMap());
 
 /**
  * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
