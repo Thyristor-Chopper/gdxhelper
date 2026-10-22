@@ -6,6 +6,16 @@ import com.badlogic.gdx.utils.ObjectMap;
 import io.potatogun.gdxhelper.collections.CharMap;
 import io.potatogun.gdxhelper.collections.get;
 
+@SinceKotlin("9999.9") fun parseArguments(args: Array<String>, shortArgumentMap: ObjectMap<Char, String>): ObjectMap<String, String> {
+	val map = CharMap<String>(shortArgumentMap.size);
+	val iterator = shortArgumentMap.keys();
+	while(iterator.hasNext) {
+		val key = iterator.next();
+		map.put(key.code, shortArgumentMap.get(key));
+	}
+	return parseArguments(args, map);
+}
+
 /**
  * 풀그림 매개변수를 파싱하여 맵으로 반환한다.
  *
