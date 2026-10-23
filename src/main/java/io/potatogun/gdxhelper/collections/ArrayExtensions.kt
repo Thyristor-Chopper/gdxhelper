@@ -35,7 +35,22 @@ fun <T> GdxArray<T>.clone(): GdxArray<T> {
  */
 fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
 	output.clear();
-	output.ensureCapacity(size);
+	output.ensureFullCapacity(size);
 	for(i in 0 until size)
 		output.add(this[i]);
+}
+
+/**
+ * 배열의 크기가 지정한 크기보다 작으면 확장한다.
+ *
+ * 기존 ensureCapacity는 추가로 필요한 용량을 받는데 이 확장함수는 필요한 전체 크기로 판단한다.
+ *
+ * @param capacity 요구 용량
+ */
+inline fun <T> GdxArray<T>.ensureFullCapacity(capacity: Int) {
+	if(capacity < 0)
+		throw IllegalArgumentException("invalid capacity");
+
+	if(capacity > items.size)  // 디컴파일해서 확인한 결과 getter 메쏘드가 아닌 jvm arraylength 바이트코드를 쓰는 .length 접근으로 바뀐다.
+		setSize(capacity);
 }

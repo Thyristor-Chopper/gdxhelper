@@ -72,7 +72,7 @@ class ArrayView<T>(private val array: GdxArray<T>) : View<T> {
 
 	override fun toArray(output: GdxArray<T>) {
 		output.clear();
-		output.ensureCapacity(array.size);
+		output.ensureFullCapacity(array.size);
 		addToArray(output);
 	}
 

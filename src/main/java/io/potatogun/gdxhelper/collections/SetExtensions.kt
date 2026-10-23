@@ -12,7 +12,7 @@ fun <T> ObjectSet<T>.toArray(): GdxArray<T> {
 
 fun <T> ObjectSet<T>.toArray(output: GdxArray<T>) {
 	output.clear();
-	output.ensureCapacity(size);
+	output.ensureFullCapacity(size);
 	copyToArray(this, output);
 }
 
@@ -30,7 +30,7 @@ fun <T> Set<T>.toArray(): GdxArray<T> {
 
 fun <T> Set<T>.toArray(output: GdxArray<T>) {
 	output.clear();
-	output.ensureCapacity(size);
+	output.ensureFullCapacity(size);
 	copyToArray(this, output);
 }
 

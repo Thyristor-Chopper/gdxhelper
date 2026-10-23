@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.ArraySupplier;
 import com.badlogic.gdx.utils.Pool;
 
+import io.potatogun.gdxhelper.collections.ensureFullCapacity;
 import io.potatogun.gdxhelper.util.ArraySuppliers;
 
 /**
@@ -22,8 +23,7 @@ open class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, pri
 	 * @param capacity 필요한 배열 크기
 	 */
 	inline fun obtain(capacity: Int): GdxArray<T> = obtain().apply {
-		if(capacity > size)
-			ensureCapacity(capacity - size);
+		ensureFullCapacity(capacity);
 	};
 
 	override fun reset(array: GdxArray<T>) {
