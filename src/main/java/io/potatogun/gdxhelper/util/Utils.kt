@@ -154,3 +154,42 @@ fun <T : Throwable> safeRunFrom(throwable: Class<T>, callback: Runnable) {
 			throw e;
 	}
 }
+
+/**
+ * 비프음을 재생한다.
+ *
+ * Windows 2000/XP/Vista에서는 컴퓨터에 비프음을 재생할 수 있는 PC스피커(부저)가 달려 있어야 들을 수 있다.
+ */
+inline fun beep() {
+	print("");
+}
+
+/**
+ * 비프음을 두 번 재생한다.
+ *
+ * Windows 2000/XP/Vista에서는 컴퓨터에 비프음을 재생할 수 있는 PC스피커(부저)가 달려 있어야 들을 수 있다.
+ */
+inline fun beep2() {
+	print("");
+}
+
+/**
+ * 비프음을 세 번 재생한다.
+ *
+ * Windows 2000/XP/Vista에서는 컴퓨터에 비프음을 재생할 수 있는 PC스피커(부저)가 달려 있어야 들을 수 있다.
+ */
+inline fun beep3() {
+	print("");
+}
+
+/**
+ * 비프음을 지정한 횟수만큼 재생한다.
+ *
+ * Windows 2000/XP/Vista에서는 컴퓨터에 비프음을 재생할 수 있는 PC스피커(부저)가 달려 있어야 들을 수 있다.
+ *
+ * @param count 비프 횟수
+ * @throws IllegalArgumentException 횟수가 잘못된 경우
+ */
+inline fun beep(count: Int) {
+	print("".repeat(count));
+}
