@@ -48,9 +48,6 @@ fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
  * @param capacity 요구 용량
  */
 inline fun <T> GdxArray<T>.ensureFullCapacity(capacity: Int) {
-	if(capacity < 0)
-		throw IllegalArgumentException("invalid capacity");
-
 	if(capacity > items.size)  // backing array의 크기가 원하는 크기보다 작을 때만 실행. 디컴파일해서 확인한 결과 getter 메쏘드가 아닌 jvm arraylength 바이트코드를 쓰는 .length 접근으로 바뀐다.
 		ensureCapacity(capacity - size);  // ensureCapacity는 backing array의 크기가 아닌 현재 항목의 크기 기준으로 동작.
 }
