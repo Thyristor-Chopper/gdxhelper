@@ -18,7 +18,7 @@ libGDX를 위한 도우미 라이브러리이다.
 
 https://github.com/Thyristor-Chopper/Endless-Dead
 
-단, 이 라이브러리의 모든 기능을 사용하지는 않는다.
+단, 해당 게임은 이 라이브러리의 모든 기능을 사용하지는 않는다.
 
 
 
