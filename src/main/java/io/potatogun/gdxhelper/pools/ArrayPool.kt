@@ -21,12 +21,10 @@ open class ArrayPool<T> @JvmOverloads constructor(private val capacity: Int, pri
 	 *
 	 * @param capacity 필요한 배열 크기
 	 */
-	inline fun obtain(capacity: Int): GdxArray<T> {
-		val array = obtain();
-		if(capacity > array.size)
-			array.ensureCapacity(capacity - array.size);
-		return array;
-	}
+	inline fun obtain(capacity: Int): GdxArray<T> = obtain().apply {
+		if(capacity > size)
+			ensureCapacity(capacity - size);
+	};
 
 	override fun reset(array: GdxArray<T>) {
 		if(autoClear)
