@@ -51,6 +51,6 @@ inline fun <T> GdxArray<T>.ensureFullCapacity(capacity: Int) {
 	if(capacity < 0)
 		throw IllegalArgumentException("invalid capacity");
 
-	if(capacity > items.size)  // 디컴파일해서 확인한 결과 getter 메쏘드가 아닌 jvm arraylength 바이트코드를 쓰는 .length 접근으로 바뀐다.
-		setSize(capacity);
+	if(capacity > size)  // 디컴파일해서 확인한 결과 getter 메쏘드가 아닌 jvm arraylength 바이트코드를 쓰는 .length 접근으로 바뀐다.
+		ensureCapacity(capacity - size);
 }
