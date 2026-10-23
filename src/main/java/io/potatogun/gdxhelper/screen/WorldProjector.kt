@@ -40,10 +40,10 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 	 * @throws IllegalStateException 다른 뷰어가 해당 월드를 이미 보여주고 있거나 월드의 자원이 이미 해제됐을 때
 	 */
 	@JvmOverloads open fun loadWorld(world: World, disposePrevious: Boolean = false) {
-		if(projectingWorld === world) return;  // 아무 작업도 할 필요 없음
+		if(isProjecting(world)) return;  // 아무 작업도 할 필요 없음
 		if(world.isDisposed)
 			throw IllegalStateException("world is disposed");
-		if(instances.any { it.projectingWorld === world })
+		if(instances.any { it.isProjecting(world) })
 			throw IllegalStateException("another projector is already projecting that world");
 		val previousWorld: World? = projectingWorld;
 		projectingWorld = world;
@@ -70,6 +70,21 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 			};
 		return true;
 	}
+
+	/**
+	 * 임의의 월드를 투영하고 있는지 확인한다.
+	 *
+	 * @return 투영 중 여부
+	 */
+	inline fun isProjecting(): Boolean = (projectingWorld != null);
+
+	/**
+	 * 지정한 월드를 투영하고 있는지 확인한다.
+	 *
+	 * @param world 확인할 월드
+	 * @return 투영 중 여부
+	 */
+	inline fun isProjecting(world: World): Boolean = (projectingWorld === world);
 
 	override fun resize(width: Int, height: Int) {
 		projectingWorld?.updateCamera();
@@ -98,6 +113,6 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		 * @param world 찾을 대상 월드
 		 * @return 찾은 월드 뷰어 (없으면 null)
 		 */
-		@JvmStatic fun getProjectorByWorld(world: World): WorldProjector? = instances.firstOrNull { it.projectingWorld === world };  // 디컴파일해서 확인한 결과 실제 람다가 생기지는 않고 iterator를 생성해서 인라인으로 직접 찾는다.
+		@JvmStatic fun getProjectorByWorld(world: World): WorldProjector? = instances.firstOrNull { it.isProjecting(world) };  // 디컴파일해서 확인한 결과 실제 람다가 생기지는 않고 iterator를 생성해서 인라인으로 직접 찾는다.
 	}
 }
