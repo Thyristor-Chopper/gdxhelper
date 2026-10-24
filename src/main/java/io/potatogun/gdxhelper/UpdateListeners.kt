@@ -8,12 +8,15 @@ import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.Updatable;
 
 import java.util.WeakHashMap;
-import java.util.function.BooleanSupplier;
 
 /**
  * 게임 화면과 독립적으로 매 프레임 상태 갱신을 하는 객체 관리자이다.
  */
 object UpdateListeners {
+	/**
+	 * 게임의 인스턴스
+	 */
+	@JvmField @JvmSynthetic internal var game: Game? = null;
 	/**
 	 * 등록된 리스너
 	 */
@@ -21,7 +24,8 @@ object UpdateListeners {
 	/**
 	 * 갱신 조건
 	 */
-	private val conditions = WeakHashMap<Updatable, BooleanSupplier>();
+	private val conditions = WeakHashMap<Updatable, ListenerCondition>();
+	// 순회용 사본
 	private val iterableClone = GdxArray<Updatable>(false, 128, ArraySuppliers.updatable);
 
 	/**
@@ -35,7 +39,7 @@ object UpdateListeners {
 		listeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val listener = iterableClone.items[i];
-			if(conditions.get(listener)?.getAsBoolean() ?: true) {
+			if(conditions.get(listener)?.test(listener, game!!) ?: true) {  // game이 null인 경우는 극히 드물고 정상적인 상황도 아닐 것
 				listener.update(delta);
 				processed++;
 			}
@@ -50,7 +54,7 @@ object UpdateListeners {
 	 * @param listener  리스너
 	 * @param condition 갱신 조건
 	 */
-	@JvmStatic @JvmOverloads fun register(listener: Updatable, condition: BooleanSupplier? = null) {
+	@JvmStatic @JvmOverloads fun register(listener: Updatable, condition: ListenerCondition? = null) {
 		listeners.add(listener);
 		if(condition != null)
 			conditions.put(listener, condition);
@@ -64,5 +68,12 @@ object UpdateListeners {
 	@JvmStatic fun unregister(listener: Updatable) {
 		listeners.remove(listener);
 		conditions.remove(listener);
+	}
+
+	/**
+	 * 리스너가 이번에 상태갱신이 가능한지를 반환하는 람다함수
+	 */
+	fun interface ListenerCondition {
+		fun test(listener: Updatable, game: Game): Boolean;
 	}
 }

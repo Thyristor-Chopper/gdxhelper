@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.Input;
-import io.potatogun.gdxhelper.function.FloatSupplier;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.drawText;
 import io.potatogun.gdxhelper.Window;
@@ -28,7 +27,7 @@ import io.potatogun.gdxhelper.Window;
  * @property tint    단추의 오버레이 색(흰색: 변경없음)
  * @property onClick 단추를 눌렀을 때 실행할 서브루틴
  */
-class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 25f }, caption: String, private val skin: Skin, private val tint: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
+class Button(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Widget.DimensionSupplier, height: Widget.DimensionSupplier = { 25f }, caption: String, private val skin: Skin, private val tint: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
 	private val font = skin.font;
 	private val accessKey: Char?;
 	private val caption: String;
@@ -209,7 +208,7 @@ class Button(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: F
 	 * @param width  단추 너비 계산 함수
 	 * @param height 단추 높이 계산 함수
 	 */
-	@JavaOnly class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
+	@JavaOnly class Builder(private val x: Widget.DimensionSupplier, private val y: Widget.DimensionSupplier, private val width: Widget.DimensionSupplier, private val height: Widget.DimensionSupplier) {
 		private var caption = "";
 		private lateinit var buttonSkin: Skin;  // Overload resolution ambiguity between candidates 때문에 변수명 다르게
 		private var color = Color.WHITE;

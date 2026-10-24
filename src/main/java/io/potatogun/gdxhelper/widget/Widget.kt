@@ -3,7 +3,6 @@ package io.potatogun.gdxhelper.widget;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
-import io.potatogun.gdxhelper.function.FloatSupplier;
 import io.potatogun.gdxhelper.util.Updatable;
 
 /**
@@ -15,11 +14,11 @@ import io.potatogun.gdxhelper.util.Updatable;
  * @param width  컨트롤 너비 계산 함수
  * @param height 컨트롤 높이 계산 함수
  */
-abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier) : Disposable, Updatable {
-	private var xSupplier: FloatSupplier = x;
-	private var ySupplier: FloatSupplier = y;
-	private var widthSupplier: FloatSupplier = width;
-	private var heightSupplier: FloatSupplier = height;
+abstract class Widget(x: DimensionSupplier, y: DimensionSupplier, width: DimensionSupplier, height: DimensionSupplier) : Disposable, Updatable {
+	private var xSupplier: DimensionSupplier = x;
+	private var ySupplier: DimensionSupplier = y;
+	private var widthSupplier: DimensionSupplier = width;
+	private var heightSupplier: DimensionSupplier = height;
 	/**
 	 * 컨트롤이 화면에 그려지는지의 여부
 	 */
@@ -82,28 +81,28 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	 * 
 	 * @return X 좌표
 	 */
-	fun getX(): Float = xSupplier.getAsFloat();
+	fun getX(): Float = xSupplier.get(this);
 
 	/**
 	 * 컨트롤의 현재 계산된 Y 좌표
 	 * 
 	 * @return Y 좌표
 	 */
-	fun getY(): Float = ySupplier.getAsFloat();
+	fun getY(): Float = ySupplier.get(this);
 
 	/**
 	 * 컨트롤의 현재 계산된 너비
 	 * 
 	 * @return 너비
 	 */
-	fun getWidth(): Float = widthSupplier.getAsFloat();
+	fun getWidth(): Float = widthSupplier.get(this);
 
 	/**
 	 * 컨트롤의 현재 계산된 높이
 	 * 
 	 * @return 높이
 	 */
-	fun getHeight(): Float = heightSupplier.getAsFloat();
+	fun getHeight(): Float = heightSupplier.get(this);
 
 	/**
 	 * 컨트롤의 X 좌표를 지정한다.
@@ -119,7 +118,7 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	 *
 	 * @param supplier 계산 식
 	 */
-	fun setX(supplier: FloatSupplier) {
+	fun setX(supplier: DimensionSupplier) {
 		xSupplier = supplier;
 	}
 
@@ -137,7 +136,7 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	 *
 	 * @param supplier 계산 식
 	 */
-	fun setY(supplier: FloatSupplier) {
+	fun setY(supplier: DimensionSupplier) {
 		ySupplier = supplier;
 	}
 
@@ -155,7 +154,7 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	 *
 	 * @param supplier 계산 식
 	 */
-	fun setWidth(supplier: FloatSupplier) {
+	fun setWidth(supplier: DimensionSupplier) {
 		widthSupplier = supplier;
 	}
 
@@ -173,7 +172,11 @@ abstract class Widget(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, 
 	 *
 	 * @param supplier 계산 식
 	 */
-	fun setHeight(supplier: FloatSupplier) {
+	fun setHeight(supplier: DimensionSupplier) {
 		heightSupplier = supplier;
+	}
+
+	fun interface DimensionSupplier {
+		fun get(widget: Widget): Float;
 	}
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.potatogun.gdxhelper.function.FloatSupplier;
 import io.potatogun.gdxhelper.util.JavaOnly;
 
 import kotlin.math.ceil;
@@ -25,7 +24,7 @@ import kotlin.math.ceil;
  * @property style  미터기의 스타일
  * @throws IllegalArgumentException 미터기 값이 잘못된 경우
  */
-class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, height: FloatSupplier = { 15f }, value: Float = 0f, private val skin: Skin, var color: Color = Color.WHITE, private val style: Style = Style.SMOOTH) : Widget(x, y, width, height) {
+class ProgressBar(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Widget.DimensionSupplier, height: Widget.DimensionSupplier = { 15f }, value: Float = 0f, private val skin: Skin, var color: Color = Color.WHITE, private val style: Style = Style.SMOOTH) : Widget(x, y, width, height) {
 	var value: Float = value
 		set(value) {
 			if(value < 0f) field = 0f;
@@ -140,7 +139,7 @@ class ProgressBar(x: FloatSupplier, y: FloatSupplier, width: FloatSupplier, heig
 	 * @param width  미터기 너비 계산 함수
 	 * @param height 미터기 높이 계산 함수
 	 */
-	@JavaOnly class Builder(private val x: FloatSupplier, private val y: FloatSupplier, private val width: FloatSupplier, private val height: FloatSupplier) {
+	@JavaOnly class Builder(private val x: Widget.DimensionSupplier, private val y: Widget.DimensionSupplier, private val width: Widget.DimensionSupplier, private val height: Widget.DimensionSupplier) {
 		private var value = 0f;
 		private lateinit var progressBarSkin: Skin;  // Overload resolution ambiguity between candidates 때문에 변수명 다르게
 		private var color = Color.WHITE;
