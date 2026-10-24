@@ -22,6 +22,11 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 	 */
 	var projectingWorld: World? = null
 		private set;
+	/**
+	 * 임의의 월드를 투영하고 있는지의 여부
+	 */
+	val isProjecting: Boolean
+		inline get() = (projectingWorld != null);
 
 	@OptIn(JavaOnly::class)
 	@SinceKotlin("9999.9")  // 여기서 @JavaOnly를 쓰면 코틀린 내에서 그냥 Screen()를 호출할 때 이 생성자를 호출하려고 시도하면서 에러 남...
@@ -70,13 +75,6 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 			};
 		return true;
 	}
-
-	/**
-	 * 임의의 월드를 투영하고 있는지 확인한다.
-	 *
-	 * @return 투영 중 여부
-	 */
-	inline fun isProjecting(): Boolean = (projectingWorld != null);
 
 	/**
 	 * 지정한 월드를 투영하고 있는지 확인한다.
