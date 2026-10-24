@@ -40,6 +40,7 @@ abstract class Game : GdxGame(), Updatable {
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
 	override fun update(delta: Float) {
+		TaskQueue.update(delta);
 		UpdateListeners.update(delta);
 	}
 

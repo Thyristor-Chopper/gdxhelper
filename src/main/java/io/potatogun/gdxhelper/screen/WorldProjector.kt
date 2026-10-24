@@ -1,8 +1,8 @@
 package io.potatogun.gdxhelper.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import io.potatogun.gdxhelper.TaskQueue;
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.safeRun;
@@ -54,9 +54,7 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		projectingWorld = world;
 		world.updateCamera();
 		if(disposePrevious && previousWorld != null)
-			Gdx.app.postRunnable {
-				safeRun<IllegalArgumentException> { previousWorld.dispose() };
-			};
+			TaskQueue.post(previousWorld, safeDisposeWorld);
 	}
 
 	/**
@@ -70,9 +68,7 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		if(currentWorld == null) return false;
 		projectingWorld = null;
 		if(dispose)
-			Gdx.app.postRunnable {
-				safeRun<IllegalArgumentException> { currentWorld.dispose() };
-			};
+			TaskQueue.post(currentWorld, safeDisposeWorld);
 		return true;
 	}
 
@@ -101,6 +97,10 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 	}
 
 	companion object {
+		@JvmField protected val safeDisposeWorld = TaskQueue.Action {
+			val world = it as World;
+			safeRun<IllegalArgumentException> { world.dispose() };
+		};
 		// 생성된 모든 인스턴스를 관리하는 목록이다. 생성자에서 자동으로 추가한다. 누가 설마 자바 unsafe의 allocateInstance를 쓰진 않겠지
 		private val instances = WeakMutableSet<WorldProjector>();
 
