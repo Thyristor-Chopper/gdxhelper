@@ -151,11 +151,13 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 	/**
 	 * 중심점의 X 좌표
 	 */
-	private var originOffsetX = 0f;
+	protected var originOffsetX = 0f
+		private set;
 	/**
 	 * 중심점의 Y 좌표
 	 */
-	private var originOffsetY = 0f;
+	protected var originOffsetY = 0f
+		private set;
 	/**
 	 * 이 개체가 차지하는 영역. 이 개체는 mutable하기 떄문에 외부 수정을 방지하고자 internal이고 외부 노출용이 아니기 떄문에 `@JvmField`이다.
 	 */
@@ -223,7 +225,7 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 		val texture = textureOverride ?: this.texture;
 		texture?.let {
 			batch.color = tintOverride ?: this.tint;
-			batch.draw(it, x - halfWidth, y - halfHeight, halfWidth + originOffsetX, halfHeight + originOffsetY, width, height, 1.0f, 1.0f, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+			batch.draw(it, x - halfWidth, y - halfHeight, halfWidth + originOffsetX, halfHeight + originOffsetY, width, height, 1f, 1f, rotation, 0, 0, texture.width, texture.height, false, false);
 			batch.color = Color.WHITE;
 		};
 
