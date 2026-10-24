@@ -34,6 +34,7 @@ object TaskQueue : Updatable {
 			task.run();
 			taskPool.free(task);
 		}
+		tasks.clear();
 	}
 
 	fun interface Action {
