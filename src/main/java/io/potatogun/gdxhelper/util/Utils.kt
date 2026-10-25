@@ -18,7 +18,7 @@ import io.potatogun.gdxhelper.Game;
  */
 @JvmField val sorter = Sort.instance();
 val isMobile: Boolean
-	inline get() = true||Gdx.app.type.let { type -> type === ApplicationType.Android || type === ApplicationType.iOS };
+	inline get() = Gdx.app.type.let { type -> type === ApplicationType.Android || type === ApplicationType.iOS };
 
 /**
  * 초를 X' XX''로 변환한다.
