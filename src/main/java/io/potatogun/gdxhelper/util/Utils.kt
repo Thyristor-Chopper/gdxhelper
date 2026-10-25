@@ -201,6 +201,8 @@ inline fun beep(count: Int) {
 
 /**
  * 현재 게임 인스턴스를 동적으로 가져온다.
+ *
+ * @throws NullPointerException 프로그램 자체가 초기화되기 전에 접근할 경우.
  */
 inline fun getGameInstance(): ApplicationListener = Gdx.app.applicationListener;
 
@@ -208,6 +210,7 @@ inline fun getGameInstance(): ApplicationListener = Gdx.app.applicationListener;
  * 현재 게임 인스턴스를 동적으로 가져온다.
  *
  * @param T 게임 인스턴스 자료형
- * @throws ClassCastException 자료형이 일치하지 않을 때
+ * @throws ClassCastException   자료형이 일치하지 않을 때
+ * @throws NullPointerException 프로그램 자체가 초기화되기 전에 접근할 경우.
  */
 @JvmSynthetic @JvmName("getGameInstanceOf") inline fun <reified T : ApplicationListener> getGameInstance(): T = Gdx.app.applicationListener as T;
