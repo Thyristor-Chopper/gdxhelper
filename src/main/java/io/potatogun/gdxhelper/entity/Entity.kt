@@ -284,9 +284,19 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 	 * 
 	 * @param position 타겟 방향
 	 */
-	fun rotateTo(position: Position) {
+	inline fun rotateTo(position: Position) {
+		rotateTo(position.x, position.y);
+	}
+
+	/**
+	 * 특정 좌표를 향해 회전한다.
+	 * 
+	 * @param x X 좌표
+	 * @param y Y 좌표
+	 */
+	fun rotateTo(x: Float, y: Float) {
 		// 샷건 내 360도 구현 참고함
-		rotation = toDegrees(atan2(position.y - y.toDouble(), position.x - x.toDouble())).toFloat() - 90f;
+		rotation = toDegrees(atan2(y - this.y.toDouble(), x - this.x.toDouble())).toFloat() - 90f;
 	}
 
 	/**

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.collections.toArray;
 import io.potatogun.gdxhelper.screen.Screen;
+import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.InputListener;
 
 import java.util.WeakHashMap;
@@ -18,7 +19,7 @@ class InputListenerManager(private val game: Game) : InputProcessor {
 	private val inputListeners = WeakMutableSet<InputListener>();
 	private val listenerConditions = WeakHashMap<InputListener, ListenerCondition>();
 	private val activeScreenListeners = WeakMutableSet<Screen>();  // 현재 화면이 아니어도 입력을 감지할 수 있는 화면
-	private val iterableClone = GdxArray<InputListener>(16);  // 순회용 사본
+	private val iterableClone = GdxArray<InputListener>(false, 16, ArraySuppliers.inputListener);  // 순회용 사본
 
 	/**
 	 * 입력 감시자를 등록한다.
@@ -97,7 +98,8 @@ class InputListenerManager(private val game: Game) : InputProcessor {
 		var processed = false;
 		inputListeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
-			val listener = iterableClone[i];
+			val listener = iterableClone.items[i];
+			if(listener == null) continue;
 			val conditionMet = listenerConditions.get(listener)?.test(listener, game) ?: true;
 			val listenable = (listener !is Screen || activeScreenListeners.contains(listener) || game.screen === listener);
 			if(listenable && conditionMet)

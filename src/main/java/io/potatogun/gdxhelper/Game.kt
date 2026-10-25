@@ -31,7 +31,13 @@ abstract class Game : GdxGame(), Updatable {
 		val screen = getScreen();
 		if(screen is Screen) {
 			screen.updateProjectionMatrix();
-			screen.resize(width, height);
+
+			val fixedWidth = Window.fixedWidth;
+			val fixedHeight = Window.fixedHeight;
+			if(fixedWidth == 0 && fixedHeight == 0)
+				screen.resize(width, height);
+			else
+				screen.resize(fixedWidth, fixedHeight);
 		} else {
 			super.resize(width, height);
 		}

@@ -23,7 +23,7 @@ private inline fun <T> copyToArray(objectSet: ObjectSet<T>, output: GdxArray<T>)
 }
 
 fun <T> Set<T>.toArray(): GdxArray<T> {
-	val output = GdxArray<T>(false, this.size);
+	val output = GdxArray<T>(false, size);
 	copyToArray(this, output);
 	return output;
 }

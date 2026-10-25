@@ -6,16 +6,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.IdentitySet;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.util.ArraySuppliers;
+import io.potatogun.gdxhelper.util.InputListener;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.drawText;
+import io.potatogun.gdxhelper.util.getGameInstance;
 import io.potatogun.gdxhelper.widget.Widget;
 
 /**
@@ -25,7 +29,8 @@ import io.potatogun.gdxhelper.widget.Widget;
  * @constructor Named argument를 쓸 수 있는 코틀린용 생성자
  * @property font   화면 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
  */
-abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
+abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener, Updatable {
+	private val game = getGameInstance();
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구.
 	 *
@@ -45,6 +50,8 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 	 * 오버레이 위에 표시되는 위젯
 	 */
 	private val overlayWidgets = IdentitySet<Widget>(16);
+	@JvmField protected val stage = Stage(ScreenViewport());
+	private var stageVisible = true;
 
 	/**
 	 * 설정 빌더를 이용하여 화면을 생성한다.
@@ -65,11 +72,11 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 			this.font = font;
 			autoDisposeFont = false;
 		}
-	}
 
-	// ────────────────────────────────────────────────────────
-	//  위젯 객체 관리
-	// ────────────────────────────────────────────────────────
+		updateProjectionMatrix();
+		stage.viewport.update(Window.intWidth, Window.intHeight, true);
+		game.inputListeners.register(this);
+	}
 
 	/**
 	 * 위젯을 화면에 추가한다.
@@ -172,21 +179,25 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 		widgets.values().toArray(output);
 	}
 
-	// ────────────────────────────────────────────────────────
-	//  콜백 함수
-	// ────────────────────────────────────────────────────────
+	protected fun showStage() {
+		stageVisible = true;
+	}
+
+	protected fun hideState() {
+		stageVisible = false;
+	}
 
 	@JvmSynthetic internal fun updateProjectionMatrix() {
 		batch.projectionMatrix.setToOrtho2D(0f, 0f, Window.width, Window.height);
 	}
 
-	// ────────────────────────────────────────────────────────
-	//  매 프레임 로직
-	// ────────────────────────────────────────────────────────
-
 	@JvmSynthetic internal fun updateAll(delta: Float) {
 		update(delta);
 		updateWidgets(delta);
+	}
+
+	override fun resize(width: Int, height: Int) {
+		stage.viewport.update(width, height, true);
 	}
 
 	/**
@@ -197,7 +208,9 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	override fun update(delta: Float) {}
+	override fun update(delta: Float) {
+		stage.act(delta);
+	}
 
 	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
 		val iterator = widgets.values();
@@ -206,10 +219,6 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 			widget.update(delta);
 		}
 	}
-
-	// ────────────────────────────────────────────────────────
-	//  매 프레임 그리기
-	// ────────────────────────────────────────────────────────
 
 	// gdxhelper의 Game 객체가 아닌 LibGDX 자체의 Game 객체에서 사용할 때 대비
 	final override fun render(delta: Float) {
@@ -233,6 +242,8 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 		drawWidgets();
 		drawOverlay();
 		drawOverlayWidgets();
+		if(stageVisible)
+			stage.draw();
 		batch.end();
 	}
 
@@ -299,10 +310,6 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 		return true;
 	}
 
-	// ────────────────────────────────────────────────────────
-	//  텍스트 헬퍼
-	// ────────────────────────────────────────────────────────
-
 	/**
 	 * 화면 좌표에 텍스트 그리기.
 	 *
@@ -323,15 +330,30 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 		drawText(batch, font, text, x, y, color, scale, width, align);
 	}
 
-	// ────────────────────────────────────────────────────────
-	//  자원 정리
-	// ────────────────────────────────────────────────────────
+	override fun onScroll(amountX: Float, amountY: Float): Boolean = stage.scrolled(amountX, amountY);
+
+	override fun onKeyDown(code: Int): Boolean = stage.keyDown(code);
+
+	override fun onKeyUp(code: Int): Boolean = stage.keyUp(code);
+
+	override fun onMouseMove(x: Int, y: Int): Boolean = stage.mouseMoved(x, y);
+
+	override fun onTouchDrag(x: Int, y: Int, pointer: Int): Boolean = stage.touchDragged(x, y, pointer);
+
+	override fun onTouchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = stage.touchDown(x, y, pointer, button);
+
+	override fun onTouchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = stage.touchUp(x, y, pointer, button);
+
+	override fun onTouchCancel(x: Int, y: Int, pointer: Int, button: Int): Boolean = stage.touchCancelled(x, y, pointer, button);
+	
+	override fun onKeyType(char: Char): Boolean = stage.keyTyped(char);
 
 	/**
 	 * LibGDX가 화면을 바꾸거나 앱을 종료할 때 자원을 해제한다.
 	 *   GPU 메모리에 올라간 것들은 수동으로 dispose 해줘야 한다.
 	 */
 	override fun dispose() {
+		game.inputListeners.unregister(this);
 		batch.dispose();
 		if(autoDisposeFont)
 			font.dispose();
@@ -340,6 +362,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), Updatable {
 			val widget = iterator.next();
 			widget.dispose();
 		}
+		stage.dispose();
 	}
 
 	/**

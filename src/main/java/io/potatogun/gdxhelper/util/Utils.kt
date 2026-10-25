@@ -2,7 +2,6 @@
 package io.potatogun.gdxhelper.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,12 +11,14 @@ import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.Sort;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import io.potatogun.gdxhelper.Game;
+
 /**
  * libGDX에서 제공하는 정렬기
  */
 @JvmField val sorter = Sort.instance();
 val isMobile: Boolean
-	inline get() = Gdx.app.type.let { type -> type === ApplicationType.Android || type === ApplicationType.iOS };
+	inline get() = true||Gdx.app.type.let { type -> type === ApplicationType.Android || type === ApplicationType.iOS };
 
 /**
  * 초를 X' XX''로 변환한다.
@@ -204,7 +205,7 @@ inline fun beep(count: Int) {
  *
  * @throws NullPointerException 프로그램 자체가 초기화되기 전에 접근할 경우.
  */
-inline fun getGameInstance(): ApplicationListener = Gdx.app.applicationListener;
+inline fun getGameInstance(): Game = Gdx.app.applicationListener as Game;
 
 /**
  * 현재 게임 인스턴스를 동적으로 가져온다.
@@ -213,6 +214,6 @@ inline fun getGameInstance(): ApplicationListener = Gdx.app.applicationListener;
  * @throws ClassCastException   자료형이 일치하지 않을 때
  * @throws NullPointerException 프로그램 자체가 초기화되기 전에 접근할 경우.
  */
-@JvmSynthetic @JvmName("getGameInstanceOf") inline fun <reified T : ApplicationListener> getGameInstance(): T = Gdx.app.applicationListener as T;
+@JvmSynthetic @JvmName("getGameInstanceOf") inline fun <reified T : Game> getGameInstance(): T = Gdx.app.applicationListener as T;
 
 @JvmSynthetic inline fun <reified T> Any?.takeIfInstance(): T? = this as? T;

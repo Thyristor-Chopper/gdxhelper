@@ -11,6 +11,7 @@ import io.potatogun.gdxhelper.widget.Widget;
  */
 public final class ArraySuppliers {
 	public static final ArraySupplier<Entity[]> entity = Entity[]::new;
+	public static final ArraySupplier<InputListener[]> inputListener = InputListener[]::new;
 	public static final ArraySupplier<Runnable[]> runnable = Runnable[]::new;
 	public static final ArraySupplier<Timer[]> timer = Timer[]::new;
 	public static final ArraySupplier<Updatable[]> updatable = Updatable[]::new;

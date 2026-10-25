@@ -3,6 +3,8 @@ package io.potatogun.gdxhelper.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input as GdxInput;
 
+import io.potatogun.gdxhelper.Window;
+
 /**
  * 키보드 입력을 편리하게 읽는 도우미
  */
@@ -11,12 +13,16 @@ object Input {
 	 * 다람쥐의 X 좌표
 	 */
 	@JvmStatic val mouseX: Int
-		inline get() = Gdx.input.getX();
+		inline get() = (Gdx.input.x * xMultiplier).toInt();
 	/**
 	 * 다람쥐의 Y 좌표
 	 */
 	@JvmStatic val mouseY: Int
-		inline get() = Gdx.input.getY();
+		inline get() = (Gdx.input.y * yMultiplier).toInt();
+	@set:JvmSynthetic var xMultiplier = 1f
+		internal set;
+	@set:JvmSynthetic var yMultiplier = 1f
+		internal set;
 	@JvmStatic val isTouched: Boolean
 		inline get() = Gdx.input.isTouched();
 	@JvmStatic val isJustTouched: Boolean
@@ -57,6 +63,10 @@ object Input {
 	@JvmStatic inline fun isButtonJustPressed(button: Int): Boolean = Gdx.input.isButtonJustPressed(button);
 
 	@JvmStatic inline fun isTouched(pointer: Int): Boolean = Gdx.input.isTouched(pointer);
+
+	@JvmStatic inline fun mouseX(pointer: Int): Int = (Gdx.input.getX(pointer) * xMultiplier).toInt();
+
+	@JvmStatic inline fun mouseY(pointer: Int): Int = (Gdx.input.getY(pointer) * yMultiplier).toInt();
 
 	// 자주 쓰는 키 상수를 짧은 이름으로 재노출.
 	//   원본은 Input.Keys.LEFT 처럼 길어서 자주 쓸수록 번거롭다.

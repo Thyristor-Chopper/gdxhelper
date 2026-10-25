@@ -2,6 +2,10 @@ package io.potatogun.gdxhelper;
 
 import com.badlogic.gdx.Gdx;
 
+import io.potatogun.gdxhelper.util.Input;
+import io.potatogun.gdxhelper.util.getGameInstance;
+import io.potatogun.gdxhelper.util.takeIfInstance;
+
 /**
  * 게임 화면(창)의 정보
  */
@@ -27,6 +31,14 @@ object Window {
 	 */
 	@get:JvmStatic var intHeight = 0
 		private set;
+	@get:JvmSynthetic internal var fixedWidth = 0
+		private set;
+	@get:JvmSynthetic internal var fixedHeight = 0
+		private set;
+	@get:JvmSynthetic internal var realWidth = 0
+		private set;
+	@get:JvmSynthetic internal var realHeight = 0
+		private set;
 
 	init {
 		updateWindowSize(Gdx.graphics.width, Gdx.graphics.height);
@@ -41,6 +53,16 @@ object Window {
 		Gdx.graphics.setTitle(title);
 	}
 
+	fun setFixedSize(width: Int, height: Int) {
+		if(width < 0 || height < 0)
+			throw IllegalArgumentException("invalid dimensions");
+
+		fixedWidth = width;
+		fixedHeight = height;
+		updateWindowSize(this.intWidth, this.intHeight);
+		getGameInstance().resize(width, height);
+	}
+
 	/**
 	 * 창 크기 캐시를 최신화한다.
 	 *
@@ -48,9 +70,22 @@ object Window {
 	 * @param intHeight 정수 높이
 	 */
 	@JvmSynthetic internal fun updateWindowSize(intWidth: Int, intHeight: Int) {
-		this.intWidth = intWidth;
-		this.intHeight = intHeight;
-		this.width = intWidth.toFloat();
-		this.height = intHeight.toFloat();
+		if(fixedWidth == 0 && fixedHeight == 0) {
+			this.intWidth = intWidth;
+			this.intHeight = intHeight;
+			this.width = intWidth.toFloat();
+			this.height = intHeight.toFloat();
+			Input.xMultiplier = 1f;
+			Input.yMultiplier = 1f;
+		} else {
+			this.intWidth = fixedWidth;
+			this.intHeight = fixedHeight;
+			this.width = fixedWidth.toFloat();
+			this.height = fixedHeight.toFloat();
+			Input.xMultiplier = fixedWidth.toFloat() / intWidth.toFloat();
+			Input.yMultiplier = fixedHeight.toFloat() / intHeight.toFloat();
+		}
+		this.realWidth = intWidth;
+		this.realHeight = intHeight;
 	}
 }

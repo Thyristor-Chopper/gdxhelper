@@ -57,12 +57,8 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		val previousWorld: World? = projectingWorld;
 		projectingWorld = world;
 		world.updateCamera();
-		if(disposePrevious && previousWorld != null) {
-			if(game is Game)
-				game.taskQueue.post(previousWorld, safeDisposeWorld);
-			else
-				Gdx.app.postRunnable { safeRun<IllegalArgumentException> { previousWorld.dispose() } };
-		}
+		if(disposePrevious && previousWorld != null)
+			game.taskQueue.post(previousWorld, safeDisposeWorld);
 	}
 
 	/**
@@ -75,12 +71,8 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		val currentWorld: World? = projectingWorld;
 		if(currentWorld == null) return false;
 		projectingWorld = null;
-		if(dispose) {
-			if(game is Game)
-				game.taskQueue.post(currentWorld, safeDisposeWorld);
-			else
-				Gdx.app.postRunnable { safeRun<IllegalArgumentException> { currentWorld.dispose() } };
-		}
+		if(dispose)
+			game.taskQueue.post(currentWorld, safeDisposeWorld);
 		return true;
 	}
 
@@ -93,6 +85,7 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 	inline fun isProjecting(world: World): Boolean = (projectingWorld === world);
 
 	override fun resize(width: Int, height: Int) {
+		super.resize(width, height);
 		projectingWorld?.updateCamera();
 	}
 
