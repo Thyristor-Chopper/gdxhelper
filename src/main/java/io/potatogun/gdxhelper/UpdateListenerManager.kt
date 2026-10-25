@@ -12,11 +12,7 @@ import java.util.WeakHashMap;
 /**
  * 게임 화면과 독립적으로 매 프레임 상태 갱신을 하는 객체 관리자이다.
  */
-object UpdateListeners {
-	/**
-	 * 게임의 인스턴스
-	 */
-	@JvmField @JvmSynthetic internal var game: Game? = null;
+class UpdateListenerManager(private val game: Game) : Updatable {
 	/**
 	 * 등록된 리스너
 	 */
@@ -32,20 +28,15 @@ object UpdateListeners {
 	 * 등록된 모든 리스너를 갱신한다.
 	 *
 	 * @param delta 직전 프레임과의 초 간격
-	 * @return 처리된 리스너 개수
 	 */
-	@JvmSynthetic internal fun update(delta: Float): Int {
-		var processed = 0;
+	override fun update(delta: Float) {
 		listeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val listener = iterableClone.items[i];
-			if(conditions.get(listener)?.test(listener, game!!) ?: true) {  // game이 null인 경우는 극히 드물고 정상적인 상황도 아닐 것
+			if(conditions.get(listener)?.test(listener, game) ?: true)
 				listener.update(delta);
-				processed++;
-			}
 		}
 		iterableClone.clear();
-		return processed;
 	}
 
 	/**
@@ -54,7 +45,7 @@ object UpdateListeners {
 	 * @param listener  리스너
 	 * @param condition 갱신 조건
 	 */
-	@JvmStatic @JvmOverloads fun register(listener: Updatable, condition: ListenerCondition? = null) {
+	@JvmOverloads fun register(listener: Updatable, condition: ListenerCondition? = null) {
 		listeners.add(listener);
 		if(condition != null)
 			conditions.put(listener, condition);
@@ -65,7 +56,7 @@ object UpdateListeners {
 	 *
 	 * @param listener 리스너
 	 */
-	@JvmStatic fun unregister(listener: Updatable) {
+	fun unregister(listener: Updatable) {
 		listeners.remove(listener);
 		conditions.remove(listener);
 	}

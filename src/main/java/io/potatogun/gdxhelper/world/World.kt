@@ -23,7 +23,7 @@ import java.util.Collections;
 /**
  * 게임 내 월드, '월드 하나'의 기본 추상 클래스
  *
- * UpdateListeners.register 메쏘드로 월드를 등록하여 상태를 갱신한다.
+ * UpdateListeners#register 메쏘드로 월드를 등록하여 상태를 갱신한다.
  *
  * @constructor Named argument를 쓸 수 있는 코틀린 전용 생성자
  * @property width    월드 전체 너비
