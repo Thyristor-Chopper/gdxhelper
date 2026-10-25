@@ -28,7 +28,7 @@ interface EntityManager : Disposable, Updatable {
 	 *
 	 * @param entity 등록할 개체
 	 * @return 성공 여부(중복 시 실패)
-	 * @throws IllegalArgumentException 추가하려는 개체가 다른 월드에 속해 있거나 개체의 자원이 이미 해제됐을 때
+	 * @throws IllegalStateException 추가하려는 개체가 다른 월드에 속해 있거나 개체의 자원이 이미 해제됐을 때
 	 */
 	fun add(entity: Entity): Boolean;
 
