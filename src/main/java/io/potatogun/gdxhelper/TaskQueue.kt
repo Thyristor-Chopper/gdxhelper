@@ -7,18 +7,18 @@ import com.badlogic.gdx.utils.Pool;
 
 import io.potatogun.gdxhelper.util.Updatable;
 
-object TaskQueue : Updatable, Disposable {
+class TaskQueue : Updatable, Disposable {
 	private val taskPool = object : Pool<Task>() {
 		override fun newObject() = Task();
 	};
 	private val tasks = GdxArray<Task>(false, 8, Task.arraySupplier);
 	private val postQueue = GdxArray<Task>(false, 8, Task.arraySupplier);
 
-	@JvmStatic inline fun post(action: Action) {
+	inline fun post(action: Action) {
 		post(null, action);
 	}
 
-	@SinceKotlin("9999.9") @JvmStatic fun post(action: Action, metadata: Any?) {
+	@SinceKotlin("9999.9") fun post(action: Action, metadata: Any?) {
 		post(metadata, action);
 	}
 

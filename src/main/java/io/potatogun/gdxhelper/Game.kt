@@ -16,6 +16,7 @@ import io.potatogun.gdxhelper.world.World;
 abstract class Game : GdxGame(), Updatable {
 	@JvmField val updateListeners = UpdateListenerManager(this);
 	@JvmField val inputListeners = InputListenerManager(this);
+	@JvmField val taskQueue = TaskQueue();
 
 	override fun create() {
 		Gdx.input.setInputProcessor(inputListeners);
@@ -42,7 +43,7 @@ abstract class Game : GdxGame(), Updatable {
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
 	override fun update(delta: Float) {
-		TaskQueue.update(delta);
+		taskQueue.update(delta);
 		updateListeners.update(delta);
 	}
 
@@ -74,6 +75,6 @@ abstract class Game : GdxGame(), Updatable {
 	override fun dispose() {
 		super.dispose();
 		Gdx.input.setInputProcessor(null);
-		TaskQueue.dispose();
+		taskQueue.dispose();
 	}
 }

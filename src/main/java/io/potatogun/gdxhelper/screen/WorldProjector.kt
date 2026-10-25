@@ -1,10 +1,13 @@
 package io.potatogun.gdxhelper.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import io.potatogun.gdxhelper.Game;
 import io.potatogun.gdxhelper.TaskQueue;
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.util.JavaOnly;
+import io.potatogun.gdxhelper.util.getGameInstance;
 import io.potatogun.gdxhelper.util.safeRun;
 import io.potatogun.gdxhelper.world.World;
 
@@ -17,6 +20,7 @@ import io.potatogun.gdxhelper.world.World;
  * @param font 화면 글꼴
  */
 open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
+	private val game = getGameInstance();
 	/**
 	 * 현재 보여주고 있는 월드를 반환한다.
 	 */
@@ -53,8 +57,12 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		val previousWorld: World? = projectingWorld;
 		projectingWorld = world;
 		world.updateCamera();
-		if(disposePrevious && previousWorld != null)
-			TaskQueue.post(previousWorld, safeDisposeWorld);
+		if(disposePrevious && previousWorld != null) {
+			if(game is Game)
+				game.taskQueue.post(previousWorld, safeDisposeWorld);
+			else
+				Gdx.app.postRunnable { safeRun<IllegalArgumentException> { previousWorld.dispose() } };
+		}
 	}
 
 	/**
@@ -67,8 +75,12 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		val currentWorld: World? = projectingWorld;
 		if(currentWorld == null) return false;
 		projectingWorld = null;
-		if(dispose)
-			TaskQueue.post(currentWorld, safeDisposeWorld);
+		if(dispose) {
+			if(game is Game)
+				game.taskQueue.post(currentWorld, safeDisposeWorld);
+			else
+				Gdx.app.postRunnable { safeRun<IllegalArgumentException> { currentWorld.dispose() } };
+		}
 		return true;
 	}
 
