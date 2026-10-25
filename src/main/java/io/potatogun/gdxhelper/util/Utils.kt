@@ -214,3 +214,5 @@ inline fun getGameInstance(): ApplicationListener = Gdx.app.applicationListener;
  * @throws NullPointerException 프로그램 자체가 초기화되기 전에 접근할 경우.
  */
 @JvmSynthetic @JvmName("getGameInstanceOf") inline fun <reified T : ApplicationListener> getGameInstance(): T = Gdx.app.applicationListener as T;
+
+@JvmSynthetic inline fun <reified T> Any?.takeIfInstance(): T? = this as? T;
