@@ -8,15 +8,19 @@ import com.badlogic.gdx.Input as GdxInput;
  */
 object Input {
 	/**
-	 * 현재 반디의 X 좌표
+	 * 다람쥐의 X 좌표
 	 */
 	@JvmStatic val mouseX: Int
 		inline get() = Gdx.input.getX();
 	/**
-	 * 현재 반디의 Y 좌표
+	 * 다람쥐의 Y 좌표
 	 */
 	@JvmStatic val mouseY: Int
 		inline get() = Gdx.input.getY();
+	@JvmStatic val isTouched: Boolean
+		inline get() = Gdx.input.isTouched();
+	@JvmStatic val isJustTouched: Boolean
+		inline get() = Gdx.input.justTouched();
 
 	/**
 	 * 키가 현재 '눌려 있는 중' 인지 — 꾹 누르고 있으면 매 프레임 true.
@@ -51,6 +55,8 @@ object Input {
 	 * @return 눌렀으면 true
 	 */
 	@JvmStatic inline fun isButtonJustPressed(button: Int): Boolean = Gdx.input.isButtonJustPressed(button);
+
+	@JvmStatic inline fun isTouched(pointer: Int): Boolean = Gdx.input.isTouched(pointer);
 
 	// 자주 쓰는 키 상수를 짧은 이름으로 재노출.
 	//   원본은 Input.Keys.LEFT 처럼 길어서 자주 쓸수록 번거롭다.
