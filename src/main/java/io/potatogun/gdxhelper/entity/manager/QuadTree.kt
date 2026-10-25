@@ -28,7 +28,7 @@ class QuadTree(capacity: Int, width: Float, height: Float, private val nearbyThr
 	private val removeQueue = GdxArray<Entity>(false, 8, ArraySuppliers.entity);
 	private val entityNodeMap = IdentityMap<Entity, Node>(capacity);
 	private val entityArrayPool = ArrayPool<Entity>(maxNodeEntities, ordered = false, supplier = ArraySuppliers.entity);
-	private val childrenPool = ArrayPool<Node>(4);
+	private val childrenPool = ArrayPool<Node>(4) { size -> arrayOfNulls<Node>(size) as Array<Node> };
 	private val nodePool = NodePool();
 	private val root: Node;
 
