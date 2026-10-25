@@ -99,7 +99,7 @@ class InputListenerManager(private val game: Game) : InputProcessor {
 		inputListeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val listener = iterableClone.items[i];
-			if(listener == null) continue;
+			if(listener as InputListener? == null) continue;
 			val conditionMet = listenerConditions.get(listener)?.test(listener, game) ?: true;
 			val listenable = (listener !is Screen || activeScreenListeners.contains(listener) || game.screen === listener);
 			if(listenable && conditionMet)

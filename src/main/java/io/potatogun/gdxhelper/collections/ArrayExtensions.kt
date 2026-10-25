@@ -34,8 +34,8 @@ fun <T> GdxArray<T>.clone(): GdxArray<T> {
  * @param output   대상 배열
  */
 fun <T> GdxArray<T>.clone(output: GdxArray<T>) {
-	output.clear();
 	output.ensureFullCapacity(size);
+	output.clear();
 	for(i in 0 until size)
 		output.add(this[i]);
 }
