@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
  * @param path 화일 이름 또는 경로
  * @return 불러온 텍스처 객체
  */
-inline fun loadTexture(path: String): Texture = Texture(Gdx.files.internal("assets/textures/$path"));
+inline fun loadTexture(path: String): Texture = Texture(Gdx.files.internal("textures/$path"));
 
 /**
  * 공유 자원이 아닌 경우에만 비디오 카드 메모리에서 정리한다.

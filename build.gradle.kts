@@ -1,3 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+
 plugins {
 	kotlin("jvm") version "2.4.20"
 	id("org.jetbrains.dokka-javadoc") version "2.2.0"
@@ -23,23 +27,23 @@ tasks.withType<JavaCompile>().configureEach {
 	targetCompatibility = "1.8"
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+tasks.withType<KotlinCompile>().configureEach {
 	compilerOptions {
 		// 자바 IDE가 함수를 자동완성할 때 매개변수명 보존
 		javaParameters.set(true)
 
 		// Windows XP 호환성
-		jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+		jvmTarget.set(JvmTarget.JVM_1_8)
 
 		// 최적화 (-Xstring-concat=indy는 현재 미적용)
 		freeCompilerArgs.addAll(listOf("-Xlambdas=indy", "-Xstring-concat=indy", "-Xno-call-assertions", "-Xno-receiver-assertions", "-Xno-source-debug-extension"))
 		freeCompilerArgs.addAll(listOf("-Xwarning-level=NOTHING_TO_INLINE:disabled", "-Xwarning-level=UNCHECKED_CAST:disabled"))
 
 		// SinceKotlin 트릭으로 자바 전용 API를 코틀린에서만 숨길 때 나오는 경고 죽이기
-		freeCompilerArgs.addAll(listOf("-Xwarning-level=NEWER_VERSION_IN_SINCE_KOTLIN:disabled"))
+		freeCompilerArgs.add("-Xwarning-level=NEWER_VERSION_IN_SINCE_KOTLIN:disabled")
 
 		// 인터페이스 최적화
-		jvmDefault = org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
+		jvmDefault = JvmDefaultMode.NO_COMPATIBILITY
 	}
 }
 

@@ -1,6 +1,8 @@
 @file:JvmName("Utils")
 package io.potatogun.gdxhelper.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,6 +15,8 @@ import com.badlogic.gdx.utils.TimeUtils;
  * libGDX에서 제공하는 정렬기
  */
 @JvmField val sorter = Sort.instance();
+val isMobile: Boolean
+	inline get() = Gdx.app.type.let { type -> type === ApplicationType.Android || type === ApplicationType.iOS };
 
 /**
  * 초를 X' XX''로 변환한다.

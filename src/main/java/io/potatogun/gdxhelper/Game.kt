@@ -1,8 +1,8 @@
 package io.potatogun.gdxhelper;
 
 import com.badlogic.gdx.Game as GdxGame;
-import com.badlogic.gdx.Screen as GdxScreen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen as GdxScreen;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import io.potatogun.gdxhelper.Window;
