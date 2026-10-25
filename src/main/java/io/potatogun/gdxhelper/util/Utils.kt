@@ -2,6 +2,7 @@
 package io.potatogun.gdxhelper.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -197,3 +198,16 @@ inline fun beep3() {
 inline fun beep(count: Int) {
 	print("".repeat(count));
 }
+
+/**
+ * 현재 게임 인스턴스를 동적으로 가져온다.
+ */
+inline fun getGameInstance(): ApplicationListener = Gdx.app.applicationListener;
+
+/**
+ * 현재 게임 인스턴스를 동적으로 가져온다.
+ *
+ * @param T 게임 인스턴스 자료형
+ * @throws ClassCastException 자료형이 일치하지 않을 때
+ */
+@JvmSynthetic @JvmName("getGameInstanceOf") inline fun <reified T : ApplicationListener> getGameInstance(): T = Gdx.app.applicationListener as T;
