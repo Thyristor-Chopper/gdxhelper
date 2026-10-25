@@ -18,7 +18,7 @@ abstract class Game : GdxGame(), Updatable {
 	@JvmField val inputListeners = InputListenerManager(this);
 
 	override fun create() {
-		inputListeners.registerInputProcessor();
+		Gdx.input.setInputProcessor(inputListeners);
 	}
 
 	// Gdx.graphics.width를 매번 실수형으로 변환하는 오버헤드를 없애기 위해 창 크기를 캐시하고 크기가 바뀔 때만 업데이트한다.
@@ -69,5 +69,11 @@ abstract class Game : GdxGame(), Updatable {
 			screen.updateProjectionMatrix();
 			screen.resize(Window.intWidth, Window.intHeight);
 		}
+	}
+
+	override fun dispose() {
+		super.dispose();
+		Gdx.input.setInputProcessor(null);
+		TaskQueue.dispose();
 	}
 }

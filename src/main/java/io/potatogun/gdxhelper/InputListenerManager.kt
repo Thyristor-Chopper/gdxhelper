@@ -1,6 +1,5 @@
 package io.potatogun.gdxhelper;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array as GdxArray;
 
@@ -12,51 +11,14 @@ import io.potatogun.gdxhelper.util.InputListener;
 import java.util.WeakHashMap;
 
 /**
- * 키보드 입력을 편리하게 읽는 도우미
+ * 입력 감시자 관리자
  */
-class InputListenerManager(private val game: Game) {
+class InputListenerManager(private val game: Game) : InputProcessor {
 	// 입력 이벤트 감지기 관련
 	private val inputListeners = WeakMutableSet<InputListener>();
 	private val listenerConditions = WeakHashMap<InputListener, ListenerCondition>();
 	private val activeScreenListeners = WeakMutableSet<Screen>();  // 현재 화면이 아니어도 입력을 감지할 수 있는 화면
 	private val iterableClone = GdxArray<InputListener>(16);  // 순회용 사본
-
-	@JvmSynthetic internal fun registerInputProcessor() {
-		// https://stackoverflow.com/questions/17644429/libgdx-mouse-just-clicked 참고함
-		Gdx.input.setInputProcessor(object : InputProcessor {
-			override fun scrolled(amountX: Float, amountY: Float): Boolean = forEachListeners { it.onScroll(amountX, amountY) };
-
-			override fun keyDown(code: Int): Boolean = forEachListeners { it.onKeyDown(code) };
-
-			override fun keyUp(code: Int): Boolean = forEachListeners { it.onKeyUp(code) };
-
-			override fun mouseMoved(x: Int, y: Int): Boolean = forEachListeners { it.onMouseMove(x, y) };
-
-			override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean = forEachListeners { it.onTouchDrag(x, y, pointer) };
-
-			override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchDown(x, y, pointer, button) };
-
-			override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchUp(x, y, pointer, button) };
-
-			override fun touchCancelled(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchCancel(x, y, pointer, button) };
-			
-			override fun keyTyped(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
-		});
-	}
-
-	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
-		var processed = false;
-		inputListeners.toArray(iterableClone);
-		for(i in 0 until iterableClone.size) {
-			val listener = iterableClone[i];
-			val conditionMet = listenerConditions.get(listener)?.test(listener, game) ?: true;
-			val listenable = (listener !is Screen || activeScreenListeners.contains(listener) || game.screen === listener);
-			if(listenable && conditionMet)
-				processed = callback(listener) || processed;
-		}
-		iterableClone.clear();
-		return processed;
-	}
 
 	/**
 	 * 입력 감시자를 등록한다.
@@ -93,6 +55,38 @@ class InputListenerManager(private val game: Game) {
 		listenerConditions.remove(listener);
 		if(listener is Screen)
 			activeScreenListeners.remove(listener);
+	}
+
+	override fun scrolled(amountX: Float, amountY: Float): Boolean = forEachListeners { it.onScroll(amountX, amountY) };
+
+	override fun keyDown(code: Int): Boolean = forEachListeners { it.onKeyDown(code) };
+
+	override fun keyUp(code: Int): Boolean = forEachListeners { it.onKeyUp(code) };
+
+	override fun mouseMoved(x: Int, y: Int): Boolean = forEachListeners { it.onMouseMove(x, y) };
+
+	override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean = forEachListeners { it.onTouchDrag(x, y, pointer) };
+
+	override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchDown(x, y, pointer, button) };
+
+	override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchUp(x, y, pointer, button) };
+
+	override fun touchCancelled(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchCancel(x, y, pointer, button) };
+	
+	override fun keyTyped(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
+
+	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
+		var processed = false;
+		inputListeners.toArray(iterableClone);
+		for(i in 0 until iterableClone.size) {
+			val listener = iterableClone[i];
+			val conditionMet = listenerConditions.get(listener)?.test(listener, game) ?: true;
+			val listenable = (listener !is Screen || activeScreenListeners.contains(listener) || game.screen === listener);
+			if(listenable && conditionMet)
+				processed = callback(listener) || processed;
+		}
+		iterableClone.clear();
+		return processed;
 	}
 
 	/**

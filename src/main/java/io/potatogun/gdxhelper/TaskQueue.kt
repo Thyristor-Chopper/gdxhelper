@@ -2,11 +2,12 @@ package io.potatogun.gdxhelper;
 
 import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.ArraySupplier;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
 import io.potatogun.gdxhelper.util.Updatable;
 
-object TaskQueue : Updatable {
+object TaskQueue : Updatable, Disposable {
 	private val taskPool = object : Pool<Task>() {
 		override fun newObject() = Task();
 	};
@@ -49,6 +50,22 @@ object TaskQueue : Updatable {
 			val task = postQueue.items[i];
 			tasks.add(task);
 		}
+		postQueue.clear();
+	}
+
+	override fun dispose() {
+		if(tasks.size > 0)
+			for(i in 0 until tasks.size) {
+				val task = tasks.items[i];
+				taskPool.free(task);
+			}
+		tasks.clear();
+
+		if(postQueue.size > 0)
+			for(i in 0 until postQueue.size) {
+				val task = postQueue.items[i];
+				taskPool.free(task);
+			}
 		postQueue.clear();
 	}
 
