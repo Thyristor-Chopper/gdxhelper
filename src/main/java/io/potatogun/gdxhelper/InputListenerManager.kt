@@ -75,6 +75,24 @@ class InputListenerManager(private val game: Game) : InputProcessor {
 	
 	override fun keyTyped(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
 
+	fun fireScroll(amountX: Float, amountY: Float): Boolean = forEachListeners { it.onScroll(amountX, amountY) };
+
+	fun fireKeyDown(code: Int): Boolean = forEachListeners { it.onKeyDown(code) };
+
+	fun fireKeyUp(code: Int): Boolean = forEachListeners { it.onKeyUp(code) };
+
+	fun fireMouseMove(x: Int, y: Int): Boolean = forEachListeners { it.onMouseMove(x, y) };
+
+	fun fireTouchDrag(x: Int, y: Int, pointer: Int): Boolean = forEachListeners { it.onTouchDrag(x, y, pointer) };
+
+	fun fireTouchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchDown(x, y, pointer, button) };
+
+	fun fireTouchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchUp(x, y, pointer, button) };
+
+	fun fireTouchCancel(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchCancel(x, y, pointer, button) };
+	
+	fun fireKeyType(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
+
 	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
 		var processed = false;
 		inputListeners.toArray(iterableClone);
