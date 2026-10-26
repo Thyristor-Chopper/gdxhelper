@@ -59,7 +59,7 @@ object Window {
 
 		fixedWidth = width;
 		fixedHeight = height;
-		updateWindowSize(this.intWidth, this.intHeight);
+		updateWindowSize(Gdx.graphics.width, Gdx.graphics.height);
 		getGameInstance().resize(width, height);
 	}
 
