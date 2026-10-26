@@ -181,6 +181,8 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		Gdx.gl.glViewport(0, 0, Window.realWidth, Window.realHeight);
+
 		// 2) 그리기 — SpriteBatch는 begin()/end() 사이에서만 동작한다.
 		batch.begin();
 		drawBackground();
