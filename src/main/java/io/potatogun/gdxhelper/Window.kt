@@ -41,7 +41,7 @@ object Window {
 		private set;
 
 	init {
-		updateWindowSize(Gdx.graphics.width, Gdx.graphics.height);
+		updateWindowSize();
 	}
 
 	/**
@@ -59,22 +59,21 @@ object Window {
 
 		fixedWidth = width;
 		fixedHeight = height;
-		updateWindowSize(Gdx.graphics.width, Gdx.graphics.height);
+		updateWindowSize();
 		getGameInstance().resize(width, height);
 	}
 
 	/**
 	 * 창 크기 캐시를 최신화한다.
-	 *
-	 * @param intWidth  정수 너비
-	 * @param intHeight 정수 높이
 	 */
-	@JvmSynthetic internal fun updateWindowSize(intWidth: Int, intHeight: Int) {
+	@JvmSynthetic internal fun updateWindowSize() {
+		this.realWidth = Gdx.graphics.width;
+		this.realHeight = Gdx.graphics.height;
 		if(fixedWidth == 0 && fixedHeight == 0) {
-			this.intWidth = intWidth;
-			this.intHeight = intHeight;
-			this.width = intWidth.toFloat();
-			this.height = intHeight.toFloat();
+			this.intWidth = realWidth;
+			this.intHeight = realHeight;
+			this.width = realWidth.toFloat();
+			this.height = realHeight.toFloat();
 			Input.xMultiplier = 1f;
 			Input.yMultiplier = 1f;
 		} else {
@@ -82,10 +81,8 @@ object Window {
 			this.intHeight = fixedHeight;
 			this.width = fixedWidth.toFloat();
 			this.height = fixedHeight.toFloat();
-			Input.xMultiplier = fixedWidth.toFloat() / intWidth.toFloat();
-			Input.yMultiplier = fixedHeight.toFloat() / intHeight.toFloat();
+			Input.xMultiplier = fixedWidth.toFloat() / realWidth.toFloat();
+			Input.yMultiplier = fixedHeight.toFloat() / realHeight.toFloat();
 		}
-		this.realWidth = intWidth;
-		this.realHeight = intHeight;
 	}
 }
