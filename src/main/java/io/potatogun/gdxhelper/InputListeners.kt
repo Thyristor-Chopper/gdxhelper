@@ -9,6 +9,7 @@ import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.collections.toArray;
 import io.potatogun.gdxhelper.screen.Screen;
 import io.potatogun.gdxhelper.util.ArraySuppliers;
+import io.potatogun.gdxhelper.util.Input;
 import io.potatogun.gdxhelper.util.InputListener;
 import io.potatogun.gdxhelper.util.getGameInstance;
 
@@ -71,16 +72,36 @@ object InputListeners : InputProcessor {
 
 	override fun keyUp(code: Int): Boolean = forEachListeners { it.onKeyUp(code) };
 
-	override fun mouseMoved(x: Int, y: Int): Boolean = forEachListeners { it.onMouseMove(x, y) };
+	override fun mouseMoved(x: Int, y: Int): Boolean {
+		val mouseX = (x * Input.xMultiplier).toInt();
+		val mouseY = (y * Input.yMultiplier).toInt();
+		return forEachListeners { it.onMouseMove(mouseX, mouseY) };
+	}
 
-	override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean = forEachListeners { it.onTouchDrag(x, y, pointer) };
+	override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean {
+		val mouseX = (x * Input.xMultiplier).toInt();
+		val mouseY = (y * Input.yMultiplier).toInt();
+		return forEachListeners { it.onTouchDrag(mouseX, mouseY, pointer) };
+	}
 
-	override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchDown(x, y, pointer, button) };
+	override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean {
+		val mouseX = (x * Input.xMultiplier).toInt();
+		val mouseY = (y * Input.yMultiplier).toInt();
+		return forEachListeners { it.onTouchDown(mouseX, mouseY, pointer, button) };
+	}
 
-	override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchUp(x, y, pointer, button) };
+	override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean {
+		val mouseX = (x * Input.xMultiplier).toInt();
+		val mouseY = (y * Input.yMultiplier).toInt();
+		return forEachListeners { it.onTouchUp(mouseX, mouseY, pointer, button) };
+	}
 
-	override fun touchCancelled(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchCancel(x, y, pointer, button) };
-	
+	override fun touchCancelled(x: Int, y: Int, pointer: Int, button: Int): Boolean {
+		val mouseX = (x * Input.xMultiplier).toInt();
+		val mouseY = (y * Input.yMultiplier).toInt();
+		return forEachListeners { it.onTouchCancel(mouseX, mouseY, pointer, button) };
+	}
+
 	override fun keyTyped(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
 
 	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {

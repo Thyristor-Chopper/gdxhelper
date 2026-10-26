@@ -90,9 +90,8 @@ class Button(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Wi
 		return true;
 	}
 
-	private inline fun isMouseOver(x: Int, y: Int): Boolean {
-		val mouseX = x * Input.xMultiplier;
-		val mouseY = Window.height - y * Input.yMultiplier;
+	private inline fun isMouseOver(mouseX: Int, mouseY: Int): Boolean {
+		val mouseY = Window.height - mouseY;
 		val x = getX();
 		val y = getY();
 		val width = getWidth();

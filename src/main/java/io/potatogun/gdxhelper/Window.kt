@@ -35,9 +35,9 @@ object Window {
 		private set;
 	@get:JvmSynthetic internal var fixedHeight = 0
 		private set;
-	@get:JvmSynthetic internal var realWidth = 0
+	@get:JvmStatic var realWidth = 0
 		private set;
-	@get:JvmSynthetic internal var realHeight = 0
+	@get:JvmStatic var realHeight = 0
 		private set;
 
 	init {
