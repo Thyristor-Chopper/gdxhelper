@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.util.Updatable;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * 화면 내의 컨트롤
  *
@@ -19,10 +21,13 @@ abstract class Widget(x: DimensionSupplier, y: DimensionSupplier, width: Dimensi
 	private var ySupplier: DimensionSupplier = y;
 	private var widthSupplier: DimensionSupplier = width;
 	private var heightSupplier: DimensionSupplier = height;
+	internal var visibleCondition: BooleanSupplier? = null
+		private set;
 	/**
 	 * 컨트롤이 화면에 그려지는지의 여부
 	 */
 	var isVisible = true
+		get() = field && visibleCondition?.getAsBoolean() ?: true;
 		private set;
 	/**
 	 * 자원이 해제됐는지의 여부
@@ -174,6 +179,10 @@ abstract class Widget(x: DimensionSupplier, y: DimensionSupplier, width: Dimensi
 	 */
 	fun setHeight(supplier: DimensionSupplier) {
 		heightSupplier = supplier;
+	}
+
+	fun setVisibleCondition(condition: BooleanSupplier) {
+		visibleCondition = condition;
 	}
 
 	fun interface DimensionSupplier {

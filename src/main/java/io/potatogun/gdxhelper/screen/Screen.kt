@@ -50,6 +50,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	 */
 	private val overlayWidgets = IdentitySet<Widget>(16);
 	private val listenableWidgets = IdentitySet<Widget>(16);
+	private val iterableClone = GdxArray<Widget>(false, 16, ArraySuppliers.widget);
 
 	/**
 	 * 설정 빌더를 이용하여 화면을 생성한다.
@@ -161,11 +162,12 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	override fun update(delta: Float) {}
 
 	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
-		val iterator = widgets.iterator();
-		while(iterator.hasNext) {
-			val widget = iterator.next();
+		widgets.toArray(iterableClone);
+		for(i in 0 until iterableClone.size) {
+			val widget = iterableClone.items[i];
 			widget.update(delta);
 		}
+		iterableClone.clear();
 	}
 
 	// gdxhelper의 Game 객체가 아닌 LibGDX 자체의 Game 객체에서 사용할 때 대비
@@ -292,12 +294,13 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 
 	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
 		var processed = false;
-		val iterator = listenableWidgets.iterator();
-		while(iterator.hasNext) {
-			val widget = iterator.next();
+		listenableWidgets.toArray(iterableClone);
+		for(i in 0 until iterableClone.size) {
+			val widget = iterableClone.items[i];
 			if(widget !is InputListener) continue;
 			processed = callback(widget) || processed;
 		}
+		iterableClone.clear();
 		return processed;
 	}
 
