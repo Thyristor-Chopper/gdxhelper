@@ -6,20 +6,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array as GdxArray;
 import com.badlogic.gdx.utils.IdentitySet;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import io.potatogun.gdxhelper.InputListeners;
 import io.potatogun.gdxhelper.Window;
+import io.potatogun.gdxhelper.collections.toArray;
 import io.potatogun.gdxhelper.util.ArraySuppliers;
 import io.potatogun.gdxhelper.util.InputListener;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.Updatable;
 import io.potatogun.gdxhelper.util.drawText;
-import io.potatogun.gdxhelper.util.getGameInstance;
 import io.potatogun.gdxhelper.widget.Widget;
 
 /**
@@ -30,7 +30,6 @@ import io.potatogun.gdxhelper.widget.Widget;
  * @property font   화면 기본 글꼴 - 개발자가 수동으로 dispose해야 한다.
  */
 abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener, Updatable {
-	private val game = getGameInstance();
 	/**
 	 * 이미지(Texture)와 글자를 화면에 찍어주는 도구.
 	 *
@@ -45,13 +44,12 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	/**
 	 * 등록된 위젯들
 	 */
-	private val widgets = ObjectMap<String, Widget>();
+	private val widgets = IdentitySet<Widget>();
 	/**
 	 * 오버레이 위에 표시되는 위젯
 	 */
 	private val overlayWidgets = IdentitySet<Widget>(16);
-	@JvmField protected val stage = Stage(ScreenViewport());
-	private var stageVisible = true;
+	private val listenableWidgets = IdentitySet<Widget>(16);
 
 	/**
 	 * 설정 빌더를 이용하여 화면을 생성한다.
@@ -74,33 +72,32 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		}
 
 		updateProjectionMatrix();
-		stage.viewport.update(Window.intWidth, Window.intHeight, true);
-		game.inputListeners.register(this);
+		InputListeners.register(this);
 	}
 
 	/**
 	 * 위젯을 화면에 추가한다.
 	 *
-	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
 	 * @return 성공 여부 (이미 식별자가 존재하거나 위젯의 자원이 해제된 상태이면 실패)
 	 */
-	fun addWidget(id: String, widget: Widget): Boolean {
+	fun addWidget(widget: Widget): Boolean {
 		if(widget.isDisposed) return false;
-		if(widgets.containsKey(id)) return false;
-		widgets.put(id, widget);
+		if(widgets.contains(widget)) return false;
+		widgets.add(widget);
+		if(widget is InputListener)
+			listenableWidgets.add(widget);
 		return true;
 	}
 
 	/**
 	 * 오버레이 위에 그려지는 위젯을 화면에 추가한다.
 	 *
-	 * @param id     위젯의 식별자
 	 * @param widget 추가할 위젯 객체
 	 * @return 성공 여부 (이미 식별자가 존재하거나 위젯의 자원이 해제된 상태이면 실패)
 	 */
-	fun addOverlayWidget(id: String, widget: Widget): Boolean {
-		if(!addWidget(id, widget)) return false;
+	fun addOverlayWidget(widget: Widget): Boolean {
+		if(!addWidget(widget)) return false;
 		overlayWidgets.add(widget);
 		return true;
 	}
@@ -108,67 +105,32 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	/**
 	 * 위젯을 화면에서 제거한다.
 	 *
-	 * @param id 위젯의 식별자
+	 * @param widget 제거할 위젯
 	 * @return 성공 여부
 	 */
-	fun removeWidget(id: String): Boolean {
-		val widget: Widget? = widgets[id];
-		if(widget == null) return false;
-		widgets.remove(id);
+	@JvmOverloads fun removeWidget(widget: Widget, dispose: Boolean = true): Boolean {
+		widgets.remove(widget);
 		overlayWidgets.remove(widget);
-		widget.dispose();
+		listenableWidgets.remove(widget);
+		if(dispose)
+			widget.dispose();
 		return true;
 	}
 
 	/**
-	 * 위젯을 화면에서 숨긴다.
+	 * 지정한 위젯이 있는지 본다.
 	 *
-	 * @param id 위젯의 식별자
-	 * @return 성공 여부
-	 */
-	fun hideWidget(id: String): Boolean {
-		val widget: Widget? = widgets[id];
-		if(widget == null) return false;
-		widget.hide();
-		return true;
-	}
-
-	/**
-	 * 숨져긴 위젯을 표시한다.
-	 *
-	 * @param id 위젯의 식별자
-	 * @return 성공 여부
-	 */
-	fun showWidget(id: String): Boolean {
-		val widget: Widget? = widgets[id];
-		if(widget == null) return false;
-		widget.show();
-		return true;
-	}
-
-	/**
-	 * 위젯을 식별자로 가져온다.
-	 *
-	 * @param id 가져올 위젯의 식별자
-	 * @return 해당 위젯
-	 * @throws NoSuchElementException 지정한 식별자의 위젯이 없는 경우
-	 */
-	fun getWidget(id: String): Widget = widgets[id] ?: throw NoSuchElementException("invalid widget ID");
-
-	/**
-	 * 지정한 식별자의 위젯이 있는지 본다.
-	 *
-	 * @param id 확인할 식별자
+	 * @param widget 확인할 위젯
 	 * @return 존재 여부
 	 */
-	fun hasWidget(id: String): Boolean = widgets.containsKey(id);
+	fun hasWidget(widget: Widget): Boolean = widgets.contains(widget);
 
 	/**
 	 * 모든 위젯 목록의 사본
 	 *
 	 * @return 위젯들의 배열
 	 */
-	fun getWidgets(): GdxArray<Widget> = widgets.values().toArray();
+	fun getWidgets(): GdxArray<Widget> = widgets.toArray();
 
 	/**
 	 * 모든 위젯 목록의 사본
@@ -176,15 +138,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	 * @param output 위젯들을 담을 배열
 	 */
 	fun getWidgets(output: GdxArray<Widget>) {
-		widgets.values().toArray(output);
-	}
-
-	protected fun showStage() {
-		stageVisible = true;
-	}
-
-	protected fun hideState() {
-		stageVisible = false;
+		widgets.toArray(output);
 	}
 
 	@JvmSynthetic internal fun updateProjectionMatrix() {
@@ -196,10 +150,6 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		updateWidgets(delta);
 	}
 
-	override fun resize(width: Int, height: Int) {
-		stage.viewport.update(width, height, true);
-	}
-
 	/**
 	 * 매 프레임 화면 로직
 	 *
@@ -208,12 +158,10 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	 *
 	 * @param delta 직전 프레임과의 시간 간격(초)
 	 */
-	override fun update(delta: Float) {
-		stage.act(delta);
-	}
+	override fun update(delta: Float) {}
 
 	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
-		val iterator = widgets.values();
+		val iterator = widgets.iterator();
 		while(iterator.hasNext) {
 			val widget = iterator.next();
 			widget.update(delta);
@@ -226,10 +174,6 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		render();
 	}
 
-	/**
-	 * LibGDX가 매 프레임 자동으로 호출.
-	 *   기본 흐름: 화면 지우기 → 로직 업데이트 → 배경 → 객체.
-	 */
 	@JvmSynthetic internal fun render() {
 		// 1) 이전 프레임의 잔상 지우기 (검은색으로 채움)
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
@@ -242,8 +186,6 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		drawWidgets();
 		drawOverlay();
 		drawOverlayWidgets();
-		if(stageVisible)
-			stage.draw();
 		batch.end();
 	}
 
@@ -264,7 +206,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	 */
 	private inline fun drawWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
 		var count = 0;
-		val iterator = widgets.values();
+		val iterator = widgets.iterator();
 		while(iterator.hasNext) {
 			val widget = iterator.next();
 			if(widget.isVisible && !overlayWidgets.contains(widget)) {
@@ -330,39 +272,50 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		drawText(batch, font, text, x, y, color, scale, width, align);
 	}
 
-	override fun onScroll(amountX: Float, amountY: Float): Boolean = stage.scrolled(amountX, amountY);
+	override fun onScroll(amountX: Float, amountY: Float): Boolean = forEachListeners { it.onScroll(amountX, amountY) };
 
-	override fun onKeyDown(code: Int): Boolean = stage.keyDown(code);
+	override fun onKeyDown(code: Int): Boolean = forEachListeners { it.onKeyDown(code) };
 
-	override fun onKeyUp(code: Int): Boolean = stage.keyUp(code);
+	override fun onKeyUp(code: Int): Boolean = forEachListeners { it.onKeyUp(code) };
 
-	override fun onMouseMove(x: Int, y: Int): Boolean = stage.mouseMoved(x, y);
+	override fun onMouseMove(x: Int, y: Int): Boolean = forEachListeners { it.onMouseMove(x, y) };
 
-	override fun onTouchDrag(x: Int, y: Int, pointer: Int): Boolean = stage.touchDragged(x, y, pointer);
+	override fun onTouchDrag(x: Int, y: Int, pointer: Int): Boolean = forEachListeners { it.onTouchDrag(x, y, pointer) };
 
-	override fun onTouchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = stage.touchDown(x, y, pointer, button);
+	override fun onTouchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchDown(x, y, pointer, button) };
 
-	override fun onTouchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = stage.touchUp(x, y, pointer, button);
+	override fun onTouchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchUp(x, y, pointer, button) };
 
-	override fun onTouchCancel(x: Int, y: Int, pointer: Int, button: Int): Boolean = stage.touchCancelled(x, y, pointer, button);
+	override fun onTouchCancel(x: Int, y: Int, pointer: Int, button: Int): Boolean = forEachListeners { it.onTouchCancel(x, y, pointer, button) };
 	
-	override fun onKeyType(char: Char): Boolean = stage.keyTyped(char);
+	override fun onKeyType(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
+
+	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
+		var processed = false;
+		val iterator = listenableWidgets.iterator();
+		while(iterator.hasNext) {
+			val widget = iterator.next();
+			if(widget !is InputListener) continue;
+			processed = callback(widget) || processed;
+		}
+		return processed;
+	}
 
 	/**
 	 * LibGDX가 화면을 바꾸거나 앱을 종료할 때 자원을 해제한다.
 	 *   GPU 메모리에 올라간 것들은 수동으로 dispose 해줘야 한다.
 	 */
 	override fun dispose() {
-		game.inputListeners.unregister(this);
+		InputListeners.unregister(this);
 		batch.dispose();
 		if(autoDisposeFont)
 			font.dispose();
-		val iterator = widgets.values();
+		val iterator = widgets.iterator();
 		while(iterator.hasNext) {
 			val widget = iterator.next();
 			widget.dispose();
 		}
-		stage.dispose();
+		widgets.clear();
 	}
 
 	/**

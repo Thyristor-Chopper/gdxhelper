@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.util.Input;
+import io.potatogun.gdxhelper.util.InputListener;
 import io.potatogun.gdxhelper.util.JavaOnly;
 import io.potatogun.gdxhelper.util.drawText;
 import io.potatogun.gdxhelper.Window;
@@ -27,14 +28,14 @@ import io.potatogun.gdxhelper.Window;
  * @property tint    단추의 오버레이 색(흰색: 변경없음)
  * @property onClick 단추를 눌렀을 때 실행할 서브루틴
  */
-class Button(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Widget.DimensionSupplier, height: Widget.DimensionSupplier = { 25f }, caption: String, private val skin: Skin, private val tint: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height) {
+class Button(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Widget.DimensionSupplier, height: Widget.DimensionSupplier = { 25f }, caption: String, private val skin: Skin, private val tint: Color = Color.WHITE, private val onClick: Runnable = {}) : Widget(x, y, width, height), InputListener {
 	private val font = skin.font;
 	private val accessKey: Char?;
 	private val caption: String;
-	private var previouslyPressed = false;
 	private var isEnabled = true;
 	private var isHover = false;
 	private var isPressed = false;
+	private var currentPointer = -1;
 
 	/**
 	 * 단추 - 코틀린용 생성자이며 자바 개발자라면 빌더를 사용하면 된다.
@@ -58,28 +59,45 @@ class Button(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Wi
 	}
 
 	override fun update(delta: Float) {
+		detectAccessKeyPress();
+	}
+
+	override fun onMouseMove(x: Int, y: Int): Boolean {
+		if(!isEnabled || !isVisible) return false;
+		isHover = isMouseOver(x, y);
+		return true;
+	}
+
+	override fun onTouchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean {
+		if(!isEnabled || !isVisible) return false;
+		if(button != Input.LEFT_MOUSE) return false;
+		if(!isMouseOver(x, y)) return false;
+		isPressed = true;
+		currentPointer = pointer;
+		return true;
+	}
+
+	override fun onTouchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean {
+		if(!isEnabled || !isVisible) return false;
+		if(button != Input.LEFT_MOUSE) return false;
+		if(pointer != currentPointer) return false;
+		isPressed = false;
+		currentPointer = -1;
+		if(isMouseOver(x, y))
+			onClick.run();
+		else
+			isHover = false;
+		return true;
+	}
+
+	private inline fun isMouseOver(x: Int, y: Int): Boolean {
+		val mouseX = x * Input.xMultiplier;
+		val mouseY = Window.height - y * Input.yMultiplier;
 		val x = getX();
 		val y = getY();
 		val width = getWidth();
 		val height = getHeight();
-
-		val mouseX = Input.mouseX.toFloat();
-		val mouseY = Window.height - Input.mouseY;
-		isHover = isEnabled && mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
-		isPressed = isEnabled && isHover && Input.isButtonPressed(Input.LEFT_MOUSE);
-
-		// 마우스를 눌렀다 뗐으면서 뗀 순간에 반디가 단추 위에 있으면 클릭 이벤트 발생
-		if(!isEnabled || !isVisible) {
-			previouslyPressed = false;
-		} else if(isPressed) {
-			previouslyPressed = true;
-		} else if(isHover && previouslyPressed) {
-			fireClickEvent();
-		} else {
-			previouslyPressed = false;
-		}
-
-		detectAccessKeyPress();
+		return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
 	}
 
 	override fun draw(batch: SpriteBatch) {
@@ -135,15 +153,6 @@ class Button(x: Widget.DimensionSupplier, y: Widget.DimensionSupplier, width: Wi
 	 */
 	fun disable() {
 		isEnabled = false;
-	}
-
-	/**
-	 * 단추 누르기
-	 */
-	private fun fireClickEvent() {
-		if(!previouslyPressed) return;
-		onClick.run();
-		previouslyPressed = false;
 	}
 
 	/**

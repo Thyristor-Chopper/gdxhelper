@@ -15,12 +15,7 @@ import io.potatogun.gdxhelper.world.World;
  */
 abstract class Game : GdxGame(), Updatable {
 	@JvmField val updateListeners = UpdateListenerManager(this);
-	@JvmField val inputListeners = InputListenerManager(this);
 	@JvmField val taskQueue = TaskQueue();
-
-	override fun create() {
-		Gdx.input.setInputProcessor(inputListeners);
-	}
 
 	// Gdx.graphics.width를 매번 실수형으로 변환하는 오버헤드를 없애기 위해 창 크기를 캐시하고 크기가 바뀔 때만 업데이트한다.
 	override fun resize(width: Int, height: Int) {
@@ -80,7 +75,6 @@ abstract class Game : GdxGame(), Updatable {
 
 	override fun dispose() {
 		super.dispose();
-		Gdx.input.setInputProcessor(null);
 		taskQueue.dispose();
 	}
 }
