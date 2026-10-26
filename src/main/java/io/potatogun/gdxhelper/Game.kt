@@ -3,12 +3,10 @@ package io.potatogun.gdxhelper;
 import com.badlogic.gdx.Game as GdxGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen as GdxScreen;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import io.potatogun.gdxhelper.Window;
 import io.potatogun.gdxhelper.screen.Screen;
 import io.potatogun.gdxhelper.util.Updatable;
-import io.potatogun.gdxhelper.world.World;
 
 /**
  * 이 프레임워크에 맞게 일부 처리가 추가된 Game 추상 클래스
@@ -16,6 +14,10 @@ import io.potatogun.gdxhelper.world.World;
 abstract class Game : GdxGame(), Updatable {
 	@JvmField val updateListeners = UpdateListenerManager(this);
 	@JvmField val taskQueue = TaskQueue();
+
+	override fun create() {
+		InputListeners.init();
+	}
 
 	// Gdx.graphics.width를 매번 실수형으로 변환하는 오버헤드를 없애기 위해 창 크기를 캐시하고 크기가 바뀔 때만 업데이트한다.
 	override fun resize(width: Int, height: Int) {
@@ -50,11 +52,11 @@ abstract class Game : GdxGame(), Updatable {
 
 	override fun render() {
 		// 상태 갱신
-		val delta = Gdx.graphics.getDeltaTime();
+		val delta = Gdx.graphics.deltaTime;
 		update(delta);
 
 		// 스크린 갱신 및 그리기
-		val screen = getScreen();
+		val screen = this.screen;
 		if(screen is Screen) {
 			screen.updateAll(delta);
 			screen.render();
@@ -75,6 +77,8 @@ abstract class Game : GdxGame(), Updatable {
 
 	override fun dispose() {
 		super.dispose();
+		updateListeners.dispose();
+		InputListeners.dispose();
 		taskQueue.dispose();
 	}
 }

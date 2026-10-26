@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array as GdxArray;
+import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.collections.toArray;
@@ -18,14 +19,14 @@ import java.util.WeakHashMap;
 /**
  * 입력 감시자 관리자
  */
-object InputListeners : InputProcessor {
+object InputListeners : InputProcessor, Disposable {
 	// 입력 이벤트 감지기 관련
 	private val inputListeners = WeakMutableSet<InputListener>();
 	private val listenerConditions = WeakHashMap<InputListener, ListenerCondition>();
 	private val activeScreenListeners = WeakMutableSet<Screen>();  // 현재 화면이 아니어도 입력을 감지할 수 있는 화면
 	private val iterableClone = GdxArray<InputListener>(false, 16, ArraySuppliers.inputListener);  // 순회용 사본
 
-	init {
+	inline fun init() {  // 아직 한 줄짜리라 인라인
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -117,6 +118,13 @@ object InputListeners : InputProcessor {
 		}
 		iterableClone.clear();
 		return processed;
+	}
+
+	override fun dispose() {
+		inputListeners.clear();
+		listenerConditions.clear();
+		activeScreenListeners.clear();
+		Gdx.input.setInputProcessor(null);
 	}
 
 	/**

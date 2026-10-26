@@ -1,6 +1,8 @@
 package io.potatogun.gdxhelper;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.utils.Array as GdxArray;
+import com.badlogic.gdx.utils.Disposable;
 
 import io.potatogun.gdxhelper.collections.WeakMutableSet;
 import io.potatogun.gdxhelper.collections.toArray;
@@ -12,7 +14,7 @@ import java.util.WeakHashMap;
 /**
  * 게임 화면과 독립적으로 매 프레임 상태 갱신을 하는 객체 관리자이다.
  */
-class UpdateListenerManager(private val game: Game) : Updatable {
+class UpdateListenerManager(private val game: ApplicationListener) : Updatable, Disposable {
 	/**
 	 * 등록된 리스너
 	 */
@@ -61,10 +63,15 @@ class UpdateListenerManager(private val game: Game) : Updatable {
 		conditions.remove(listener);
 	}
 
+	override fun dispose() {
+		listeners.clear();
+		conditions.clear();
+	}
+
 	/**
 	 * 리스너가 이번에 상태갱신이 가능한지를 반환하는 람다함수
 	 */
 	fun interface ListenerCondition {
-		fun test(listener: Updatable, game: Game): Boolean;
+		fun test(listener: Updatable, game: ApplicationListener): Boolean;
 	}
 }
