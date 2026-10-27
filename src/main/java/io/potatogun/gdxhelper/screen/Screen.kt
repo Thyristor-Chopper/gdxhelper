@@ -162,6 +162,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	override fun update(delta: Float) {}
 
 	private inline fun updateWidgets(delta: Float) {  // update에서만 한 번 쓰이므로 인라인 함수
+		if(widgets.size <= 0) return;
 		widgets.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val widget = iterableClone.items[i];
@@ -209,6 +210,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	 * @return 보이는(실제로 그린) 위젯 수
 	 */
 	private inline fun drawWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
+		if(widgets.size <= 0) return 0;
 		var count = 0;
 		val iterator = widgets.iterator();
 		while(iterator.hasNext) {
@@ -227,6 +229,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	 * @return 보이는(실제로 그린) 위젯 수
 	 */
 	private inline fun drawOverlayWidgets(): Int {  // render에서만 한 번 쓰이므로 인라인이다.
+		if(overlayWidgets.size <= 0) return 0;
 		var count = 0;
 		val iterator = overlayWidgets.iterator();
 		while(iterator.hasNext) {
@@ -295,6 +298,7 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 	override fun onKeyType(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
 
 	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
+		if(listenableWidgets.size <= 0) return false;
 		var processed = false;
 		listenableWidgets.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
@@ -315,12 +319,16 @@ abstract class Screen(font: BitmapFont? = null) : ScreenAdapter(), InputListener
 		batch.dispose();
 		if(autoDisposeFont)
 			font.dispose();
-		val iterator = widgets.iterator();
-		while(iterator.hasNext) {
-			val widget = iterator.next();
-			widget.dispose();
+		if(widgets.size > 0) {
+			val iterator = widgets.iterator();
+			while(iterator.hasNext) {
+				val widget = iterator.next();
+				widget.dispose();
+			}
+			widgets.clear();
+			overlayWidgets.clear();
+			listenableWidgets.clear();
 		}
-		widgets.clear();
 	}
 
 	/**

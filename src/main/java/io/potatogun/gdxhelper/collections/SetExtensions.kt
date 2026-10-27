@@ -17,6 +17,7 @@ fun <T> ObjectSet<T>.toArray(output: GdxArray<T>) {
 }
 
 private inline fun <T> copyToArray(objectSet: ObjectSet<T>, output: GdxArray<T>) {
+	if(objectSet.size <= 0) return;
 	val iterator = objectSet.iterator();
 	while(iterator.hasNext)
 		output.add(iterator.next());
@@ -35,6 +36,7 @@ fun <T> Set<T>.toArray(output: GdxArray<T>) {
 }
 
 private inline fun <T> copyToArray(set: Set<T>, output: GdxArray<T>) {
+	if(set.isEmpty()) return;
 	val iterator = set.iterator();
 	while(iterator.hasNext())
 		output.add(iterator.next());

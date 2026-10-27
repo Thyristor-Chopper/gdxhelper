@@ -32,6 +32,7 @@ class UpdateListenerManager(private val game: ApplicationListener) : Updatable, 
 	 * @param delta 직전 프레임과의 초 간격
 	 */
 	override fun update(delta: Float) {
+		if(listeners.isEmpty()) return;
 		listeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val listener = iterableClone.items[i];

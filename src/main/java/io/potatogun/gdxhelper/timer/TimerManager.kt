@@ -51,6 +51,8 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 		// 전역 조건 검사
 		if(!(condition?.getAsBoolean() ?: true)) return;
 
+		if(timers.size <= 0) return;
+
 		// 순회 중 제거 튕김을 방지하기 위해 사본에서 순회
 		timers.toArray(iterableClone);
 

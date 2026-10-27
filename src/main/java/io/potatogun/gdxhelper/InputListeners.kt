@@ -106,6 +106,7 @@ object InputListeners : InputProcessor, Disposable {
 	override fun keyTyped(char: Char): Boolean = forEachListeners { it.onKeyType(char) };
 
 	private inline fun forEachListeners(crossinline callback: (InputListener) -> Boolean): Boolean {
+		if(inputListeners.isEmpty()) return false;
 		val game = getGameInstance();
 		var processed = false;
 		inputListeners.toArray(iterableClone);
