@@ -52,13 +52,17 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		if(isProjecting(world)) return;  // 아무 작업도 할 필요 없음
 		if(world.isDisposed)
 			throw IllegalStateException("world is disposed");
-		if(instances.any { it.isProjecting(world) })
+		if(world.projector != null)
 			throw IllegalStateException("another projector is already projecting that world");
 		val previousWorld: World? = projectingWorld;
 		projectingWorld = world;
+		world.projector = this;
 		world.updateCamera();
-		if(disposePrevious && previousWorld != null)
-			game.taskQueue.post(previousWorld, safeDisposeWorld);
+		if(previousWorld != null) {
+			previousWorld.projector = null;
+			if(disposePrevious)
+				game.taskQueue.post(previousWorld, safeDisposeWorld);
+		}
 	}
 
 	/**
@@ -71,6 +75,7 @@ open class WorldProjector(font: BitmapFont? = null) : Screen(font) {
 		val currentWorld: World? = projectingWorld;
 		if(currentWorld == null) return false;
 		projectingWorld = null;
+		currentWorld.projector = null;
 		if(dispose)
 			game.taskQueue.post(currentWorld, safeDisposeWorld);
 		return true;

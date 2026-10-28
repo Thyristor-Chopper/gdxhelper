@@ -44,9 +44,11 @@ abstract class World(@JvmField val width: Float, @JvmField val height: Float, @J
 	private val autoDisposeFont: Boolean;
 	/**
 	 * 월드를 보여주는 스크린. 만약 이 월드를 띄우는 뷰어가 없으면 null일 수도 있음에 주의
+	 *
+	 * 자바에서는 getProjector()이다.
 	 */
-	val projector: WorldProjector?
-		inline get() = WorldProjector.getProjectorByWorld(this);
+	@set:JvmSynthetic var projector: WorldProjector? = null
+		internal set;
 	// 카메라 오프셋 — 월드의 어느 지점이 화면 중앙에 오는지.
 	//   이 두 값만 바꾸면 카메라가 움직이는 효과가 난다.
 	/**
