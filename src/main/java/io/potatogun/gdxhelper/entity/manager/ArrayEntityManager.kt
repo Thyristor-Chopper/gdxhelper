@@ -26,14 +26,16 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	@Suppress("INAPPLICABLE_JVM_NAME")
 	@get:JvmName("view")
 	override val view: View<Entity> = allEntities.createView();
+	private lateinit var world: World;  // 한 번 할당된 후에는 바뀌지 않음
 
 	override fun draw(batch: SpriteBatch) {
 		if(allEntities.size == 0) return;
+		if(!initWorld()) return;
 
 		val halfScreenWidth = Window.width * 0.5f;
 		val halfScreenHeight = Window.height * 0.5f;
 
-		val world = allEntities.items[0].world!!;  // setWorld(null)을 하면 자동으로 개체 관리자에서 빠지게 됨
+		val world = this.world;
 		val offsetX = world.cameraX;
 		val offsetY = world.cameraY;
 
@@ -51,8 +53,8 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 	override fun update(delta: Float) {
 		commit();
 
-		if(allEntities.size > 0) {
-			val world = allEntities.items[0].world!!;  // setWorld(null)을 하면 자동으로 개체 관리자에서 빠지게 됨...
+		if(allEntities.size > 0 && initWorld()) {
+			val world = this.world;
 			val isFrozen = (world is Freezable && world.isFrozen);
 
 			for(i in 0 until allEntities.size) {
@@ -64,6 +66,20 @@ abstract class ArrayEntityManager @JvmOverloads constructor(capacity: Int, order
 		}
 
 		commit();
+	}
+
+	private fun initWorld(): Boolean {
+		if(::world.isInitialized) return true;
+
+		for(i in 0 until allEntities.size) {
+			val entity = allEntities.items[i];
+			val world = entity.world;
+			if(world != null) {
+				this.world = world;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	override fun dispose() {

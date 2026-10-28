@@ -22,7 +22,7 @@ interface EntityManager : Disposable, Updatable {
 	val view: View<Entity>;
 
 	/**
-	 * 개체를 등록한다. 구현자는 개체의 자원이 살아있는지 확인해야 한다.
+	 * 개체를 등록한다. 구현자는 개체의 자원이 살아있는지 확인하고 동일 월드에 속한 개체인지 확인해야 한다.
 	 *
 	 * 대기열을 사용하여 구현해야 한다.
 	 *
