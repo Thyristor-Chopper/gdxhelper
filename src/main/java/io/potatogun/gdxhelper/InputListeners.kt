@@ -112,7 +112,8 @@ object InputListeners : InputProcessor, Disposable {
 		inputListeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val listener = iterableClone.items[i];
-			val conditionMet = listenerConditions.get(listener)?.test(listener, game) ?: true;
+			val condition = listenerConditions.get(listener);
+			val conditionMet = condition == null || condition.test(listener, game);
 			val listenable = (listener !is Screen || activeScreenListeners.contains(listener) || game.screen === listener);
 			if(listenable && conditionMet)
 				processed = callback(listener) || processed;

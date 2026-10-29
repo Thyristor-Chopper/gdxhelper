@@ -36,7 +36,8 @@ class UpdateListenerManager(private val game: ApplicationListener) : Updatable, 
 		listeners.toArray(iterableClone);
 		for(i in 0 until iterableClone.size) {
 			val listener = iterableClone.items[i];
-			if(conditions.get(listener)?.test(listener, game) ?: true)
+			val condition = conditions.get(listener);
+			if(condition == null || condition.test(listener, game))
 				listener.update(delta);
 		}
 		iterableClone.clear();

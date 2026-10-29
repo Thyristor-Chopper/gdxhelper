@@ -304,8 +304,15 @@ abstract class Entity(world: World? = null, val name: String, x: Float = 0f, y: 
 	 */
 	fun rotateToCursor() {
 		val world = level;
-		val cameraX = world?.cameraX ?: 0f;
-		val cameraY = world?.cameraY ?: 0f;
+		val cameraX: Float;
+		val cameraY: Float;
+		if(world != null) {
+			cameraX = world.cameraX;
+			cameraY = world.cameraY;
+		} else {
+			cameraX = 0f;
+			cameraY = 0f;
+		}
 		// 샷건 내 360도 구현 참고함
 		val x = Input.mouseX.toFloat();
 		val y = Input.mouseY.toFloat();

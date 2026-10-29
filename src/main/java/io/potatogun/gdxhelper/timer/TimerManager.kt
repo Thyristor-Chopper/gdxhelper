@@ -49,7 +49,7 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 	 */
 	override fun update(delta: Float) {
 		// 전역 조건 검사
-		if(!(condition?.getAsBoolean() ?: true)) return;
+		if(condition != null && !condition.getAsBoolean()) return;
 
 		if(timers.size <= 0) return;
 
@@ -59,7 +59,8 @@ class TimerManager @JvmOverloads constructor(private val condition: BooleanSuppl
 		// 각 타이머 갱신
 		for(i in 0 until iterableClone.size) {
 			val timer = iterableClone.items[i];
-			if(timer.condition?.getAsBoolean() ?: true) {
+			val condition = timer.condition;
+			if(condition == null || condition.getAsBoolean()) {
 				timer.update(delta);
 				if(timer.executed)
 					timers.remove(timer);

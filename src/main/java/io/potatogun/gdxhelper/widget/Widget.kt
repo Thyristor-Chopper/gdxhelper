@@ -27,7 +27,10 @@ abstract class Widget(x: DimensionSupplier, y: DimensionSupplier, width: Dimensi
 	 * 컨트롤이 화면에 그려지는지의 여부
 	 */
 	var isVisible = true
-		get() = field && visibleCondition?.getAsBoolean() ?: true;
+		get() {
+			val visibleCondition = this.visibleCondition;
+			return field && (visibleCondition == null || visibleCondition.getAsBoolean());
+		}
 		private set;
 	/**
 	 * 자원이 해제됐는지의 여부
